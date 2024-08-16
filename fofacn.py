@@ -60,7 +60,7 @@ def store_proxy_ip2redis(iptests, region: str):
         port = server["port"]
         loc = server["region"]
 
-        if server["download_speed"] == '0 kB/s':
+        if server["download_speed"] == '0.00 kB/s':
             continue
         server_info_json = json.dumps(server)
         r.hsetnx("snifferx-result", f"fofa-{region.lower()}:{ip}:{port}", server_info_json)

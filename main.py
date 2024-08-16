@@ -237,7 +237,7 @@ def store_ip_port_result_in_redis(asn, iptests: []):
         port = server["port"]
         # TODO 判断是否有问题 0.00 kB/s
         # 修改为0.00 可能会造成一些能用的IP被遗漏
-        # 如果设置为0.0 会导致有些看似可用的IP被误用
+        # 如果设置为0 会导致有些看似可用的IP被误用
         # 目前设置为宁愿遗漏
         if server["download_speed"] == '0.00 kB/s':
             continue

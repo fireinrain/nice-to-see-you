@@ -91,7 +91,7 @@ def store_proxy_ip2redis(iptests, region: str):
         port = server["port"]
         loc = server["region"]
 
-        if server["download_speed"] == '0 kB/s' or (loc in dont_need_dc and region != 'US'):
+        if server["download_speed"] == '0.00 kB/s' or (loc in dont_need_dc and region != 'US'):
             continue
         server_info_json = json.dumps(server)
 
