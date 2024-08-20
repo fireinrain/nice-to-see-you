@@ -404,10 +404,10 @@ def clean_dead_ip():
             continue
 
         # 不主动删除fofa的数据
-        if 'fofa' in key_str:
-            # 对于国内来说访问的city几乎都是
-            print(f">>> fofa find 数据:{key_str},暂时做跳过处理...")
-            continue
+        # if 'fofa' in key_str:
+        #     # 对于国内来说访问的city几乎都是
+        #     print(f">>> fofa find 数据:{key_str},暂时做跳过处理...")
+        #     continue
 
         if region in dont_need_dc and '906' not in key_str:
             # delete ip 主动删除US EU的ip 不做通断检测
