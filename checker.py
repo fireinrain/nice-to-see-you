@@ -399,7 +399,7 @@ def clean_dead_ip():
                 continue
 
         # 排除fofacn 的ip # 排除上海阿里云 它奇葩的禁止国外ping和tcp
-        if 'fofa-cn' in key_str and port == 443 and city == 'Tokyo':
+        if 'fofa-cn' in key_str and port == 443 and (city == 'Tokyo' or city == 'San Jose'):
             print(f">>> fofa-cn 数据:{key_str},暂时做跳过处理...")
             continue
 
