@@ -1,4 +1,5 @@
 import concurrent.futures as futures
+import csv
 import datetime
 import json
 import random
@@ -426,7 +427,10 @@ def clean_dead_ip():
 
     # 获取剩余ip数量
     new_keys = r.hkeys('snifferx-result')
-    end_msg_info = f"IP移除统计信息: {remove_counts},剩余可用IP数: {len(new_keys)}"
+    ip_counts = len(new_keys)
+    # 写入记录
+    write_ip_report(ip_counts)
+    end_msg_info = f"IP移除统计信息: {remove_counts},剩余可用IP数: {ip_counts}"
     telegram_notify = notify.pretty_telegram_notify("🎉🎉CleanGFW-Ban-IP运行结束",
                                                     f"clean-ban-ip gfw",
                                                     end_msg_info)
@@ -437,6 +441,23 @@ def clean_dead_ip():
         print(">>> Start fofa find message sent successfully!")
     else:
         print(">>> Start fofa find message failed to send.")
+
+
+def write_ip_report(ip_counts: int):
+    current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
+    # report_data = f'{current_date_str},{ip_counts}'
+    reader = None
+    with open('report.csv', mode='r', newline='') as file:
+        reader = list(csv.reader(file))
+
+        # Check if the last row's date matches the specified date
+        if reader[-1][0] == current_date_str:
+            reader[-1] = [current_date_str, ip_counts]
+    # Write the updated data back to the CSV file
+    with open('report.csv', mode='w', newline='') as file:
+        datas = [f'{i[0]},{i[1]}' for i in reader]
+        data_str = '\n'.join(datas)
+        file.write(data_str)
 
 
 def recover_init_data():
@@ -801,5 +822,6 @@ def recover_init_data():
 
 
 if __name__ == '__main__':
-    clean_dead_ip()
+    # clean_dead_ip()
     # recover_init_data()
+    write_ip_report(44)
