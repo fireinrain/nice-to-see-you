@@ -29,6 +29,7 @@
 </div>
 
 <script>
+    let myChart = null;
     document.addEventListener("DOMContentLoaded", function () {
         const fetchData = async () => {
             const response = await fetch('https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/report.csv');
@@ -47,7 +48,11 @@
             const labels = data.map(line => line.split(',')[0]);
             const values = data.map(line => parseInt(line.split(',')[1]));
             const ctx = document.getElementById('dataChart').getContext('2d');
-            const chart = new Chart(ctx, {
+            // If a chart instance exists, destroy it
+            if (myChart) {
+                myChart.destroy();
+            }
+            myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
