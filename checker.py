@@ -400,7 +400,7 @@ def clean_dead_ip():
                 continue
 
         # 排除fofacn 的ip # 排除上海阿里云 它奇葩的禁止国外ping和tcp
-        if 'fofa-cn' in key_str and port == 443 and (city == 'Tokyo' or city == 'San Jose'):
+        if 'fofa-cn' in key_str and (city == 'Tokyo' or city == 'San Jose'):
             print(f">>> fofa-cn 数据:{key_str},暂时做跳过处理...")
             continue
 
@@ -417,7 +417,7 @@ def clean_dead_ip():
             remove_counts += 1
             print(f">>> 普通US/EU IP数据,当前不做通断检测，直接删除: {key_str} {kv_value}")
             continue
-        port_open = IPChecker.check_port_open_with_retry(ip, port, 5)
+        port_open = IPChecker.check_port_open_with_retry(ip, port, 3)
         if not port_open:
             print(f">>> 当前优选IP端口已失效: {ip}:{port},进行移除...")
             print(f">>> 原始记录: {key_str}--{kv_value}")
