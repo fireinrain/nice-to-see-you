@@ -58,6 +58,6 @@ jobs:
         echo start push
         git config --global user.name "fireinrain"
         git config --global user.email "lzyme.dev@gmail.com"
-        git add asn/ ports_results/ README.md
+        git add asn/ README.md report.csv
         git commit -m $(date '+%Y-%m-%d')
         git push origin HEAD:master
