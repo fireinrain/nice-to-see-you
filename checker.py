@@ -822,6 +822,6 @@ def recover_init_data():
 
 
 if __name__ == '__main__':
-    # clean_dead_ip()
+    clean_dead_ip()
     # recover_init_data()
-    write_ip_report(44)
+    # write_ip_report(44)
