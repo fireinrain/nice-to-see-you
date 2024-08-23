@@ -430,6 +430,7 @@ def clean_dead_ip():
     ip_counts = len(new_keys)
     # 写入记录
     write_ip_report(ip_counts)
+    print(f"写入记录成功:{ip_counts}")
     end_msg_info = f"IP移除统计信息: {remove_counts},剩余可用IP数: {ip_counts}"
     telegram_notify = notify.pretty_telegram_notify("🎉🎉CleanGFW-Ban-IP运行结束",
                                                     f"clean-ban-ip gfw",
@@ -453,6 +454,8 @@ def write_ip_report(ip_counts: int):
         # Check if the last row's date matches the specified date
         if reader[-1][0] == current_date_str:
             reader[-1] = [current_date_str, ip_counts]
+        else:
+            reader.append([current_date_str, ip_counts])
     # Write the updated data back to the CSV file
     with open('report.csv', mode='w', newline='') as file:
         datas = [f'{i[0]},{i[1]}' for i in reader]
