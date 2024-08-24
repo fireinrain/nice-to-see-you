@@ -101,52 +101,39 @@
     });
 
     // 防止控制台打开
-    (function () {
-        // Function to detect if DevTools is open
-        function detectDevTools(allow) {
-            // Disable detection on mobile devices, including iPhones
-            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                return;
+    (function() {
+            function detectDevTools(allow) {
+                if(allow) return;
+
+                const widthThreshold = window.outerWidth - window.innerWidth > 160;
+                const heightThreshold = window.outerHeight - window.innerHeight > 160;
+
+                if(widthThreshold || heightThreshold) {
+                    document.body.innerHTML = 'DevTools is not allowed on this page.';
+                }
             }
 
-            if (allow) return;
+            setInterval(detectDevTools, 1000);
 
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            // 禁用右键菜单
+            document.addEventListener('contextmenu', event => event.preventDefault());
 
-            if (widthThreshold || heightThreshold) {
-                // Add styled content to the body when DevTools is detected
-                document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 24px;">' +
-                    'DevTools is not allowed on this page. 😊' +
-                    '</div>';
-            }
-        }
-
-        // Check DevTools status every second
-        setInterval(detectDevTools, 1000);
-
-        // Disable right-click menu
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // Disable common DevTools shortcuts
-        document.onkeydown = function (e) {
-            // Detect desktop-only shortcuts, excluding iPhones and iPads
-            if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+            // 禁用常见的开发者工具快捷键
+            document.onkeydown = function(e) {
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
                     return false;
                 }
-                if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
                     return false;
                 }
-                if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
                     return false;
                 }
-                if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
                     return false;
                 }
             }
-        }
-    })();
+        })();
 
 
 </script>
