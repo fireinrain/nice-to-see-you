@@ -4,6 +4,8 @@ import datetime
 import json
 import random
 import re
+from collections import defaultdict
+
 import urllib3
 import aiohttp
 import asyncio
@@ -429,7 +431,8 @@ def clean_dead_ip():
     new_keys = r.hkeys('snifferx-result')
     ip_counts = len(new_keys)
     # 写入记录
-    write_ip_report(ip_counts)
+    write_ip_report2csv(ip_counts)
+    write_ip_report2json(ip_counts)
     print(f"写入记录成功:{ip_counts}")
     end_msg_info = f"IP移除统计信息: {remove_counts},剩余可用IP数: {ip_counts}"
     telegram_notify = notify.pretty_telegram_notify("🎉🎉CleanGFW-Ban-IP运行结束",
@@ -444,7 +447,7 @@ def clean_dead_ip():
         print(">>> Start fofa find message failed to send.")
 
 
-def write_ip_report(ip_counts: int):
+def write_ip_report2csv(ip_counts: int):
     current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
     # report_data = f'{current_date_str},{ip_counts}'
     reader = None
@@ -461,6 +464,50 @@ def write_ip_report(ip_counts: int):
         datas = [f'{i[0]},{i[1]}' for i in reader]
         data_str = '\n'.join(datas)
         file.write(data_str)
+
+
+def write_ip_report2json(ip_counts: int):
+    data_center_count = defaultdict(int)
+    keys = r.hkeys('snifferx-result')
+    # For each key, get the value and store in Cloudflare KV
+    for key in keys:
+        value = r.hget('snifferx-result', key)
+
+        # Prepare the data for Cloudflare KV
+        # kv_key = key.decode('utf-8')
+        kv_value = json.loads(value.decode('utf-8'))
+
+        data_center = kv_value['data_center']
+        data_center_count[data_center] += 1
+    data_center_count = dict(data_center_count)
+    print(f"current region report: {data_center_count}")
+
+    current_date_str = datetime.datetime.today().strftime('%Y-%m-%d')
+    with open('report.json', 'r') as f:
+        report_json = f.read()
+        json_loads = json.loads(report_json)
+
+    last_record = json_loads[-1]
+    last_record_date_ = last_record['date']
+    if last_record_date_ == current_date_str:
+        json_loads[-1] = {
+            'date': current_date_str,
+            'counts': ip_counts,
+            'detail': data_center_count
+        }
+    else:
+        d = {
+            'date': current_date_str,
+            'counts': ip_counts,
+            'detail': data_center_count
+        }
+        json_loads.append(d)
+
+    data_dumps = json.dumps(json_loads)
+    # print(data_dumps)
+    with open('report.json', 'w') as f:
+        f.write(data_dumps)
+        f.flush()
 
 
 def recover_init_data():
@@ -825,6 +872,7 @@ def recover_init_data():
 
 
 if __name__ == '__main__':
-    clean_dead_ip()
+    # clean_dead_ip()
     # recover_init_data()
-    # write_ip_report(44)
+    # write_ip_report2csv(44)
+    write_ip_report2json(401)
