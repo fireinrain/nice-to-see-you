@@ -4,7 +4,7 @@ name: single-task-clean-check
 on:
   push:
     branches:
-      - master
+#      - master
     tags: [ "v[0-9]+.[0-9]+.[0-9]+*" ]
   schedule:
 #     run on every hour
