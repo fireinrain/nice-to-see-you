@@ -38,6 +38,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.11
+    - name: Set up Masscan
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y masscan
 
     - name: Install dependencies
       run: |
@@ -47,4 +51,5 @@ jobs:
 
     - name: Run single-task-cfcdn-host
       run: |
+        chmod +x love-you
         sudo -E python3 cfcdn.py
