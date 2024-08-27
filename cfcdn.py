@@ -121,7 +121,10 @@ def store_ip_port_result_in_redis(asn, iptests: []):
 
         r.hsetnx('snifferx-cfcdn', f'{asn}:{ip}:{port}', server_info_json)
         # 添加到cf dns 记录
-        cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
+        try:
+            cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
+        except Exception as e:
+            print("add dns to cloudflare error: ",e)
 
         time.sleep(1)
 
