@@ -123,6 +123,8 @@ def store_ip_port_result_in_redis(asn, iptests: []):
         # 添加到cf dns 记录
         cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
 
+        time.sleep(1)
+
 
 def server_info_to_dict(server_info):
     return {
@@ -153,8 +155,7 @@ def scan_and_store_results(asn, scan_ports):
         # parse result and store to redis
         iptests = parse_result_csv(snifferx)
         store_ip_port_result_in_redis(asn, iptests)
-
-    time.sleep(3)  # 等待一会儿再获取下一个批次
+        print(f"当前搜索到ip数量: {len(iptests)}")
 
     print(f"当前节点任务已经完成: {datetime.datetime.now()}")
     clear_directory("masscan_results")
