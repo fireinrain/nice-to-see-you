@@ -108,6 +108,8 @@ def parse_masscan_output(file_path: str, ip_text_file: str):
 
 
 def store_ip_port_result_in_redis(asn, iptests: []):
+    keys = r.hkeys('snifferx-cfcdn')
+    keys_list = [str(x) for x in keys]
     for server in iptests:
         ip = server["ip"]
         port = server["port"]
@@ -118,15 +120,17 @@ def store_ip_port_result_in_redis(asn, iptests: []):
         if server["download_speed"] == '0.00 kB/s':
             continue
         server_info_json = json.dumps(server)
+        for key in keys_list:
+            if ip in key:
+                continue
+            r.hsetnx('snifferx-cfcdn', f'{asn}:{ip}:{port}', server_info_json)
+            # 添加到cf dns 记录
+            try:
+                cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
+            except Exception as e:
+                print("add dns to cloudflare error: ", e)
 
-        r.hsetnx('snifferx-cfcdn', f'{asn}:{ip}:{port}', server_info_json)
-        # 添加到cf dns 记录
-        try:
-            cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
-        except Exception as e:
-            print("add dns to cloudflare error: ",e)
-
-        time.sleep(1)
+            time.sleep(1)
 
 
 def server_info_to_dict(server_info):
@@ -305,7 +309,10 @@ def main():
                     print(f">>> 当前代理优选IP端口已失效: {ip}:{port},进行移除...")
                     print(f">>> 原始记录: {key_str}--{kv_value}")
                     r.hdel('snifferx-cfcdn', key)
-                    cloudflare.remove_dns_record('A', cloudflare.hostname, ip)
+                    try:
+                        cloudflare.remove_dns_record('A', cloudflare.hostname, ip)
+                    except Exception as e:
+                        print(f"Delete DNS record failed: {e}")
 
 
 if __name__ == "__main__":
