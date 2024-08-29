@@ -294,6 +294,8 @@ def parse_result_csv(result_csv_file: str) -> []:
 
         data = []
         for row in reader:
+            if row[7] == '0 kB/s':
+                row[7] = '0.00 kB/s'
             server_info = ServerInfo(
                 ip=row[0],
                 port=int(row[1]),
