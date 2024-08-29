@@ -84,6 +84,9 @@ def get_cidr_ips(asn):
 
 if __name__ == '__main__':
     # for asn in Wanted_ASN:
-    #     get_cidr_ips(asn)
-    #     time.sleep(2)
+    #     if ',' in asn:
+    #         asns = asn.split(',')
+    #         for a in asns:
+    #             get_cidr_ips(a)
+    #             time.sleep(2)
     get_cidr_ips("40065")
