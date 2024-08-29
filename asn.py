@@ -31,7 +31,8 @@ ASN_Map = {
     "25820": "AS25820 IT7 Networks Inc,392448",
     "132203": "AS132203 Tencent Building Kejizhongyi Avenue,1827072",
     "4809": "AS4809 China Telecom CN2,615936",
-    "7679": "AS7679 QTnet Inc,696320"
+    "7679": "AS7679 QTnet Inc,696320",
+    "40065": "AS40065 CNSERVERS LLC,480512",
 }
 # 每天运行2个，凌晨一个 中午一个
 Wanted_ASN = ['906', '4760', '31898', '135377', '3462', '4609', '25820',
@@ -85,4 +86,4 @@ if __name__ == '__main__':
     # for asn in Wanted_ASN:
     #     get_cidr_ips(asn)
     #     time.sleep(2)
-    get_cidr_ips("7679")
+    get_cidr_ips("40065")
