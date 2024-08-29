@@ -412,8 +412,8 @@ def clean_dead_ip():
         #     print(f">>> fofa find 数据:{key_str},暂时做跳过处理...")
         #     continue
 
-        # 保留906 并且fofa-us的数据
-        if region in dont_need_dc and ('906' not in key_str and 'fofa-us' not in key_str):
+        # 保留906 25820(it7) 并且fofa-us的数据
+        if region in dont_need_dc and ('906' not in key_str and '25820' not in key_str and 'fofa-us' not in key_str):
             # delete ip 主动删除US EU的ip 不做通断检测
             r.hdel('snifferx-result', key)
             remove_counts += 1

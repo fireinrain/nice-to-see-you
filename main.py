@@ -309,7 +309,7 @@ def parse_result_csv(result_csv_file: str) -> []:
             server_info_dict = server_info_to_dict(server_info)
             data.append(server_info_dict)
     # TODO 以HK JP TW KR SG 排序
-    return data if len(data) < 6 else data[:6]
+    return data if len(data) < 10 else data[:10]
 
 
 def clear_directory(folder_path):
