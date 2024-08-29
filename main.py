@@ -418,7 +418,7 @@ def count_fields_containing_asn(hashmap_key, asn):
     return count
 
 
-def run_task(asn_number: str):
+def run_find_task(asn_number: str):
     asn = asn_number
     clean_duplicate_redis_data(asn)
     # scan_ports = (
@@ -523,35 +523,48 @@ def get_current_weekday_plus():
     return 0
 
 
+def cleanup_old_asn_data(asn: str):
+    keys_to_delete = r.keys(f'*{asn}*')
+    # 删除这些键
+    if keys_to_delete:
+        r.delete(*keys_to_delete)
+    # 移除snifferx-result hashmap中特有的asn 扫描结果
+    delete_keys_containing_asn("snifferx-result", asn)
+    print(f"清理上次运行asn数据成功...")
+    # 发送TG消息开始
+    msg_info = f"开始扫描: ASN{asn},IPv4规模: {ASN_Map.get(asn).split(',')[1]}"
+    telegram_notify = notify.pretty_telegram_notify("🔎🔎Open-Port-Sniffer运行开始",
+                                                    f"open-port-sniffer asn{asn}",
+                                                    msg_info)
+    telegram_notify = notify.clean_str_for_tg(telegram_notify)
+    success = notify.send_telegram_message(telegram_notify)
+
+    if success:
+        print("Start scan message sent successfully!")
+    else:
+        print("Start scan message failed to send.")
+
+
 # 搭配worker 展示结果
 def main():
     weekday = get_current_weekday_plus()
     asn = Wanted_ASN[weekday]
     argv_ = sys.argv
     if len(argv_) <= 1:
-        run_task(asn)
-        return
+        if ',' in asn:
+            asn_split = asn.split(",")
+            for asn_number in asn_split:
+                run_find_task(asn_number)
+        else:
+            run_find_task(asn)
     else:
         if argv_[1] == "clean":
-            keys_to_delete = r.keys(f'*{asn}*')
-            # 删除这些键
-            if keys_to_delete:
-                r.delete(*keys_to_delete)
-            # 移除snifferx-result hashmap中特有的asn 扫描结果
-            delete_keys_containing_asn("snifferx-result", asn)
-            print(f"清理上次运行asn数据成功...")
-            # 发送TG消息开始
-            msg_info = f"开始扫描: ASN{asn},IPv4规模: {ASN_Map.get(asn).split(',')[1]}"
-            telegram_notify = notify.pretty_telegram_notify("🔎🔎Open-Port-Sniffer运行开始",
-                                                            f"open-port-sniffer asn{asn}",
-                                                            msg_info)
-            telegram_notify = notify.clean_str_for_tg(telegram_notify)
-            success = notify.send_telegram_message(telegram_notify)
-
-            if success:
-                print("Start scan message sent successfully!")
+            if ',' in asn:
+                asns = asn.split(",")
+                for asn in asns:
+                    cleanup_old_asn_data(asn)
             else:
-                print("Start scan message failed to send.")
+                cleanup_old_asn_data(asn)
 
 
 if __name__ == "__main__":
