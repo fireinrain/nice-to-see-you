@@ -110,6 +110,7 @@ def parse_masscan_output(file_path: str, ip_text_file: str):
 def store_ip_port_result_in_redis(asn, iptests: []):
     keys = r.hkeys('snifferx-cfcdn')
     keys_list = [str(x) for x in keys]
+    key_targets = ','.join(keys_list)
     for server in iptests:
         ip = server["ip"]
         port = server["port"]
@@ -120,9 +121,8 @@ def store_ip_port_result_in_redis(asn, iptests: []):
         if server["download_speed"] == '0.00 kB/s':
             continue
         server_info_json = json.dumps(server)
-        for key in keys_list:
-            if ip in key:
-                continue
+
+        if ip not in key_targets:
             r.hsetnx('snifferx-cfcdn', f'{asn}:{ip}:{port}', server_info_json)
             # 添加到cf dns 记录
             try:
@@ -274,9 +274,10 @@ def main():
     argv_ = sys.argv
     if len(argv_) <= 1:
         msg_info = f"CFCDN扫描开始: ASN{asns}"
-        telegram_notify = notify.pretty_telegram_notify("🌞🌞Open-Port-Sniffer(CFCDN,用于worker访问开启CF CDN网站)运行开始",
-                                                        f"open-port-sniffer asn{asns} cfcdn",
-                                                        msg_info)
+        telegram_notify = notify.pretty_telegram_notify(
+            "🌞🌞Open-Port-Sniffer(CFCDN,用于worker访问开启CF CDN网站)运行开始",
+            f"open-port-sniffer asn{asns} cfcdn",
+            msg_info)
         telegram_notify = notify.clean_str_for_tg(telegram_notify)
         success = notify.send_telegram_message(telegram_notify)
 
