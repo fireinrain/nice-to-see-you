@@ -128,9 +128,9 @@ def store_ip_port_result_in_redis(asn, iptests: []):
             try:
                 cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
             except Exception as e:
-                print("add dns to cloudflare error: ", e)
+                print(f"add dns to cloudflare error: {e},当前ip是:{ip}")
 
-            time.sleep(1)
+            time.sleep(2)
 
 
 def server_info_to_dict(server_info):
@@ -274,7 +274,7 @@ def main():
     argv_ = sys.argv
     if len(argv_) <= 1:
         msg_info = f"CFCDN扫描开始: ASN{asns}"
-        telegram_notify = notify.pretty_telegram_notify("🌞🌞Open-Port-Sniffer(CFCDN)运行开始",
+        telegram_notify = notify.pretty_telegram_notify("🌞🌞Open-Port-Sniffer(CFCDN,用于worker访问开启CF CDN网站)运行开始",
                                                         f"open-port-sniffer asn{asns} cfcdn",
                                                         msg_info)
         telegram_notify = notify.clean_str_for_tg(telegram_notify)
