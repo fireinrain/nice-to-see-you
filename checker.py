@@ -372,6 +372,9 @@ def clean_dead_ip():
     remove_counts = 0
     for key in keys:
         value = r.hget('snifferx-result', key)
+        if not value:
+            r.hdel('snifferx-result', key)
+            continue
 
         # Prepare the data for Cloudflare KV
         # kv_key = key.decode('utf-8')
