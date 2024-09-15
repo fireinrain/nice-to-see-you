@@ -99,6 +99,8 @@ def store_proxy_ip2redis(iptests, region: str):
 
 
 async def main():
+    # zoom现在不支持普通注册用户调用api了
+    return
     # 发送TG消息开始
     msg_info = f"Zoom查找: zoom: {len(ZoomeyeRules)}"
     telegram_notify = notify.pretty_telegram_notify("👁️👁️Zoom-Find-Proxy运行开始",
