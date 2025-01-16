@@ -17,6 +17,5 @@ pycryptodomex==3.20.0
 pytz==2024.1
 redis==5.0.7
 requests
-urllib3
 yarl==1.9.4
 zoomeyehk==2.2.0
