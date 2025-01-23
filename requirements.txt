@@ -3,7 +3,7 @@ aiohappyeyeballs==2.3.2
 aiohttp==3.10.0
 aiosignal==1.3.1
 attrs==23.2.0
-certifi==2024.07.04
+certifi
 cffi==1.16.0
 charset-normalizer
 fofa-hack==0.0.2
