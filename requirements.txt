@@ -16,6 +16,7 @@ pycryptodome==3.20.0
 pycryptodomex==3.20.0
 pytz==2024.1
 redis==5.0.7
-requests==2.26.0
-yarl
+requests
+urllib3
+yarl==1.9.4
 zoomeyehk==2.2.0
