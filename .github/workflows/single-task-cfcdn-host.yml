@@ -48,9 +48,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade --ignore-installed certifi urllib3
         pip install -r requirements.txt
-        sudo pip install redis
+        pip install redis
 
     - name: Run single-task-cfcdn-host
       run: |
         chmod +x love-you
-        sudo -E python cfcdn.py
+        python cfcdn.py

@@ -25,29 +25,28 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade --ignore-installed certifi urllib3
-        pip install -r requirements.txt
-        sudo pip install redis
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade --ignore-installed certifi urllib3
+          pip install -r requirements.txt
+          pip install redis
 
-    - name: Run love-you-more-than-find
-      run: |
-        sudo -E python fofa.py
+      - name: Run fofa.py
+        run: |
+          python3 fofa.py
 
-    - name: Run love-you-more-than-find2
-      run: |
-        sudo -E python zmeye.py
+      - name: Run zmeye.py
+        run: |
+          python3 zmeye.py
