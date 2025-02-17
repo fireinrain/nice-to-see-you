@@ -48,4 +48,4 @@ jobs:
 
     - name: Run single-task-cfcdn-updater
       run: |
-        sudo -E python3 cfcdn.py check
+        sudo -E python cfcdn.py check

@@ -45,4 +45,4 @@ jobs:
 
     - name: Run Run love-you-more-than
       run: |
-        sudo -E python3 main.py clean
+        sudo -E python main.py clean

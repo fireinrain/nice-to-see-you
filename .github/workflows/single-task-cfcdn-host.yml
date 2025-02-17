@@ -53,4 +53,4 @@ jobs:
     - name: Run single-task-cfcdn-host
       run: |
         chmod +x love-you
-        sudo -E python3 cfcdn.py
+        sudo -E python cfcdn.py

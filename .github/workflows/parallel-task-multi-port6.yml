@@ -55,6 +55,6 @@ jobs:
     - name: Run Run love-you-more-than
       run: |
         chmod +x love-you
-        sudo -E python3 main.py
+        sudo -E python main.py
         curl ipinfo.io
 
