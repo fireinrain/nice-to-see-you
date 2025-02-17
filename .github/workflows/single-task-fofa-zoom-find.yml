@@ -46,8 +46,8 @@ jobs:
 
     - name: Run love-you-more-than-find
       run: |
-        sudo -E python3 fofa.py
+        sudo -E python fofa.py
 
     - name: Run love-you-more-than-find2
       run: |
-        sudo -E python3 zmeye.py
+        sudo -E python zmeye.py
