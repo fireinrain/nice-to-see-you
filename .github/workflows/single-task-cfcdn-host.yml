@@ -45,12 +45,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade --ignore-installed certifi urllib3
-        pip install -r requirements.txt
-        pip install redis
+        sudo python -m pip install --upgrade pip
+        sudo pip install --upgrade --ignore-installed certifi urllib3
+        sudo pip install -r requirements.txt
+        sudo pip install redis
 
     - name: Run single-task-cfcdn-host
       run: |
-        chmod +x love-you
-        python cfcdn.py
+        sudo chmod +x love-you
+        sudo python3 cfcdn.py

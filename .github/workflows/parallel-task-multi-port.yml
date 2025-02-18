@@ -48,14 +48,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade --ignore-installed certifi urllib3
-        pip install -r requirements.txt
-        pip install redis
+        sudo python -m pip install --upgrade pip
+        sudo pip install --upgrade --ignore-installed certifi urllib3
+        sudo pip install -r requirements.txt
+        sudo pip install redis
 
     - name: Run Run love-you-more-than
       run: |
-        chmod +x love-you
-        python3 main.py
+        sudo chmod +x love-you
+        sudo python3 main.py
         curl ipinfo.io
 
