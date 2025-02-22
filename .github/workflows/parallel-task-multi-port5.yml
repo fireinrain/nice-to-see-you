@@ -47,17 +47,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo pip install --upgrade --ignore-installed certifi urllib3
-        sudo pip install -r requirements.txt
-        sudo pip install redis
+        pip install --upgrade --ignore-installed certifi urllib3
+        pip install -r requirements.txt
+        pip install redis
 
     - name: Run Run love-you-more-than
-      env:
-        REDIS_HOST: ${{ secrets.REDIS_HOST }}
-        REDIS_PORT: ${{ secrets.REDIS_PORT }}
-        REDIS_PASS: ${{ secrets.REDIS_PASS }}
-        TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}    
       run: |
         sudo chmod +x love-you
         sudo python3 main.py
