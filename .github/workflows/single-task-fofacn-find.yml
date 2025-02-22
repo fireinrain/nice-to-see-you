@@ -44,4 +44,4 @@ jobs:
 
     - name: Run love-you-more-than-find
       run: |
-        sudo python3 fofacn.py
+        sudo python3 -E fofacn.py

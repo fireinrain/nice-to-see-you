@@ -36,7 +36,7 @@ jobs:
 
       - name: Run single-task-clean-check
         run: |
-          sudo python3 checker.py
+          sudo python3 -E checker.py
 
       - name: Check for changes
         id: git-status
