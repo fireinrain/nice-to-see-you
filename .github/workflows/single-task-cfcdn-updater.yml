@@ -46,5 +46,11 @@ jobs:
         sudo pip install redis
 
     - name: Run single-task-cfcdn-updater
+      env:
+        REDIS_HOST: ${{ secrets.REDIS_HOST }}
+        REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        REDIS_PASS: ${{ secrets.REDIS_PASS }}
+        TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}    
       run: |
-        sudo python3 -E cfcdn.py check
+        sudo python3 cfcdn.py check
