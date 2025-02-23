@@ -7,7 +7,7 @@ on:
      - master
    tags: [ "v[0-9]+.[0-9]+.[0-9]+*" ]
 
-  workflow_run:
+   workflow_run:
     workflows: ["parallel-task-clean-pre"]  # 这里需要匹配第一个 workflow 的名称
     types:
       - completed
