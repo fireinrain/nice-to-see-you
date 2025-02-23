@@ -163,11 +163,45 @@ def get_cidr_batch(asn):
     return []
 
 
+def get_masscan_path():
+    # 首先尝试 shutil.which
+    masscan_path = shutil.which('masscan')
+    if masscan_path:
+        return masscan_path
+
+    # 常见的安装位置
+    common_paths = [
+        '/usr/bin/masscan',
+        '/usr/local/bin/masscan',
+        '/usr/sbin/masscan',
+        '/usr/local/sbin/masscan'
+    ]
+
+    # 检查常见位置
+    for path in common_paths:
+        if os.path.isfile(path) and os.access(path, os.X_OK):
+            return path
+
+    # 最后尝试 which 命令
+    try:
+        result = subprocess.run(['which', 'masscan'],
+                                check=True,
+                                capture_output=True,
+                                text=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError:
+        pass
+
+    raise FileNotFoundError("Could not find masscan executable")
+
+
 # 使用 Masscan 扫描所有 IP 的端口
 def scan_ip_range(cidr, output_file, scan_ports="443"):
-    cmd = ["sudo masscan", cidr, f"-p{scan_ports}", "--rate=20000", "--wait=3", "-oL", output_file]
+    cmd = ["sudo", "masscan", cidr, f"-p{scan_ports}", "--rate=20000", "--wait=3", "-oL", output_file]
     print(f"Executing command: {' '.join(cmd)}")
     try:
+        masscan_path = get_masscan_path()
+        print(f"masscan 所在目录: {masscan_path}")
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
         print("Scan completed successfully.")
         print(result.stdout)
