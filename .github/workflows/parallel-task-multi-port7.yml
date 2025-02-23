@@ -49,11 +49,10 @@ jobs:
       run: |
         pip install --upgrade --ignore-installed certifi urllib3
         pip install -r requirements.txt
-        pip install redis
 
     - name: Run Run love-you-more-than    
       run: |
         sudo chmod +x love-you
-        sudo python3 main.py
+        python3 main.py
         curl ipinfo.io
 

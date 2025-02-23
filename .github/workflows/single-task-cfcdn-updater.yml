@@ -43,7 +43,6 @@ jobs:
       run: |
         pip install --upgrade --ignore-installed certifi urllib3
         pip install -r requirements.txt
-        pip install redis
 
     - name: Run single-task-cfcdn-updater
       run: |
