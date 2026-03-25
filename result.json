@@ -2,102 +2,6 @@
   "counts": 22,
   "data": [
     {
-      "ip": "1.161.46.22",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "222 ms",
-      "download_speed": "11880 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "1.161.41.155",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "220 ms",
-      "download_speed": "10961 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "1.162.82.44",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "215 ms",
-      "download_speed": "3783 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "60.249.21.29",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "222 ms",
-      "download_speed": "7735 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "36.232.112.247",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "KHH",
-      "region": "Asia Pacific",
-      "city": "Kaohsiung City",
-      "network_latency": "142 ms",
-      "download_speed": "971 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "1.161.55.229",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "216 ms",
-      "download_speed": "10724 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "211.75.210.33",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "187 ms",
-      "download_speed": "9340 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
-      "ip": "36.232.75.92",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "KHH",
-      "region": "Asia Pacific",
-      "city": "Kaohsiung City",
-      "network_latency": "145 ms",
-      "download_speed": "945 kB/s",
-      "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
-    },
-    {
       "ip": "125.227.233.197",
       "port": 2053,
       "enable_tls": true,
@@ -107,7 +11,7 @@
       "network_latency": "222 ms",
       "download_speed": "3447 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "220.132.13.135",
@@ -119,7 +23,7 @@
       "network_latency": "189 ms",
       "download_speed": "982 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "118.161.70.26",
@@ -131,7 +35,43 @@
       "network_latency": "173 ms",
       "download_speed": "2190 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "60.249.21.29",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "222 ms",
+      "download_speed": "7735 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "36.232.112.247",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "KHH",
+      "region": "Asia Pacific",
+      "city": "Kaohsiung City",
+      "network_latency": "142 ms",
+      "download_speed": "971 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "36.232.75.92",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "KHH",
+      "region": "Asia Pacific",
+      "city": "Kaohsiung City",
+      "network_latency": "145 ms",
+      "download_speed": "945 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "60.249.21.30",
@@ -143,7 +83,7 @@
       "network_latency": "215 ms",
       "download_speed": "7276 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "125.227.233.197",
@@ -155,7 +95,7 @@
       "network_latency": "221 ms",
       "download_speed": "4176 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "111.251.160.220",
@@ -167,7 +107,7 @@
       "network_latency": "163 ms",
       "download_speed": "1575 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "1.162.82.44",
@@ -179,7 +119,67 @@
       "network_latency": "219 ms",
       "download_speed": "3150 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "1.161.41.155",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "220 ms",
+      "download_speed": "10961 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "1.161.46.22",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "222 ms",
+      "download_speed": "11880 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "1.162.82.44",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "215 ms",
+      "download_speed": "3783 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "1.161.55.229",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "216 ms",
+      "download_speed": "10724 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
+    },
+    {
+      "ip": "211.75.210.33",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "187 ms",
+      "download_speed": "9340 kB/s",
+      "asn": "3462",
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "1.173.206.152",
@@ -191,7 +191,7 @@
       "network_latency": "230 ms",
       "download_speed": "2045 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "125.227.233.197",
@@ -203,7 +203,7 @@
       "network_latency": "223 ms",
       "download_speed": "1620 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "114.42.225.68",
@@ -215,7 +215,7 @@
       "network_latency": "166 ms",
       "download_speed": "3173 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "1.170.227.178",
@@ -227,7 +227,7 @@
       "network_latency": "225 ms",
       "download_speed": "4626 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "1.161.60.208",
@@ -239,7 +239,7 @@
       "network_latency": "221 ms",
       "download_speed": "10900 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "1.161.52.134",
@@ -251,7 +251,7 @@
       "network_latency": "221 ms",
       "download_speed": "10706 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     },
     {
       "ip": "125.228.236.138",
@@ -263,7 +263,7 @@
       "network_latency": "219 ms",
       "download_speed": "7442 kB/s",
       "asn": "3462",
-      "last_check": "2026-03-25 21:12:20"
+      "last_check": "2026-03-25 21:22:40"
     }
   ]
 }
