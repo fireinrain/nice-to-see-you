@@ -540,7 +540,7 @@ def export_result_json_data():
                 key_str = str(field)
                 asn = key_str.split(":")[0]
                 obj = json.loads(value)
-                obj["asn"] = asn
+                obj["asn"] = str(asn)
                 # 最后检查时间
                 obj["last_check"] = time_str
                 result_list.append(obj)
