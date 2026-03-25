@@ -530,6 +530,7 @@ def export_result_json_data():
         data = r.hgetall(key)
 
         result_list = []
+        counts = len(data.keys())
 
         # 2️⃣ 遍历 value
         for field, value in data.items():
@@ -546,9 +547,13 @@ def export_result_json_data():
             except Exception as e:
                 print(f"解析失败: {field}", e)
 
+        result = {
+            "counts": counts,
+            "data": result_list
+        }
         # 3️⃣ 写入文件
         with open("result.json", "w", encoding="utf-8") as f:
-            json.dump(result_list, f, ensure_ascii=False, indent=2)
+            json.dump(result, f, ensure_ascii=False, indent=2)
         print(f"✅ 导出完成，共 {len(result_list)} 条")
     except Exception as e:
         print("❌ 导出失败:", e)
