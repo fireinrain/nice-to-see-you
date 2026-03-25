@@ -360,8 +360,8 @@ def clean_dead_ip():
     # 发送TG消息开始
     msg_info = f"CleanGFW-Ban ip"
     telegram_notify = tg_notify.pretty_telegram_notify("🧹🧹CleanGFW-Ban-IP运行开始",
-                                                    f"clean-ban-ip gfw",
-                                                    msg_info)
+                                                       f"clean-ban-ip gfw",
+                                                       msg_info)
     telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
     success = tg_notify.send_telegram_message(telegram_notify)
 
@@ -443,8 +443,8 @@ def clean_dead_ip():
     print(f"写入记录成功:{ip_counts}")
     end_msg_info = f"IP移除统计信息: {remove_counts},剩余可用IP数: {ip_counts}"
     telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉CleanGFW-Ban-IP运行结束",
-                                                    f"clean-ban-ip gfw",
-                                                    end_msg_info)
+                                                       f"clean-ban-ip gfw",
+                                                       end_msg_info)
     telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
     success = tg_notify.send_telegram_message(telegram_notify)
 
@@ -515,12 +515,47 @@ def write_ip_report2json(ip_counts: int):
     with open('report.json', 'w') as f:
         f.write(data_dumps)
         f.flush()
+    # 拷贝到结果库
+    copy_checked_ipport2result("snifferx-result", "snifferx-final-result")
     # 导入数据作为api结果
-    export_result_json_data()
+    export_result_json_data("snifferx-final-result")
 
 
-def export_result_json_data():
-    key = "snifferx-result"
+def copy_checked_ipport2result(from_key: str, to_key: str, overwrite=True):
+    try:
+        data = r.hgetall(from_key)
+
+        if not data:
+            print(f"⚠️ {from_key} 为空")
+            return
+
+        count = 0
+        skipped = 0
+
+        for field, value in data.items():
+            try:
+                # 👇 校验 JSON（防止脏数据）
+                json.loads(value)
+
+                # 👇 如果不覆盖，检查是否存在
+                if not overwrite and r.hexists(to_key, field):
+                    skipped += 1
+                    continue
+
+                r.hset(to_key, field, value)
+                count += 1
+
+            except Exception as e:
+                print(f"❌ 跳过异常数据: {field}", e)
+
+        print(f"✅ 写入: {count} 条")
+        print(f"⏭ 跳过: {skipped} 条")
+
+    except Exception as e:
+        print("❌ 复制失败:", e)
+
+
+def export_result_json_data(key: str):
     # 东八区
     tz = datetime.timezone(datetime.timedelta(hours=8))
     now = datetime.datetime.now(tz)
@@ -537,10 +572,10 @@ def export_result_json_data():
             try:
                 # value 是 JSON 字符串 → 转 dict
                 # asn 数据
-                key_str = str(field)
+                key_str = field.decode() if isinstance(field, bytes) else field
                 asn = key_str.split(":")[0]
                 obj = json.loads(value)
-                obj["asn"] = str(asn)
+                obj["asn"] = asn
                 # 最后检查时间
                 obj["last_check"] = time_str
                 result_list.append(obj)
