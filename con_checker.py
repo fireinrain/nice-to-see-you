@@ -521,7 +521,9 @@ def write_ip_report2json(ip_counts: int):
 
 def export_result_json_data():
     key = "snifferx-result"
-    now = datetime.utcnow() + datetime.timedelta(hours=8)
+    # 东八区
+    tz = datetime.timezone(datetime.timedelta(hours=8))
+    now = datetime.datetime.now(tz)
     time_str = now.strftime("%Y-%m-%d %H:%M:%S")
     try:
         # 1️⃣ 获取整个 hash
