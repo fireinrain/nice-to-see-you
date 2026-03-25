@@ -8,7 +8,7 @@ redis_pass = os.getenv("REDIS_PASS", "mypass")
 pool = redis.ConnectionPool(
     host=redis_host,
     port=redis_port,
-    db=2,
+    db=0,
     password=redis_pass,
     # ⏱️ 超时
     socket_timeout=5,
