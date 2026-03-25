@@ -8,10 +8,20 @@ redis_pass = os.getenv("REDIS_PASS", "mypass")
 pool = redis.ConnectionPool(
     host=redis_host,
     port=redis_port,
-    db=1, password=redis_pass,
-    socket_connect_timeout=60 * 30,
-    socket_timeout=60 * 30,
-    max_connections=2
+    db=2,
+    password=redis_pass,
+    # ⏱️ 超时
+    socket_timeout=5,
+    socket_connect_timeout=5,
+    # 🔁 重试
+    retry_on_timeout=True,
+    # ❤️ 心跳
+    health_check_interval=30,
+    # 🚨 限制连接数（关键）
+    max_connections=50,
+    # 🔧 TCP keepalive（非常重要）
+    socket_keepalive=True,
+    socket_keepalive_options={},
 )
 # 适配的redis版本
 # redis 版本 redis:6.2.14-alpine
