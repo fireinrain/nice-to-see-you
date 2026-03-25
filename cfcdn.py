@@ -8,10 +8,10 @@ import sys
 import time
 from collections import namedtuple
 
-from checker import IPChecker
+from con_checker import IPChecker
 from redis_tool import r
 
-import notify
+import tg_notify
 from asn import CountryASN
 import requests
 import cloudflare
@@ -240,11 +240,11 @@ def run_task(asn_number: str):
     result_counts = count_fields_containing_asn("snifferx-cfcdn", asn)
 
     msg_info = f"CFCDN扫描结束: ASN{asn},结果数量: {result_counts}"
-    telegram_notify = notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer(CFCDN)运行结束",
+    telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer(CFCDN)运行结束",
                                                     f"open-port-sniffer asn{asn} cfcdn",
                                                     msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Finish scan message sent successfully!")
@@ -274,12 +274,12 @@ def main():
     argv_ = sys.argv
     if len(argv_) <= 1:
         msg_info = f"CFCDN扫描开始: ASN{asns}"
-        telegram_notify = notify.pretty_telegram_notify(
+        telegram_notify = tg_notify.pretty_telegram_notify(
             "🌞🌞Open-Port-Sniffer(CFCDN,用于worker访问开启CF CDN网站)运行开始",
             f"open-port-sniffer asn{asns} cfcdn",
             msg_info)
-        telegram_notify = notify.clean_str_for_tg(telegram_notify)
-        success = notify.send_telegram_message(telegram_notify)
+        telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+        success = tg_notify.send_telegram_message(telegram_notify)
 
         if success:
             print("Start scan message sent successfully!")

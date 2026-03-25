@@ -2,10 +2,10 @@ import asyncio
 import json
 import os
 
-from zoomeyehk.sdk import ZoomEye
+from zoomeyeai.sdk import ZoomEye
 
-import checker
-import notify
+import con_checker
+import tg_notify
 from redis_tool import r
 
 api_key = os.getenv("ZOOMEYE_API_KEY")
@@ -103,11 +103,11 @@ async def main():
     return
     # 发送TG消息开始
     msg_info = f"Zoom查找: zoom: {len(ZoomeyeRules)}"
-    telegram_notify = notify.pretty_telegram_notify("👁️👁️Zoom-Find-Proxy运行开始",
+    telegram_notify = tg_notify.pretty_telegram_notify("👁️👁️Zoom-Find-Proxy运行开始",
                                                     f"zoom-find-proxy zoom",
                                                     msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start zoom message sent successfully!")
@@ -126,7 +126,7 @@ async def main():
         proxy_ip_list = []
         for proxy_ip in proxy_ips:
             has_test_ip_set.add(proxy_ip)
-            check_info = await checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
+            check_info = await con_checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
             if check_info[0]:
                 print(f"ip: {proxy_ip[0]},port:{proxy_ip[1]}, cf-proxy:{check_info}")
                 proxy_ip_list.append(check_info[1])
@@ -143,7 +143,7 @@ async def main():
             if proxy_ip in has_test_ip_set:
                 print(f"当前IP: {proxy_ip}已经在CLoudServiceRule测试过...")
                 continue
-            check_info = await checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
+            check_info = await con_checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
             if check_info[0]:
                 print(f"ip: {proxy_ip[0]},port:{proxy_ip[1]}, cf-proxy:{check_info}")
                 proxy_ip_list.append(check_info[1])
@@ -153,11 +153,11 @@ async def main():
         await asyncio.sleep(30)
 
     end_msg_info = f"统计信息: {zoom_static}"
-    telegram_notify = notify.pretty_telegram_notify("🎉🎉Zoom-Find-Proxy运行结束",
+    telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Zoom-Find-Proxy运行结束",
                                                     f"zoom-find-proxy zoom",
                                                     end_msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start zoom find message sent successfully!")

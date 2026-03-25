@@ -30,7 +30,7 @@ def test_env_injection():
 
 def test_ip_file():
     from main import parse_masscan_output
-    parse_masscan_output("masscan_results/45.59.184.0-24_temp.txt", "masscan_results/45.59.184.0-24_ip.txt")
+    parse_masscan_output("../masscan_results/45.59.184.0-24_temp.txt", "masscan_results/45.59.184.0-24_ip.txt")
 
 
 def get_current_weekday_plus():

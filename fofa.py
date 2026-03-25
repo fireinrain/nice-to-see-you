@@ -4,9 +4,9 @@ import json
 
 from fofa_hack import fofa
 from redis_tool import r
-import notify
+import tg_notify
 
-import checker
+import con_checker
 
 FoFaQueryRules = {
     # 'KR': 'server=="cloudflare" && header="Forbidden" && asn=="31898" && country=="KR" && "http"',
@@ -76,11 +76,11 @@ def store_proxy_ip2redis(iptests, region: str):
 async def main():
     # 发送TG消息开始
     msg_info = f"FoFa查找: fofa规则数量: {len(FoFaQueryRules)}"
-    telegram_notify = notify.pretty_telegram_notify("📡📡Fofa-Find-Proxy运行开始",
+    telegram_notify = tg_notify.pretty_telegram_notify("📡📡Fofa-Find-Proxy运行开始",
                                                     f"fofa-find-proxy fofa",
                                                     msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start fofa message sent successfully!")
@@ -99,7 +99,7 @@ async def main():
         proxy_ip_list = []
         for proxy_ip in proxy_ips:
             has_test_ip_set.add(proxy_ip)
-            check_info = await checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
+            check_info = await con_checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
             if check_info[0]:
                 print(f"ip: {proxy_ip[0]},port:{proxy_ip[1]}, cf-proxy:{check_info}")
                 proxy_ip_list.append(check_info[1])
@@ -116,7 +116,7 @@ async def main():
             if proxy_ip in has_test_ip_set:
                 print(f"当前IP: {proxy_ip}已经在CLoudServiceRule测试过...")
                 continue
-            check_info = await checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
+            check_info = await con_checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
             if check_info[0]:
                 print(f"ip: {proxy_ip[0]},port:{proxy_ip[1]}, cf-proxy:{check_info}")
                 proxy_ip_list.append(check_info[1])
@@ -126,11 +126,11 @@ async def main():
         await asyncio.sleep(30)
 
     end_msg_info = f"统计信息: {fofa_static}"
-    telegram_notify = notify.pretty_telegram_notify("🎉🎉Fofa-Find-Proxy运行结束",
+    telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Fofa-Find-Proxy运行结束",
                                                     f"fofa-find-proxy fofa",
                                                     end_msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start fofa find message sent successfully!")

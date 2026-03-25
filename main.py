@@ -12,7 +12,7 @@ from collections import namedtuple
 from redis_tool import r
 import pytz
 
-import notify
+import tg_notify
 from asn import Wanted_ASN, ASN_Map
 import redis
 import requests
@@ -486,11 +486,11 @@ def run_find_task(asn_number: str):
             if r.incr(f"last_instance:{asn}") == 1:
                 result_counts = count_fields_containing_asn("snifferx-result", asn)
                 msg_info = f"扫描结束: ASN{asn},结果数量: {result_counts}"
-                telegram_notify = notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer运行结束",
+                telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer运行结束",
                                                                 f"open-port-sniffer asn{asn}",
                                                                 msg_info)
-                telegram_notify = notify.clean_str_for_tg(telegram_notify)
-                success = notify.send_telegram_message(telegram_notify)
+                telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+                success = tg_notify.send_telegram_message(telegram_notify)
 
                 if success:
                     print("Finish scan message sent successfully!")
@@ -567,11 +567,11 @@ def cleanup_old_asn_data(asn: str):
     print(f"清理上次运行asn数据成功...")
     # 发送TG消息开始
     msg_info = f"开始扫描: ASN{asn},IPv4规模: {ASN_Map.get(asn).split(',')[1]}"
-    telegram_notify = notify.pretty_telegram_notify("🔎🔎Open-Port-Sniffer运行开始",
+    telegram_notify = tg_notify.pretty_telegram_notify("🔎🔎Open-Port-Sniffer运行开始",
                                                     f"open-port-sniffer asn{asn}",
                                                     msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start scan message sent successfully!")

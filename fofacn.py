@@ -4,9 +4,9 @@ import re
 
 from fofa_hack import fofa
 from redis_tool import r
-import notify
+import tg_notify
 
-import checker
+import con_checker
 
 # server=="cloudflare" && header="Forbidden" && country=="CN" && city=="Hangzhou" && "https"
 # server=="cloudflare" && header="Forbidden" && country=="CN" && city=="Shanghai" && "https"
@@ -69,11 +69,11 @@ def store_proxy_ip2redis(iptests, region: str):
 async def main():
     # 发送TG消息开始
     msg_info = f"FoFaCN查找: fofa规则数量: {len(CNLocalRules)}"
-    telegram_notify = notify.pretty_telegram_notify("👁️‍🗨️👁️‍🗨️FofaCN-Find-Proxy运行开始",
+    telegram_notify = tg_notify.pretty_telegram_notify("👁️‍🗨️👁️‍🗨️FofaCN-Find-Proxy运行开始",
                                                     f"fofacn-find-proxy fofacn",
                                                     msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start fofa message sent successfully!")
@@ -89,7 +89,7 @@ async def main():
         proxy_ips = query_proxy_ip(rule, 50)
         proxy_ip_list = []
         for proxy_ip in proxy_ips:
-            check_info = await checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
+            check_info = await con_checker.check_if_cf_proxy(proxy_ip[0], proxy_ip[1])
             if check_info[0]:
                 print(f"ip: {proxy_ip[0]},port:{proxy_ip[1]}, cf-proxy:{check_info}")
                 proxy_ip_list.append(check_info[1])
@@ -99,11 +99,11 @@ async def main():
         await asyncio.sleep(30)
 
     end_msg_info = f"统计信息: {fofa_static}"
-    telegram_notify = notify.pretty_telegram_notify("🎉🎉FofaCN-Find-Proxy运行结束",
+    telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉FofaCN-Find-Proxy运行结束",
                                                     f"fofacn-find-proxy fofacn",
                                                     end_msg_info)
-    telegram_notify = notify.clean_str_for_tg(telegram_notify)
-    success = notify.send_telegram_message(telegram_notify)
+    telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+    success = tg_notify.send_telegram_message(telegram_notify)
 
     if success:
         print("Start fofa find message sent successfully!")
