@@ -578,14 +578,14 @@ def export_result_json_data(key: str):
                 asn = key_str.split(":")[0]
                 obj = json.loads(value)
                 obj["asn"] = asn
-                # 最后检查时间
-                obj["last_check"] = time_str
                 result_list.append(obj)
             except Exception as e:
                 print(f"解析失败: {field}", e)
 
         result = {
             "counts": counts,
+            # 最后检查时间
+            "last_check": time_str,
             "data": result_list
         }
         # 3️⃣ 写入文件
