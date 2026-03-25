@@ -8,7 +8,8 @@
     "city": "Taipei",
     "network_latency": "166 ms",
     "download_speed": "1039 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "125.227.233.197",
@@ -19,7 +20,8 @@
     "city": "Singapore",
     "network_latency": "179 ms",
     "download_speed": "2928 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "118.161.70.26",
@@ -30,7 +32,8 @@
     "city": "Taipei",
     "network_latency": "180 ms",
     "download_speed": "2170 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "60.249.21.29",
@@ -41,7 +44,8 @@
     "city": "Taipei",
     "network_latency": "173 ms",
     "download_speed": "10738 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "211.75.210.32",
@@ -52,7 +56,8 @@
     "city": "Taipei",
     "network_latency": "164 ms",
     "download_speed": "11498 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "36.232.112.247",
@@ -63,7 +68,8 @@
     "city": "Kaohsiung City",
     "network_latency": "224 ms",
     "download_speed": "558 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "114.37.201.123",
@@ -74,7 +80,8 @@
     "city": "Taipei",
     "network_latency": "213 ms",
     "download_speed": "10988 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "36.232.75.92",
@@ -85,7 +92,8 @@
     "city": "Kaohsiung City",
     "network_latency": "221 ms",
     "download_speed": "541 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "60.249.21.30",
@@ -96,7 +104,8 @@
     "city": "Taipei",
     "network_latency": "172 ms",
     "download_speed": "10835 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "114.37.205.216",
@@ -107,7 +116,8 @@
     "city": "Taipei",
     "network_latency": "219 ms",
     "download_speed": "9273 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "111.251.160.220",
@@ -118,7 +128,8 @@
     "city": "Taipei",
     "network_latency": "201 ms",
     "download_speed": "1987 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "125.227.233.197",
@@ -129,7 +140,8 @@
     "city": "Singapore",
     "network_latency": "178 ms",
     "download_speed": "2293 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.162.82.44",
@@ -140,7 +152,8 @@
     "city": "Taipei",
     "network_latency": "193 ms",
     "download_speed": "3368 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.161.41.155",
@@ -151,7 +164,8 @@
     "city": "Taipei",
     "network_latency": "192 ms",
     "download_speed": "14259 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.161.46.22",
@@ -162,7 +176,8 @@
     "city": "Taipei",
     "network_latency": "195 ms",
     "download_speed": "12986 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.162.82.44",
@@ -173,7 +188,8 @@
     "city": "Taipei",
     "network_latency": "193 ms",
     "download_speed": "2191 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "114.42.195.147",
@@ -184,7 +200,8 @@
     "city": "Taipei",
     "network_latency": "179 ms",
     "download_speed": "1314 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "114.33.57.170",
@@ -195,7 +212,8 @@
     "city": "Taipei",
     "network_latency": "217 ms",
     "download_speed": "4662 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "220.135.92.105",
@@ -206,7 +224,8 @@
     "city": "Taipei",
     "network_latency": "163 ms",
     "download_speed": "3103 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.161.55.229",
@@ -217,7 +236,8 @@
     "city": "Taipei",
     "network_latency": "194 ms",
     "download_speed": "13220 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "211.75.210.33",
@@ -228,7 +248,8 @@
     "city": "Taipei",
     "network_latency": "165 ms",
     "download_speed": "11722 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "125.227.233.197",
@@ -239,7 +260,8 @@
     "city": "Singapore",
     "network_latency": "175 ms",
     "download_speed": "1934 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.173.206.152",
@@ -250,7 +272,8 @@
     "city": "Kaohsiung City",
     "network_latency": "203 ms",
     "download_speed": "2285 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.161.60.208",
@@ -261,7 +284,8 @@
     "city": "Taipei",
     "network_latency": "190 ms",
     "download_speed": "13348 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.161.52.251",
@@ -272,7 +296,8 @@
     "city": "Taipei",
     "network_latency": "190 ms",
     "download_speed": "12817 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   },
   {
     "ip": "1.170.227.178",
@@ -283,6 +308,7 @@
     "city": "Kaohsiung City",
     "network_latency": "191 ms",
     "download_speed": "6632 kB/s",
-    "asn": "b'3462"
+    "asn": "b'3462",
+    "last_check": "2026-03-25 19:38:24"
   }
 ]
