@@ -1,9 +1,9 @@
 name: single-task-clean-check
-
+# 清理数据 并且生成一个报告 和一个api json数据
 on:
   push:
     branches:
-      #  - master
+        - master
     tags: [ "v[0-9]+.[0-9]+.[0-9]+*" ]
   schedule:
     - cron: "0 1,12 * * *"  # Runs at 01:00 and 12:00 UTC
@@ -35,7 +35,7 @@ jobs:
 
       - name: Run single-task-clean-check    
         run: |
-          python3 checker.py
+          python3 con_checker.py
 
       - name: Check for changes
         id: git-status
@@ -52,6 +52,6 @@ jobs:
           echo "Changes detected, pushing to repository..."
           git config --global user.name "fireinrain"
           git config --global user.email "lzyme.dev@gmail.com"
-          git add asn/ README.md report.csv report.json
+          git add asn/ README.md report.csv report.json result.json
           git commit -m "$(date '+%Y-%m-%d')"
           git push origin master

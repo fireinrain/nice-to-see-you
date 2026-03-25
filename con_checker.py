@@ -515,12 +515,42 @@ def write_ip_report2json(ip_counts: int):
     with open('report.json', 'w') as f:
         f.write(data_dumps)
         f.flush()
+    # 导入数据作为api结果
+    export_result_json_data()
 
+
+def export_result_json_data():
+    key = "snifferx-result"
+    try:
+        # 1️⃣ 获取整个 hash
+        data = r.hgetall(key)
+
+        result_list = []
+
+        # 2️⃣ 遍历 value
+        for field, value in data.items():
+            try:
+                # value 是 JSON 字符串 → 转 dict
+                # asn 数据
+                key_str = str(field)
+                asn = key_str.split(":")[0]
+                obj = json.loads(value)
+                obj["asn"] = asn
+                result_list.append(obj)
+            except Exception as e:
+                print(f"解析失败: {field}", e)
+
+        # 3️⃣ 写入文件
+        with open("result.json", "w", encoding="utf-8") as f:
+            json.dump(result_list, f, ensure_ascii=False, indent=2)
+        print(f"✅ 导出完成，共 {len(result_list)} 条")
+    except Exception as e:
+        print("❌ 导出失败:", e)
 
 
 if __name__ == '__main__':
-    # clean_dead_ip()
+    clean_dead_ip()
     # write_ip_report2csv(44)
     # write_ip_report2json(401)
-    gfw = IPChecker.check_baned_with_gfw("cloud3.131433.xyz", "22")
-    print(gfw)
+    # gfw = IPChecker.check_baned_with_gfw("cloud3.131433.xyz", "22")
+    # print(gfw)
