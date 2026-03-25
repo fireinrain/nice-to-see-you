@@ -521,6 +521,8 @@ def write_ip_report2json(ip_counts: int):
 
 def export_result_json_data():
     key = "snifferx-result"
+    now = datetime.utcnow() + datetime.timedelta(hours=8)
+    time_str = now.strftime("%Y-%m-%d %H:%M:%S")
     try:
         # 1️⃣ 获取整个 hash
         data = r.hgetall(key)
@@ -536,6 +538,8 @@ def export_result_json_data():
                 asn = key_str.split(":")[0]
                 obj = json.loads(value)
                 obj["asn"] = asn
+                # 最后检查时间
+                obj["last_check"] = time_str
                 result_list.append(obj)
             except Exception as e:
                 print(f"解析失败: {field}", e)
