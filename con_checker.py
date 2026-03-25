@@ -357,6 +357,9 @@ async def check_if_cf_proxy(ip: str, port: int) -> (bool, {}):
 
 
 def clean_dead_ip():
+    # 将扫描到的result结果 复制到final
+    copy_checked_ipport2result("snifferx-result", "snifferx-final-result")
+
     # 发送TG消息开始
     msg_info = f"CleanGFW-Ban ip"
     telegram_notify = tg_notify.pretty_telegram_notify("🧹🧹CleanGFW-Ban-IP运行开始",
@@ -370,14 +373,14 @@ def clean_dead_ip():
     else:
         print(">>> Start clean ip message failed to send.")
 
-    keys = r.hkeys('snifferx-result')
+    keys = r.hkeys('snifferx-final-result')
     dont_need_dc = ['North America', 'Europe']
     # For each key, get the value and store in Cloudflare KV
     remove_counts = 0
     for key in keys:
-        value = r.hget('snifferx-result', key)
+        value = r.hget('snifferx-final-result', key)
         if not value:
-            r.hdel('snifferx-result', key)
+            r.hdel('snifferx-final-result', key)
             continue
 
         # Prepare the data for Cloudflare KV
@@ -404,7 +407,7 @@ def clean_dead_ip():
             if baned_with_gfw:
                 print(f">>> 当前优选IP端口已被墙: {key_str},进行移除...")
                 print(f">>> 原始记录: {key}--{kv_value}")
-                r.hdel('snifferx-result', key)
+                r.hdel('snifferx-final-result', key)
                 remove_counts += 1
                 continue
 
@@ -422,7 +425,7 @@ def clean_dead_ip():
         # 保留906 25820(it7) 并且fofa-us的数据
         if region in dont_need_dc and ('906' not in key_str and '25820' not in key_str and 'fofa-us' not in key_str):
             # delete ip 主动删除US EU的ip 不做通断检测
-            r.hdel('snifferx-result', key)
+            r.hdel('snifferx-final-result', key)
             remove_counts += 1
             print(f">>> 普通US/EU IP数据,当前不做通断检测，直接删除: {key_str} {kv_value}")
             continue
@@ -430,12 +433,12 @@ def clean_dead_ip():
         if not port_open:
             print(f">>> 当前优选IP端口已失效: {ip}:{port},进行移除...")
             print(f">>> 原始记录: {key_str}--{kv_value}")
-            r.hdel('snifferx-result', key)
+            r.hdel('snifferx-final-result', key)
             remove_counts += 1
             continue
 
     # 获取剩余ip数量
-    new_keys = r.hkeys('snifferx-result')
+    new_keys = r.hkeys('snifferx-final-result')
     ip_counts = len(new_keys)
     # 写入记录
     write_ip_report2csv(ip_counts)
@@ -475,10 +478,10 @@ def write_ip_report2csv(ip_counts: int):
 
 def write_ip_report2json(ip_counts: int):
     data_center_count = defaultdict(int)
-    keys = r.hkeys('snifferx-result')
+    keys = r.hkeys('snifferx-final-result')
     # For each key, get the value and store in Cloudflare KV
     for key in keys:
-        value = r.hget('snifferx-result', key)
+        value = r.hget('snifferx-final-result', key)
 
         # Prepare the data for Cloudflare KV
         # kv_key = key.decode('utf-8')
@@ -516,7 +519,6 @@ def write_ip_report2json(ip_counts: int):
         f.write(data_dumps)
         f.flush()
     # 拷贝到结果库
-    copy_checked_ipport2result("snifferx-result", "snifferx-final-result")
     # 导入数据作为api结果
     export_result_json_data("snifferx-final-result")
 

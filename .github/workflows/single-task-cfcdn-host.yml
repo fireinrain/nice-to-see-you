@@ -1,6 +1,6 @@
 # This workflow will scrap GitHub trending projects daily.
 name: single-task-cfcdn-host
-
+# 查找绑定了域名的代理ip
 on:
   push:
     branches:

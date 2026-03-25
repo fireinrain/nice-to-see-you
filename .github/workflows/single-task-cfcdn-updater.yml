@@ -1,6 +1,6 @@
 # This workflow will scrap GitHub trending projects daily.
 name: single-task-cfcdn-updater
-
+# 更新绑定了域名的优选ip 默认是443端口
 on:
   push:
     branches:
