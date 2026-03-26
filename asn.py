@@ -1,7 +1,7 @@
 import json
 import os
 import time
-
+import re
 import requests
 
 from country_cidr import ASIACIDR
@@ -82,6 +82,28 @@ CountryASN = {
 }
 
 
+def fetch_cidrs(asn: str) -> list:
+    url = f"https://asntool.com/{asn}"
+
+    try:
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"request error: {e}")
+        return []
+
+    text = resp.text
+
+    # 匹配 CIDR（IPv4）
+    cidr_pattern = r"\b\d{1,3}(?:\.\d{1,3}){3}/\d{1,2}\b"
+    cidrs = re.findall(cidr_pattern, text)
+
+    # 去重 + 排序
+    cidrs = sorted(set(cidrs))
+
+    return cidrs
+
+
 def get_cidr_ips(asn):
     # 确保 asn 目录存在
     asn_dir = "asn"
@@ -105,16 +127,16 @@ def get_cidr_ips(asn):
             print(f"CIDR data for ASN {asn} fetched from API and saved to file.")
             return
         # 如果文件不存在，请求 API 数据
-        url = f'https://api.bgpview.io/asn/{asn}/prefixes'
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "Cookie": "_ga=GA1.2.16443840.1721715301; _ga_7YFHLCZHVM=GS1.2.1721940403.6.1.1721943528.56.0.0; cf_clearance=6qVAAvRLRnLn6Noe9h274Id6yAZYjFDn_sk9Mo4WFag-1723470618-1.0.1.1-CRGPHBAPwpMFZuVQa2QvvooVQedZAKqEyRVawhaHZF62qdcKaCAHjXtINkKM3hv5ffoJb5VYilFKEwNEtjQdmA"
-        }
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        cidrs = [prefix['prefix'] for prefix in data['data']['ipv4_prefixes']]
-
+        # url = f'https://api.bgpview.io/asn/{asn}/prefixes'
+        # headers = {
+        #     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        #     "Cookie": "_ga=GA1.2.16443840.1721715301; _ga_7YFHLCZHVM=GS1.2.1721940403.6.1.1721943528.56.0.0; cf_clearance=6qVAAvRLRnLn6Noe9h274Id6yAZYjFDn_sk9Mo4WFag-1723470618-1.0.1.1-CRGPHBAPwpMFZuVQa2QvvooVQedZAKqEyRVawhaHZF62qdcKaCAHjXtINkKM3hv5ffoJb5VYilFKEwNEtjQdmA"
+        # }
+        # response = requests.get(url, headers=headers)
+        # response.raise_for_status()
+        # data = response.json()
+        # cidrs = [prefix['prefix'] for prefix in data['data']['ipv4_prefixes']]
+        cidrs = fetch_cidrs(asn)
         # 将数据写入文件
         with open(file_path, 'w') as file:
             json.dump(cidrs, file)

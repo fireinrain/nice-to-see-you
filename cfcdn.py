@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 from collections import namedtuple
-
+from asn import get_cidr_ips
 from con_checker import IPChecker
 from redis_tool import r
 
@@ -18,38 +18,6 @@ import cloudflare
 
 
 # 获取所有 CIDR 列表
-def get_cidr_ips(asn):
-    # 确保 asn 目录存在
-    asn_dir = "asn"
-    os.makedirs(asn_dir, exist_ok=True)
-
-    file_path = os.path.join(asn_dir, f"{asn}")
-
-    # 检查是否存在对应的 ASN 文件
-    if os.path.exists(file_path):
-        # 如果文件存在，读取文件内容
-        with open(file_path, 'r') as file:
-            cidrs = json.load(file)
-        print(f"CIDR data for ASN {asn} loaded from file.")
-    else:
-        # 如果文件不存在，请求 API 数据
-        url = f'https://api.bgpview.io/asn/{asn}/prefixes'
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "Cookie": "cf_clearance=QGTGcYnHuiA.9rho9oE4t8qMiyEOZbTbSISclJRmL2A-1720255983-1.0.1.1-Mf0yAeogUfsanJBjw3qpZKalVLAfsN8AyPnjlQDzT0PvEFBOO7Ypp9NyQ4WCWHIAaeCAYaqpVE_Aa6z3s8AIpA; _ga=GA1.2.16443840.1721715301; _gid=GA1.2.1729940749.1721936545; _ga_7YFHLCZHVM=GS1.2.1721936545.5.1.1721937177.55.0.0"
-        }
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        cidrs = [prefix['prefix'] for prefix in data['data']['ipv4_prefixes']]
-
-        # 将数据写入文件
-        with open(file_path, 'w') as file:
-            json.dump(cidrs, file)
-        print(f"CIDR data for ASN {asn} fetched from API and saved to file.")
-
-    return cidrs
-
 
 # 将 CIDR 列表存入 Redis
 def store_cidrs_in_redis(asn) -> []:
