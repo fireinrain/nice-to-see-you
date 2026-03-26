@@ -4,7 +4,7 @@ name: parallel-task-clean-pre
 on:
   push:
     branches:
-      - master
+#      - master
     tags: [ "v[0-9]+.[0-9]+.[0-9]+*" ]
   schedule:
 #     run on every hour
@@ -16,7 +16,7 @@ on:
 #     run on 0 and 12 clock
 #    - cron: "0 2,12 * * *"
 #    每天凌晨一点运行
-    - cron: "0 1 * * *"
+    - cron: "0 1 13 * *"
 env:
   REDIS_HOST: ${{ secrets.REDIS_HOST }}
   REDIS_PORT: ${{ secrets.REDIS_PORT }}

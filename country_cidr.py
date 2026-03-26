@@ -67,7 +67,11 @@ def save_to_files(results, output_dir="asia_ip_lists"):
             print(f"已保存: {filename} (共 {len(cidr_list)} 条)")
 
 
-
+import os
+import time
+import json
+import math
+import urllib.request
 
 
 class ASIACIDR:
@@ -79,14 +83,12 @@ class ASIACIDR:
         """
         self.cache_file = cache_file
         self.expire_seconds = expire_days * 24 * 60 * 60
-        # 默认关注的亚太地区代码
-        self.target_regions = ['HK', 'SG', 'TW', 'KR', 'JP', 'MO']
+        self.target_regions = ['HK', 'SG', 'MO', 'TW', 'KR', 'JP']
         self.apnic_url = "https://ftp.apnic.net/stats/apnic/delegated-apnic-latest"
 
-        # 存放最终的 CIDR 数据，格式：{"HK": ["1.1.1.0/24", ...], ...}
+        # 仅存放纯净的 CIDR 数据字典
         self.cidr_data = {}
 
-        # 初始化时尝试加载或更新数据
         self._prepare_data()
 
     def _prepare_data(self):
@@ -95,37 +97,49 @@ class ASIACIDR:
             print(f"[*] 发现本地有效缓存 ({self.cache_file})，正在读取...")
             self._load_from_cache()
         else:
-            print(f"[*] 本地缓存不存在或已超过设定的过期时间，准备重新下载数据...")
+            print(f"[*] 缓存不存在、已过期或格式不匹配，准备重新下载数据...")
             self._download_and_update()
 
     def _is_cache_valid(self):
-        """判断本地缓存文件是否存在且未过期"""
+        """判断本地缓存文件是否存在，并且解析内部写入的时间戳判断是否过期"""
         if not os.path.exists(self.cache_file):
             return False
 
-        file_mtime = os.path.getmtime(self.cache_file)
-        current_time = time.time()
-
-        # 如果当前时间减去文件最后修改时间大于设定的过期秒数，则认为失效
-        if (current_time - file_mtime) > self.expire_seconds:
-            return False
-
-        return True
-
-    def _load_from_cache(self):
-        """从本地 JSON 文件加载数据"""
         try:
             with open(self.cache_file, 'r', encoding='utf-8') as f:
-                self.cidr_data = json.load(f)
+                cache_content = json.load(f)
+
+            # 兼容性检查：确保 JSON 文件包含我们设计的 metadata 结构
+            if 'metadata' not in cache_content or 'last_updated' not in cache_content['metadata']:
+                return False
+
+            last_updated = cache_content['metadata']['last_updated']
+            current_time = time.time()
+
+            # 核心逻辑：使用 JSON 内部的时间戳进行对比
+            if (current_time - last_updated) > self.expire_seconds:
+                return False
+
+            return True
+        except (json.JSONDecodeError, IOError):
+            # 如果文件损坏或非规范 JSON，直接判定为无效
+            return False
+
+    def _load_from_cache(self):
+        """从本地 JSON 文件加载 data 块"""
+        try:
+            with open(self.cache_file, 'r', encoding='utf-8') as f:
+                cache_content = json.load(f)
+                # 只将实际的 IP 数据提取到内存中
+                self.cidr_data = cache_content.get('data', {})
         except Exception as e:
             print(f"[!] 读取缓存失败: {e}，将尝试重新下载。")
             self._download_and_update()
 
     def _download_and_update(self):
-        """从 APNIC 下载最新数据，解析为 CIDR，并覆盖本地缓存"""
+        """从 APNIC 下载最新数据，并构造包含时间戳的 JSON 覆盖本地"""
         print(f"[*] 正在从 {self.apnic_url} 下载最新 IP 数据，请稍候...")
 
-        # 初始化临时字典
         temp_data = {region: [] for region in self.target_regions}
 
         try:
@@ -143,19 +157,25 @@ class ASIACIDR:
 
                 registry, cc, ip_type, start_ip, value, date, status = parts[:7]
 
-                # 只处理目标地区、IPv4 且状态为 allocated/assigned 的数据
                 if cc in self.target_regions and ip_type == 'ipv4' and status in ('allocated', 'assigned'):
                     ip_count = int(value)
-                    # 将 IP 数量转换为 CIDR 前缀长度：32 - log2(IP数量)
                     prefix_length = 32 - int(math.log2(ip_count))
                     cidr = f"{start_ip}/{prefix_length}"
                     temp_data[cc].append(cidr)
 
             self.cidr_data = temp_data
 
-            # 将解析后的数据写入本地缓存文件
+            # 【关键修改】构造包含内部时间戳的持久化数据结构
+            cache_structure = {
+                "metadata": {
+                    "last_updated": time.time(),
+                    "expire_days_setting": self.expire_seconds / (24 * 60 * 60)
+                },
+                "data": self.cidr_data
+            }
+
             with open(self.cache_file, 'w', encoding='utf-8') as f:
-                json.dump(self.cidr_data, f, indent=4)
+                json.dump(cache_structure, f, indent=4)
             print(f"[*] 数据下载并解析完成，已更新本地缓存: {self.cache_file}")
 
         except Exception as e:
@@ -167,7 +187,6 @@ class ASIACIDR:
         """
         获取特定地区的 IPv4 CIDR 列表
         :param region: 国家/地区代码，如 'HK', 'SG'
-        :return: 包含该地区所有 IPv4 CIDR 的列表
         """
         region_upper = region.upper()
         if region_upper not in self.cidr_data:
@@ -178,13 +197,11 @@ class ASIACIDR:
     def get_all_ipv4(self):
         """
         获取所有受支持地区的 IPv4 CIDR 列表
-        :return: 包含所有目标地区 IPv4 CIDR 的一维列表
         """
         all_cidrs = []
         for region_cidrs in self.cidr_data.values():
             all_cidrs.extend(region_cidrs)
         return all_cidrs
-
 
 # ==========================================
 # 使用示例

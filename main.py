@@ -551,7 +551,7 @@ def cleanup_old_asn_data(asn: str):
 # 搭配worker 展示结果
 def main():
     weekday = get_current_weekday_plus()
-    asn = Wanted_ASN[-1]
+    asn = Wanted_ASN[weekday]
     argv_ = sys.argv
     if len(argv_) <= 1:
         if ',' in asn:
