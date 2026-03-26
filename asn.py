@@ -4,6 +4,8 @@ import time
 
 import requests
 
+from country_cidr import ASIACIDR
+
 ASN_Map = {
     "932": "AS932 XNNET LLC,16128",
     "15169": "AS15169 Google LLC,9134336",
@@ -34,11 +36,40 @@ ASN_Map = {
     "7679": "AS7679 QTnet Inc,696320",
     "40065": "AS40065 CNSERVERS LLC,480512",
     "138915": "AS138915 Kaopu Cloud HK Limited,171008",
-    "18450": "AS18450 WebNX Inc,99840"
+    "18450": "AS18450 WebNX Inc,99840",
+    # oneman 商家
+    "36002": "GoMami Networks (NHL-157)",
+    "49304": "SAKURA LINK LIMITED",
+    "8143": "Neburst LLC·neburst.com",
+    "140096": "花卷jinx.cloud",
+    "400618": "primesecuritycorp.com",
+    "153517": "Ju Link Tech Limited rfchost",
+    "3491": "PCCW Global, Inc.",
+    "209554": "	isif.net ou",
+    "154162": "ISIF LIMITED HK",
+    "7720": "Skywolf Technology LLC",
+    "967": "VMISS Inc. ca",
+    "400464": "VMISS Inc. vmiss.com",
+    "41378": "Kirino LLC",
+    "929": "KIRINO LLC",
+    "60024": "HK CEDOC LIMITED",
+    "210110": "Kvmcloud Network CO., LIMITED",
+    "396856": "Sharon Networks, LLC",
+    "6233": "xTom US",
+    # fake asn for country cidr
+    "SG_CIDR": "SG_CIDR",
+    "HK_CIDR": "HK_CIDR",
+    "TW_CIDR": "TW_CIDR",
+    "MO_CIDR": "MO_CIDR",
+    "JP_CIDR": "JP_CIDR",
+    "KR_CIDR": "KR_CIDR",
+
 }
 # 每天运行2个，凌晨一个 中午一个
-Wanted_ASN = ['906,40065,932,7679', '4760,3258,18450', '31898,9689,9312', '135377,9312', '3462', '4609', '25820,138915',
-              '17511,2497', '4785,19527', '15169', '21859', '4809,17858', '45102', '132203']
+Wanted_ASN = ['906,40065,932,7679', '4760,3258,18450,SG_CIDR', '31898,9689,9312', '135377,9312,HK_CIDR', '3462',
+              '4609,TW_CIDR', '25820,138915',
+              '17511,2497,MO_CIDR', '4785,19527', '15169,JP_CIDR', '21859', '4809,17858,KR_CIDR', '45102',
+              '132203,36002,49304,8143,140096,400618,153517,3491,209554,154162,7720,967,400464,41378,929,60024,210110,396856,6233']
 
 CountryASN = {
     'HK': ['4515', '9269', '4760', '9304', '10103', '17444', '9381', '135377'],
@@ -65,6 +96,14 @@ def get_cidr_ips(asn):
             cidrs = json.load(file)
         print(f"CIDR data for ASN {asn} loaded from file.")
     else:
+        if asn.endswith("CIDR"):
+            asia_cidr = ASIACIDR(cache_file='asia_ipv4_cidr.json', expire_days=30)
+            region = asn.split("_")[0]
+            region_ipv4_cidrs = asia_cidr.get_region_ipv4(region)
+            with open(file_path, 'w') as file:
+                json.dump(region_ipv4_cidrs, file)
+            print(f"CIDR data for ASN {asn} fetched from API and saved to file.")
+            return
         # 如果文件不存在，请求 API 数据
         url = f'https://api.bgpview.io/asn/{asn}/prefixes'
         headers = {
@@ -92,3 +131,5 @@ if __name__ == '__main__':
     #             get_cidr_ips(a)
     #             time.sleep(2)
     get_cidr_ips("40065")
+    get_cidr_ips("KR_CIDR")
+

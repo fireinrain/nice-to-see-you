@@ -9,6 +9,8 @@ import sys
 import time
 import uuid
 from collections import namedtuple
+
+from country_cidr import ASIACIDR
 from redis_tool import r
 import pytz
 
@@ -63,6 +65,14 @@ def get_cidr_ips(asn):
             cidrs = json.load(file)
         print(f"CIDR data for ASN {asn} loaded from file.")
     else:
+        if asn.endswith("CIDR"):
+            asia_cidr = ASIACIDR(cache_file='asia_ipv4_cidr.json', expire_days=30)
+            region = asn.split("_")[0]
+            region_ipv4_cidrs = asia_cidr.get_region_ipv4(region)
+            with open(file_path, 'w') as file:
+                json.dump(region_ipv4_cidrs, file)
+            print(f"CIDR data for ASN {asn} fetched from API and saved to file.")
+            return
         # 如果文件不存在，请求 API 数据
         url = f'https://api.bgpview.io/asn/{asn}/prefixes'
         headers = {
@@ -487,8 +497,8 @@ def run_find_task(asn_number: str):
                 result_counts = count_fields_containing_asn("snifferx-result", asn)
                 msg_info = f"扫描结束: ASN{asn},结果数量: {result_counts}"
                 telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer运行结束",
-                                                                f"open-port-sniffer asn{asn}",
-                                                                msg_info)
+                                                                   f"open-port-sniffer asn{asn}",
+                                                                   msg_info)
                 telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
                 success = tg_notify.send_telegram_message(telegram_notify)
 
@@ -568,8 +578,8 @@ def cleanup_old_asn_data(asn: str):
     # 发送TG消息开始
     msg_info = f"开始扫描: ASN{asn},IPv4规模: {ASN_Map.get(asn).split(',')[1]}"
     telegram_notify = tg_notify.pretty_telegram_notify("🔎🔎Open-Port-Sniffer运行开始",
-                                                    f"open-port-sniffer asn{asn}",
-                                                    msg_info)
+                                                       f"open-port-sniffer asn{asn}",
+                                                       msg_info)
     telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
     success = tg_notify.send_telegram_message(telegram_notify)
 
