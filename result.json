@@ -1,6 +1,6 @@
 {
-  "counts": 96,
-  "last_check": "2026-03-26 21:30:59",
+  "counts": 93,
+  "last_check": "2026-03-27 07:41:53",
   "data": [
     {
       "ip": "38.47.109.193",
@@ -133,17 +133,6 @@
       "network_latency": "213 ms",
       "download_speed": "2354 kB/s",
       "asn": "132203"
-    },
-    {
-      "ip": "118.161.70.26",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "173 ms",
-      "download_speed": "2190 kB/s",
-      "asn": "3462"
     },
     {
       "ip": "82.40.33.16",
@@ -872,17 +861,6 @@
       "asn": "400618"
     },
     {
-      "ip": "1.161.55.229",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "216 ms",
-      "download_speed": "10724 kB/s",
-      "asn": "3462"
-    },
-    {
       "ip": "43.160.207.33",
       "port": 443,
       "enable_tls": true,
@@ -1024,17 +1002,6 @@
       "network_latency": "178 ms",
       "download_speed": "10431 kB/s",
       "asn": "396856"
-    },
-    {
-      "ip": "1.173.206.152",
-      "port": 23555,
-      "enable_tls": true,
-      "data_center": "KHH",
-      "region": "Asia Pacific",
-      "city": "Kaohsiung City",
-      "network_latency": "230 ms",
-      "download_speed": "2045 kB/s",
-      "asn": "3462"
     },
     {
       "ip": "101.32.244.117",
