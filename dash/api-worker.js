@@ -78,9 +78,23 @@ export default {
       const rawData = await dataResp.json();
       let resultData = rawData.data;
 
-      // ========= 过滤：国家 -> data_center =========
+      // ========= 过滤：支持多 loc =========
       if (loc) {
-        const codes = LOC_MAP[loc.toUpperCase()] || [];
+        const locList = loc
+          .split(",")
+          .map(v => v.trim().toUpperCase())
+          .filter(Boolean);
+
+        let codes = [];
+        for (const l of locList) {
+          if (LOC_MAP[l]) {
+            codes.push(...LOC_MAP[l]);
+          }
+        }
+
+        // 去重
+        codes = [...new Set(codes)];
+
         resultData = resultData.filter(item =>
           item.data_center && codes.includes(item.data_center)
         );
@@ -161,7 +175,6 @@ body {
   height: 100vh;
 }
 
-/* 卡片 */
 .box {
   background: rgba(30, 41, 59, 0.85);
   padding: 36px;
@@ -171,14 +184,11 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* 标题 */
 h2 {
   margin: 0 0 18px 0;
   font-size: 22px;
-  letter-spacing: 0.5px;
 }
 
-/* 输入框 */
 input {
   width: 100%;
   padding: 14px 16px;
@@ -186,18 +196,8 @@ input {
   border: 1px solid #334155;
   background: #0f172a;
   color: white;
-  font-size: 15px;
-  outline: none;
-  transition: all 0.2s ease;
 }
 
-/* focus 发光 */
-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
-}
-
-/* 按钮 */
 button {
   width: 100%;
   margin-top: 16px;
@@ -206,17 +206,9 @@ button {
   border-radius: 10px;
   background: linear-gradient(90deg, #3b82f6, #06b6d4);
   color: white;
-  font-size: 15px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-button:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-/* 小字 */
 .tip {
   font-size: 12px;
   color: #94a3b8;
@@ -228,15 +220,11 @@ button:hover {
 <body>
   <div class="box">
     <h2>🔐 API Access Gateway</h2>
-
     <form onsubmit="go(event)">
       <input id="key" placeholder="Enter access key..." />
       <button>Unlock Dashboard</button>
     </form>
-
-    <div class="tip">
-      Secure API Dashboard · Authorization Required
-    </div>
+    <div class="tip">Secure API Dashboard · Authorization Required</div>
   </div>
 
   <script>
@@ -285,6 +273,7 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 <h3>参数</h3>
 <ul>
 <li>?loc=TW</li>
+<li>?loc=TW,HK   ← 支持多个地区</li>
 <li>?port=443</li>
 <li>?asn=3462</li>
 <li>?sort=speed</li>
@@ -293,13 +282,18 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 
 <div class="card">
 <h3>示例</h3>
-<code>/api?loc=TW&sort=speed</code>
+<code>/api?loc=TW,HK&sort=speed</code>
 </div>
 
 <div class="card">
 <h3>原始数据查看</h3>
-<span style="color: #800040;"><a href="https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json" target="_blank">下载api数据</a></span>
+<span style="color: #38bdf8;">
+<a href="https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json" target="_blank">
+下载api数据
+</a>
+</span>
 </div>
+
 </body>
 </html>
 `;
