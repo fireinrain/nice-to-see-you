@@ -27,7 +27,7 @@ def store_cidrs_in_redis(asn) -> []:
 
 # 使用 Masscan 扫描所有 IP 的端口
 def scan_ip_range(cidr, output_file, scan_ports="443"):
-    cmd = ["masscan", cidr, f"-p{scan_ports}", "--rate=20000", "--wait=3", "-oL", output_file]
+    cmd = ["sudo", "masscan", cidr, f"-p{scan_ports}", "--rate=20000", "--wait=3", "-oL", output_file]
     print(f"Executing command: {' '.join(cmd)}")
     try:
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
