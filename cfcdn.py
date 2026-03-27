@@ -95,6 +95,12 @@ def store_ip_port_result_in_redis(asn, iptests: []):
             # 添加到cf dns 记录
             try:
                 cloudflare.add_dns_record('A', cloudflare.hostname, f'{ip}')
+                end_msg_info = f"CF优选域名: {cloudflare.hostname},添加IP: {ip}"
+                telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉CFCDNHost-添加IP运行结束",
+                                                                   f"add-ip-host cfcdn",
+                                                                   end_msg_info)
+                telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
+                tg_notify.send_telegram_message(telegram_notify)
             except Exception as e:
                 print(f"add dns to cloudflare error: {e},当前ip是:{ip}")
 

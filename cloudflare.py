@@ -8,6 +8,7 @@ api_email = os.getenv('CF_APIEMAIL', 'xxx@gmail.com')
 zone_id = os.getenv('CF_ZONEID', 'xxx')
 hostname = os.getenv('CF_HOSTNAME','xx.xx')
 
+print(f"cf email: {api_email} - cf hostname: {hostname}")
 # DNS record details
 # RecordName = 'xxx.xxxxx'
 # RecordType = 'A'
