@@ -423,5 +423,5 @@ def parse_result_csv2(result_csv_file: str) -> []:
 
 
 if __name__ == "__main__":
-    # main()
-    clean_sni_fraud_ip()
+    main()
+    # clean_sni_fraud_ip()
