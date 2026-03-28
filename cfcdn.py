@@ -360,7 +360,7 @@ def parse_result_csv2(result_csv_file: str) -> []:
                 region=row[4],
                 city=row[5],
                 network_latency=row[6],
-                download_speed=row[7]
+                # download_speed=row[7]
             )
             server_info_dict = server_info_to_dict(server_info)
             data.append(server_info_dict)
