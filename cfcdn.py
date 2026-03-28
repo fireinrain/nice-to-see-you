@@ -326,7 +326,7 @@ def clean_sni_fraud_ip():
 
 def iptest_snifferx2(input_file: str, output_file: str) -> str | None:
     # ./iptest -file=ip.txt -max=100 -outfile=AS4609-20000-25000.csv -speedtest=3 -tls=1
-    cmd = ["./love-you", f"-file={input_file}", f"-max=100", f"-outfile={output_file}", "-speedtest=0", "-tls=1"]
+    cmd = ["./love-you", f"-file={input_file}", f"-max=100", f"-outfile={output_file}", "-speedtest=3", "-tls=1"]
     print(f"Executing command: {' '.join(cmd)}")
     try:
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
@@ -360,7 +360,7 @@ def parse_result_csv2(result_csv_file: str) -> []:
                 region=row[4],
                 city=row[5],
                 network_latency=row[6],
-                # download_speed=row[7]
+                download_speed=row[7]
             )
             server_info_dict = server_info_to_dict(server_info)
             data.append(server_info_dict)
