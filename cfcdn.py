@@ -295,33 +295,87 @@ def main():
 # 清理误判的ip SNI欺诈
 def clean_sni_fraud_ip():
     keys = ["snifferx-cfcdn", "snifferx-final-result", "snifferx-result"]
+
     for k in keys:
+        print(f"\n==== 处理 {k} ====")
+
+        # 1️⃣ 获取 Redis 所有 key
         hkeys = r.hkeys(k)
-        rs = []
-        for ip_str in hkeys:
-            ip_str = str(ip_str)
-            ip_str = ip_str.replace("'","")
-            str_split = ip_str.split(":")
-            rs.append(f"{str_split[1]} {str_split[2]}\n")
-        # save to file
-        with open("aip.txt", "w") as f:
-            f.writelines(rs)
-        print(rs)
-        # 执行扫描 跳过测速
-        result_file = iptest_snifferx2("aip.txt", "aresult.csv")
-        # 读取结果
+
+        # 2️⃣ 构建映射（避免 O(n²)）
+        # ip:port -> 原始key
+        ip_map = {}
+        ip_lines = []
+
+        for raw in hkeys:
+            key_str = raw.decode() if isinstance(raw, bytes) else str(raw)
+
+            parts = key_str.split(":")
+            if len(parts) < 3:
+                continue
+
+            ip = parts[1]
+            port = parts[2]
+
+            ip_port = f"{ip}:{port}"
+            ip_map[ip_port] = raw  # 保存原始key
+
+            ip_lines.append(f"{ip} {port}\n")
+
+        if not ip_lines:
+            print("无数据，跳过")
+            continue
+
+        # 3️⃣ 写入扫描文件（避免覆盖）
+        input_file = f"{k}_aip.txt"
+        output_file = f"{k}_result.csv"
+
+        with open(input_file, "w") as f:
+            f.writelines(ip_lines)
+
+        # 4️⃣ 执行扫描（跳过测速）
+        result_file = iptest_snifferx2(input_file, output_file)
+
+        # 5️⃣ 解析扫描结果
         result_csv_ = parse_result_csv2(result_file)
 
-        for result in result_csv_:
-            print(result)
-            ip_port = str(result["ip"]) + ":" + str(result["port"])
-            for ip_str in hkeys:
-                ip_str = str(ip_str)
-                if ip_port not in ip_str:
-                    print(f"删除SNI欺诈ip:{k},{ip_str}")
-                    # r.hdel(k, ip_str)
+        # 6️⃣ 过滤有效 IP
+        clean_data = []
 
-        # 查找map下的key 判断是否在结果中存在，存在跳过 不存在删除
+        for result in result_csv_:
+            ip = result.get("ip")
+            port = result.get("port")
+
+            if not ip or not port:
+                continue
+
+            ip_port = f"{ip}:{port}"
+
+            if ip_port in ip_map:
+                raw_key = ip_map[ip_port]
+
+                data = r.hget(k, raw_key)
+                clean_data.append((raw_key, data))
+
+                print(f"✔ 可用IP: {k} -> {ip_port}")
+
+        print(f"有效数量: {len(clean_data)}")
+
+        # 7️⃣ 清空原 hash
+        if hkeys:
+            r.delete(k)
+            print(f"已清空 {k}")
+
+        # 8️⃣ 写回过滤后的数据
+        if clean_data:
+            pipe = r.pipeline()
+            for raw_key, data in clean_data:
+                pipe.hset(k, raw_key, data)
+            pipe.execute()
+
+            print(f"已写回 {len(clean_data)} 条数据")
+
+        print(f"==== 完成 {k} ====")
 
 
 def iptest_snifferx2(input_file: str, output_file: str) -> str | None:
