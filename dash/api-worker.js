@@ -79,22 +79,20 @@ export default {
   // =========================
   async function isAlive(node) {
     try {
-      const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 2000);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
 
-      const url = node.url || node.ping_url || node.test_url;
-      if (!url) return false;
+        const resp = await fetch(`http://${node.ip}:${node.port}`, {
+          method: "HEAD",
+          signal: controller.signal
+        });
 
-      const resp = await fetch(url, {
-        method: "GET",
-        signal: ctrl.signal
-      });
+        clearTimeout(timeout);
 
-      clearTimeout(timeout);
-      return resp.ok;
-    } catch (e) {
-      return false;
-    }
+        return resp && resp.status < 500;
+      } catch (e) {
+        return false;
+      }
   }
 
   try {
