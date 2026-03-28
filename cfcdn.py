@@ -300,6 +300,7 @@ def clean_sni_fraud_ip():
         rs = []
         for ip_str in hkeys:
             ip_str = str(ip_str)
+            ip_str = ip_str.replace("'","")
             str_split = ip_str.split(":")
             rs.append(f"{str_split[1]} {str_split[2]}\n")
         # save to file
