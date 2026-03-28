@@ -305,7 +305,7 @@ def clean_sni_fraud_ip():
         # save to file
         with open("aip.txt", "w") as f:
             f.writelines(rs)
-
+        print(rs)
         # 执行扫描 跳过测速
         result_file = iptest_snifferx2("aip.txt", "aresult.csv")
         # 读取结果
