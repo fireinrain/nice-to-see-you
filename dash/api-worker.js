@@ -1,4 +1,17 @@
 // api.cfpool.131433.xyz
+
+// =====================
+// 🌍 国家 -> data_center 映射
+// =====================
+const LOC_MAP = {
+  SG: ["SIN"],
+  HK: ["HKG"],
+  TW: ["TPE", "KHH"],
+  MO: ["MFM"],
+  JP: ["FUK", "OKA", "KIX", "NRT"],
+  KR: ["ICN"],
+  US: ["LAX"]
+};
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -24,6 +37,91 @@ export default {
     }
 
     // =====================
+// 🚀 /api/one -> 单地区最快节点
+// =====================
+if (pathname === "/api/one") {
+  const authHeader = request.headers.get("Authorization");
+
+  if (authHeader !== AUTH_KEY) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  // 👉 默认 JP
+  let loc = url.searchParams.get("loc") || "JP";
+  loc = loc.trim().toUpperCase();
+
+  // 👉 只允许单个 loc（防止传 HK,JP）
+  if (loc.includes(",")) {
+    return new Response(JSON.stringify({ error: "Only single loc supported" }), {
+      status: 400,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  // 👉 校验 loc 是否存在
+  if (!LOC_MAP[loc]) {
+    return new Response(JSON.stringify({ error: "Invalid loc" }), {
+      status: 400,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  const codes = LOC_MAP[loc];
+
+  const dataUrl =
+    "https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json";
+
+  try {
+    const resp = await fetch(dataUrl, {
+      cf: { cacheTtl: 60 }
+    });
+
+    const raw = await resp.json();
+
+    // 👉 过滤地区
+    let filtered = raw.data.filter(item =>
+      item.data_center && codes.includes(item.data_center)
+    );
+
+    if (!filtered.length) {
+      return new Response(JSON.stringify({ error: "No data for loc" }), {
+        status: 404,
+        headers: { "content-type": "application/json;charset=UTF-8" }
+      });
+    }
+
+    // 👉 排序（按 speed 最大）
+    filtered.sort(
+      (a, b) =>
+        parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
+    );
+
+    const best = filtered[0];
+
+    return new Response(JSON.stringify({
+      loc: loc,
+      count: filtered.length,
+      data: best
+    }, null, 2), {
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+        "access-control-allow-origin": "*",
+        "cache-control": "public, max-age=60"
+      }
+    });
+
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+}
+
+    // =====================
     // 🔐 /api 鉴权
     // =====================
     if (pathname.startsWith("/api")) {
@@ -39,18 +137,7 @@ export default {
       return new Response("Not Found", { status: 404 });
     }
 
-    // =====================
-    // 🌍 国家 -> data_center 映射
-    // =====================
-    const LOC_MAP = {
-      SG: ["SIN"],
-      HK: ["HKG"],
-      TW: ["TPE", "KHH"],
-      MO: ["MFM"],
-      JP: ["FUK", "OKA", "KIX", "NRT"],
-      KR: ["ICN"],
-      US: ["LAX"]
-    };
+
 
     // =====================
     // 📦 缓存
@@ -260,36 +347,71 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 <h1>🚀 HTTP API Dashboard</h1>
 
 <div class="card">
-<h3>🔑 Auth Header</h3>
+<h3>🔑 Authentication</h3>
+<p>所有 API 请求必须携带 Header：</p>
 <code>Authorization: eulerme</code>
 </div>
 
 <div class="card">
-<h3>📡 Endpoint</h3>
+<h3>📡 通用查询接口</h3>
 <code>/api</code>
-</div>
 
-<div class="card">
-<h3>参数</h3>
+<p style="margin-top:10px;">用于获取节点列表，支持多条件过滤与排序</p>
+
+<h4>参数说明</h4>
 <ul>
-<li>?loc=TW</li>
-<li>?loc=TW,HK   ← 支持多个地区</li>
-<li>?port=443</li>
-<li>?asn=3462</li>
-<li>?sort=speed</li>
+<li><code>?loc=TW</code> → 单地区过滤</li>
+<li><code>?loc=TW,HK</code> → 多地区过滤（支持：SG, HK, MO, TW, JP, KR, US）</li>
+<li><code>?port=443</code> → 端口过滤</li>
+<li><code>?asn=3462</code> → ASN过滤</li>
+<li><code>?sort=speed</code> → 按下载速度排序</li>
+<li><code>?sort=latency</code> → 按延迟排序</li>
+</ul>
+
+<h4>示例</h4>
+<code>/api?loc=TW,HK&sort=speed</code>
+
+<h4>返回说明</h4>
+<ul>
+<li>返回符合条件的节点列表</li>
+<li>包含 counts / last_check / data 字段</li>
 </ul>
 </div>
 
 <div class="card">
-<h3>示例</h3>
-<code>/api?loc=TW,HK&sort=speed</code>
+<h3>⚡ 最优节点接口</h3>
+<code>/api/one</code>
+
+<p style="margin-top:10px;">用于获取指定地区中最优（速度最快）节点</p>
+
+<h4>参数说明</h4>
+<ul>
+<li><code>?loc=JP</code> → 指定地区（默认 JP）</li>
+</ul>
+
+<div style="font-size:12px;color:#94a3b8;margin-top:6px;">
+⚠ 仅支持单个 loc 参数（如 HK），不支持 HK,JP
 </div>
 
-<div class="card">
+<h4>示例</h4>
+<ul>
+<li><code>/api/one</code> → 默认 JP 最优节点</li>
+<li><code>/api/one?loc=HK</code> → HK 最优节点</li>
+<li><code>/api/one?loc=US</code> → US 最优节点</li>
+</ul>
+
+<h4>返回说明</h4>
+<ul>
+<li>返回单条最优节点数据</li>
+<li>包含 loc / count / data 字段</li>
+</ul>
+</div>
+
+<div class="card" style="display: none">
 <h3>原始数据查看</h3>
-<span style="color: #38bdf8;">
+<span style="color: lawngreen;">
 <a href="https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json" target="_blank">
-下载api数据
+查看原始扫描结果
 </a>
 </span>
 </div>
