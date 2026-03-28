@@ -15,6 +15,8 @@ import tg_notify
 from asn import CountryASN
 import requests
 import cloudflare
+
+
 # 域名 fwd.x.klee-node-xxxus.256800.xyz
 
 # 获取所有 CIDR 列表
@@ -215,8 +217,8 @@ def run_task(asn_number: str):
 
     msg_info = f"CFCDN扫描结束: ASN{asn},结果数量: {result_counts}"
     telegram_notify = tg_notify.pretty_telegram_notify("🎉🎉Open-Port-Sniffer(CFCDN)运行结束",
-                                                    f"open-port-sniffer asn{asn} cfcdn",
-                                                    msg_info)
+                                                       f"open-port-sniffer asn{asn} cfcdn",
+                                                       msg_info)
     telegram_notify = tg_notify.clean_str_for_tg(telegram_notify)
     success = tg_notify.send_telegram_message(telegram_notify)
 
@@ -290,5 +292,81 @@ def main():
                         print(f"Delete DNS record failed: {e}")
 
 
+# 清理误判的ip SNI欺诈
+def clean_sni_fraud_ip():
+    keys = ["snifferx-cfcdn", "snifferx-final-result", "snifferx-result"]
+    for k in keys:
+        hkeys = r.hkeys(k)
+        rs = []
+        for ip_str in hkeys:
+            ip_str = str(ip_str)
+            str_split = ip_str.split(":")
+            rs.append(f"{str_split[1]} {str_split[2]}\n")
+        # save to file
+        with open("aip.txt", "w") as f:
+            f.writelines(rs)
+
+        # 执行扫描 跳过测速
+        result_file = iptest_snifferx2("aip.txt", "aresult.csv")
+        # 读取结果
+        result_csv_ = parse_result_csv2(result_file)
+
+        for result in result_csv_:
+            print(result)
+            ip_port = str(result["ip"]) + ":" + str(result["port"])
+            for ip_str in hkeys:
+                ip_str = str(ip_str)
+                if ip_port not in ip_str:
+                    print(f"删除SNI欺诈ip:{k},{ip_str}")
+                    # r.hdel(k, ip_str)
+
+        # 查找map下的key 判断是否在结果中存在，存在跳过 不存在删除
+
+
+def iptest_snifferx2(input_file: str, output_file: str) -> str | None:
+    # ./iptest -file=ip.txt -max=100 -outfile=AS4609-20000-25000.csv -speedtest=3 -tls=1
+    cmd = ["./love-you", f"-file={input_file}", f"-max=100", f"-outfile={output_file}", "-speedtest=0", "-tls=1"]
+    print(f"Executing command: {' '.join(cmd)}")
+    try:
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        print("IPTest completed successfully.")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing masscan: {e}")
+        print(f"Exit status: {e.returncode}")
+        print(f"Standard output: {e.stdout}")
+        print(f"Standard error: {e.stderr}")
+    if os.path.exists(output_file):
+        return output_file
+    return None
+
+
+def parse_result_csv2(result_csv_file: str) -> []:
+    ServerInfo = namedtuple("ServerInfo", ["ip", "port", "enable_tls", "data_center",
+                                           "region", "city", "network_latency", "download_speed"])
+
+    with open(result_csv_file, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+
+        data = []
+        for row in reader:
+            server_info = ServerInfo(
+                ip=row[0],
+                port=int(row[1]),
+                enable_tls=row[2].lower() == "true",
+                data_center=row[3],
+                region=row[4],
+                city=row[5],
+                network_latency=row[6],
+                download_speed=row[7]
+            )
+            server_info_dict = server_info_to_dict(server_info)
+            data.append(server_info_dict)
+    # TODO 以HK JP TW KR SG 排序
+    return data
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    clean_sni_fraud_ip()
