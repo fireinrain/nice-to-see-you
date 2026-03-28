@@ -43,89 +43,180 @@ export default {
     // 🚀 /api/one
     // =====================
     if (pathname === "/api/one") {
-      const authHeader = request.headers.get("Authorization");
+  const authHeader = request.headers.get("Authorization");
 
-      if (authHeader !== AUTH_KEY) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
+  if (authHeader !== AUTH_KEY) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  let loc = url.searchParams.get("loc") || "JP";
+  loc = loc.trim().toUpperCase();
+
+  if (loc.includes(",")) {
+    return new Response(JSON.stringify({ error: "Only single loc supported" }), {
+      status: 400,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  if (!LOC_MAP[loc]) {
+    return new Response(JSON.stringify({ error: "Invalid loc" }), {
+      status: 400,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+
+  const codes = LOC_MAP[loc];
+
+  const dataUrl =
+    "https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json";
+
+  // =========================
+  // 🧪 健康检测
+  // =========================
+  async function isAlive(node) {
+    try {
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 2000);
+
+      const url = node.url || node.ping_url || node.test_url;
+      if (!url) return false;
+
+      const resp = await fetch(url, {
+        method: "GET",
+        signal: ctrl.signal
+      });
+
+      clearTimeout(timeout);
+      return resp.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  try {
+    const resp = await fetch(dataUrl, { cf: { cacheTtl: 60 } });
+    const raw = await resp.json();
+
+    let filtered = raw.data.filter(item =>
+      item.data_center && codes.includes(item.data_center)
+    );
+
+    if (!filtered.length) {
+      return new Response(JSON.stringify({ error: "No data for loc" }), {
+        status: 404,
+        headers: { "content-type": "application/json;charset=UTF-8" }
+      });
+    }
+
+    const check = url.searchParams.get("check") === "1";
+    const random = url.searchParams.get("random") === "1";
+
+    let selected;
+
+    // =====================================================
+    // 🔥 模式1：random + check（只在 random 集合里循环）
+    // =====================================================
+    if (check && random) {
+      let pool = [...filtered];
+
+      while (pool.length > 0) {
+        const idx = Math.floor(Math.random() * pool.length);
+        const node = pool[idx];
+
+        const ok = await isAlive(node);
+        if (ok) {
+          selected = node;
+          break;
+        }
+
+        pool.splice(idx, 1);
+      }
+
+      if (!selected) {
+        return new Response(JSON.stringify({ error: "No alive random node" }), {
+          status: 503,
           headers: { "content-type": "application/json;charset=UTF-8" }
         });
       }
 
-      // 默认 JP
-      let loc = url.searchParams.get("loc") || "JP";
-      loc = loc.trim().toUpperCase();
+    // =====================================================
+    // 🔥 模式2：speed + check（顺序检测，不随机）
+    // =====================================================
+    } else if (check) {
+      filtered.sort(
+        (a, b) =>
+          parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
+      );
 
-      if (loc.includes(",")) {
-        return new Response(JSON.stringify({ error: "Only single loc supported" }), {
-          status: 400,
+      for (const node of filtered) {
+        const ok = await isAlive(node);
+        if (ok) {
+          selected = node;
+          break;
+        }
+      }
+
+      if (!selected) {
+        return new Response(JSON.stringify({ error: "No alive speed node" }), {
+          status: 503,
           headers: { "content-type": "application/json;charset=UTF-8" }
         });
       }
 
-      if (!LOC_MAP[loc]) {
-        return new Response(JSON.stringify({ error: "Invalid loc" }), {
-          status: 400,
-          headers: { "content-type": "application/json;charset=UTF-8" }
-        });
-      }
-
-      const codes = LOC_MAP[loc];
-      const dataUrl =
-        "https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json";
-
-      try {
-        const resp = await fetch(dataUrl, { cf: { cacheTtl: 60 } });
-        const raw = await resp.json();
-
-        let filtered = raw.data.filter(item =>
-          item.data_center && codes.includes(item.data_center)
+    // =====================================================
+    // 🔥 模式3：无 check（原逻辑）
+    // =====================================================
+    } else {
+      if (random) {
+        const idx = Math.floor(Math.random() * filtered.length);
+        selected = filtered[idx];
+      } else {
+        filtered.sort(
+          (a, b) =>
+            parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
         );
-
-        if (!filtered.length) {
-          return new Response(JSON.stringify({ error: "No data for loc" }), {
-            status: 404,
-            headers: { "content-type": "application/json;charset=UTF-8" }
-          });
-        }
-
-        // 👉 random 参数
-        const random = url.searchParams.get("random");
-        const isRandom = random === "1";
-
-        let selected;
-
-        if (isRandom) {
-          const idx = Math.floor(Math.random() * filtered.length);
-          selected = filtered[idx];
-        } else {
-          filtered.sort(
-            (a, b) =>
-              parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
-          );
-          selected = filtered[0];
-        }
-
-        return new Response(JSON.stringify({
-          loc: loc,
-          strategy: isRandom ? "random" : "speed",
-          count: filtered.length,
-          data: selected
-        }, null, 2), {
-          headers: {
-            "content-type": "application/json;charset=UTF-8",
-            "access-control-allow-origin": "*",
-            "cache-control": "public, max-age=60"
-          }
-        });
-
-      } catch (e) {
-        return new Response(JSON.stringify({ error: e.message }), {
-          status: 500,
-          headers: { "content-type": "application/json;charset=UTF-8" }
-        });
+        selected = filtered[0];
       }
     }
+
+    return new Response(
+      JSON.stringify(
+        {
+          loc,
+          strategy:
+            check && random
+              ? "random-check"
+              : check
+              ? "speed-check"
+              : random
+              ? "random"
+              : "speed",
+          count: filtered.length,
+          data: selected
+        },
+        null,
+        2
+      ),
+      {
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+          "access-control-allow-origin": "*",
+          "cache-control": "public, max-age=30"
+        }
+      }
+    );
+
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { "content-type": "application/json;charset=UTF-8" }
+    });
+  }
+}
 
     // =====================
     // 🔐 /api
@@ -384,33 +475,96 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 <h3>⚡ 最优节点接口</h3>
 <code>/api/one</code>
 
-<p style="margin-top:10px;">用于获取指定地区中最优（速度最快）节点</p>
+<p style="margin-top:10px;">
+用于获取指定地区中最优节点（支持速度 / 随机 / 健康检测策略）
+</p>
 
 <h4>参数说明</h4>
 <ul>
 <li><code>?loc=JP</code> → 指定地区（默认 JP）</li>
-<li><code>?random=1</code> → 随机返回一个节点（默认 0 返回最快）</li>
+<li><code>?random=1</code> → 随机返回节点</li>
+<li><code>?check=1</code> → 启用健康检测（核心能力）</li>
 </ul>
-
 
 <div style="font-size:12px;color:#94a3b8;margin-top:6px;">
 ⚠ 仅支持单个 loc 参数（如 HK），不支持 HK,JP
 </div>
 
-<h4>示例</h4>
+---
+
+<h4>🧠 执行策略说明（重要）</h4>
+
+<div class="card">
+
+<h4>1️⃣ speed 模式（默认）</h4>
 <ul>
-<li><code>/api/one</code> → JP 最快节点</li>
-<li><code>/api/one?loc=HK</code> → HK 最快节点</li>
-<li><code>/api/one?loc=HK&random=1</code> → HK 随机节点</li>
+<li>不带 check 参数</li>
+<li>按下载速度排序</li>
+<li>直接返回最快节点</li>
 </ul>
 
-<h4>返回说明</h4>
+<code>/api/one?loc=JP</code>
+
+---
+
+<h4>2️⃣ random 模式（默认随机）</h4>
 <ul>
-<li>返回单条最优节点数据</li>
-<li>包含 loc / count / data 字段</li>
+<li>不带 check</li>
+<li>随机返回一个节点</li>
 </ul>
+
+<code>/api/one?loc=JP&random=1</code>
+
+---
+
+<h4>3️⃣ speed + check（健康优先）</h4>
+<ul>
+<li>按速度排序</li>
+<li>从最快开始逐个检测连通性</li>
+<li>不可用 → 自动尝试下一个</li>
+<li>不进行随机 fallback</li>
+</ul>
+
+<code>/api/one?loc=JP&check=1</code>
+
+---
+
+<h4>4️⃣ random + check（随机健康循环）🔥</h4>
+<ul>
+<li>从节点池中随机选择</li>
+<li>对选中节点进行连通性检测</li>
+<li>失败 → 重新 random 再试</li>
+<li>成功 → 立即返回</li>
+<li>不会回退 speed 顺序</li>
+</ul>
+
+<code>/api/one?loc=JP&check=1&random=1</code>
+
 </div>
 
+---
+
+<h4>📦 返回说明</h4>
+
+<ul>
+<li>返回单条节点数据</li>
+<li>包含 loc / strategy / count / data 字段</li>
+</ul>
+
+<pre><code>{
+  "loc": "JP",
+  "strategy": "speed | random | speed-check | random-check",
+  "count": 12,
+  "data": {
+    "ip": "x.x.x.x",
+    "port": 443,
+    "download_speed": 1234,
+    "data_center": "JP"
+  }
+}
+</code></pre>
+
+</div>
 <div class="card" style="display: none">
 <h3>原始数据查看</h3>
 <span style="color: lawngreen;">
