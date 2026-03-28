@@ -1,5 +1,7 @@
 // api.cfpool.131433.xyz
 
+// api.cfpool.131433.xyz
+
 // =====================
 // 🌍 国家 -> data_center 映射
 // =====================
@@ -12,6 +14,7 @@ const LOC_MAP = {
   KR: ["ICN"],
   US: ["LAX"]
 };
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -20,7 +23,7 @@ export default {
     const AUTH_KEY = "eulerme";
 
     // =====================
-    // 🔐 /dash 口令验证
+    // 🔐 /dash
     // =====================
     if (pathname === "/dash") {
       const auth = url.searchParams.get("auth");
@@ -37,92 +40,95 @@ export default {
     }
 
     // =====================
-// 🚀 /api/one -> 单地区最快节点
-// =====================
-if (pathname === "/api/one") {
-  const authHeader = request.headers.get("Authorization");
+    // 🚀 /api/one
+    // =====================
+    if (pathname === "/api/one") {
+      const authHeader = request.headers.get("Authorization");
 
-  if (authHeader !== AUTH_KEY) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { "content-type": "application/json;charset=UTF-8" }
-    });
-  }
+      if (authHeader !== AUTH_KEY) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401,
+          headers: { "content-type": "application/json;charset=UTF-8" }
+        });
+      }
 
-  // 👉 默认 JP
-  let loc = url.searchParams.get("loc") || "JP";
-  loc = loc.trim().toUpperCase();
+      // 默认 JP
+      let loc = url.searchParams.get("loc") || "JP";
+      loc = loc.trim().toUpperCase();
 
-  // 👉 只允许单个 loc（防止传 HK,JP）
-  if (loc.includes(",")) {
-    return new Response(JSON.stringify({ error: "Only single loc supported" }), {
-      status: 400,
-      headers: { "content-type": "application/json;charset=UTF-8" }
-    });
-  }
+      if (loc.includes(",")) {
+        return new Response(JSON.stringify({ error: "Only single loc supported" }), {
+          status: 400,
+          headers: { "content-type": "application/json;charset=UTF-8" }
+        });
+      }
 
-  // 👉 校验 loc 是否存在
-  if (!LOC_MAP[loc]) {
-    return new Response(JSON.stringify({ error: "Invalid loc" }), {
-      status: 400,
-      headers: { "content-type": "application/json;charset=UTF-8" }
-    });
-  }
+      if (!LOC_MAP[loc]) {
+        return new Response(JSON.stringify({ error: "Invalid loc" }), {
+          status: 400,
+          headers: { "content-type": "application/json;charset=UTF-8" }
+        });
+      }
 
-  const codes = LOC_MAP[loc];
+      const codes = LOC_MAP[loc];
+      const dataUrl =
+        "https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json";
 
-  const dataUrl =
-    "https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/result.json";
+      try {
+        const resp = await fetch(dataUrl, { cf: { cacheTtl: 60 } });
+        const raw = await resp.json();
 
-  try {
-    const resp = await fetch(dataUrl, {
-      cf: { cacheTtl: 60 }
-    });
+        let filtered = raw.data.filter(item =>
+          item.data_center && codes.includes(item.data_center)
+        );
 
-    const raw = await resp.json();
+        if (!filtered.length) {
+          return new Response(JSON.stringify({ error: "No data for loc" }), {
+            status: 404,
+            headers: { "content-type": "application/json;charset=UTF-8" }
+          });
+        }
 
-    // 👉 过滤地区
-    let filtered = raw.data.filter(item =>
-      item.data_center && codes.includes(item.data_center)
-    );
+        // 👉 random 参数
+        const random = url.searchParams.get("random");
+        const isRandom = random === "1";
 
-    if (!filtered.length) {
-      return new Response(JSON.stringify({ error: "No data for loc" }), {
-        status: 404,
-        headers: { "content-type": "application/json;charset=UTF-8" }
-      });
+        let selected;
+
+        if (isRandom) {
+          const idx = Math.floor(Math.random() * filtered.length);
+          selected = filtered[idx];
+        } else {
+          filtered.sort(
+            (a, b) =>
+              parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
+          );
+          selected = filtered[0];
+        }
+
+        return new Response(JSON.stringify({
+          loc: loc,
+          strategy: isRandom ? "random" : "speed",
+          count: filtered.length,
+          data: selected
+        }, null, 2), {
+          headers: {
+            "content-type": "application/json;charset=UTF-8",
+            "access-control-allow-origin": "*",
+            "cache-control": "public, max-age=60"
+          }
+        });
+
+      } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+          status: 500,
+          headers: { "content-type": "application/json;charset=UTF-8" }
+        });
+      }
     }
 
-    // 👉 排序（按 speed 最大）
-    filtered.sort(
-      (a, b) =>
-        parseSpeed(b.download_speed) - parseSpeed(a.download_speed)
-    );
-
-    const best = filtered[0];
-
-    return new Response(JSON.stringify({
-      loc: loc,
-      count: filtered.length,
-      data: best
-    }, null, 2), {
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-        "access-control-allow-origin": "*",
-        "cache-control": "public, max-age=60"
-      }
-    });
-
-  } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { "content-type": "application/json;charset=UTF-8" }
-    });
-  }
-}
-
     // =====================
-    // 🔐 /api 鉴权
+    // 🔐 /api
     // =====================
     if (pathname.startsWith("/api")) {
       const authHeader = request.headers.get("Authorization");
@@ -137,8 +143,6 @@ if (pathname === "/api/one") {
       return new Response("Not Found", { status: 404 });
     }
 
-
-
     // =====================
     // 📦 缓存
     // =====================
@@ -148,7 +152,6 @@ if (pathname === "/api/one") {
     let cached = await cache.match(cacheKey);
     if (cached) return cached;
 
-    // 参数
     const loc = url.searchParams.get("loc");
     const port = url.searchParams.get("port");
     const asn = url.searchParams.get("asn");
@@ -165,7 +168,6 @@ if (pathname === "/api/one") {
       const rawData = await dataResp.json();
       let resultData = rawData.data;
 
-      // ========= 过滤：支持多 loc =========
       if (loc) {
         const locList = loc
           .split(",")
@@ -179,7 +181,6 @@ if (pathname === "/api/one") {
           }
         }
 
-        // 去重
         codes = [...new Set(codes)];
 
         resultData = resultData.filter(item =>
@@ -199,7 +200,6 @@ if (pathname === "/api/one") {
         );
       }
 
-      // ========= 排序 =========
       if (sort === "speed") {
         resultData.sort(
           (a, b) =>
@@ -231,6 +231,7 @@ if (pathname === "/api/one") {
 
       ctx.waitUntil(cache.put(cacheKey, response.clone()));
       return response;
+
     } catch (e) {
       return new Response(JSON.stringify({ error: e.message }), {
         status: 500,
@@ -239,6 +240,7 @@ if (pathname === "/api/one") {
     }
   }
 };
+
 
 // =====================
 // 🔐 登录页面
@@ -387,7 +389,9 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 <h4>参数说明</h4>
 <ul>
 <li><code>?loc=JP</code> → 指定地区（默认 JP）</li>
+<li><code>?random=1</code> → 随机返回一个节点（默认 0 返回最快）</li>
 </ul>
+
 
 <div style="font-size:12px;color:#94a3b8;margin-top:6px;">
 ⚠ 仅支持单个 loc 参数（如 HK），不支持 HK,JP
@@ -395,9 +399,9 @@ code {background:#020617;padding:5px;border-radius:6px;color:#38bdf8;}
 
 <h4>示例</h4>
 <ul>
-<li><code>/api/one</code> → 默认 JP 最优节点</li>
-<li><code>/api/one?loc=HK</code> → HK 最优节点</li>
-<li><code>/api/one?loc=US</code> → US 最优节点</li>
+<li><code>/api/one</code> → JP 最快节点</li>
+<li><code>/api/one?loc=HK</code> → HK 最快节点</li>
+<li><code>/api/one?loc=HK&random=1</code> → HK 随机节点</li>
 </ul>
 
 <h4>返回说明</h4>
