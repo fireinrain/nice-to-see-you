@@ -1,6 +1,6 @@
 {
-  "counts": 62,
-  "last_check": "2026-03-28 12:00:28",
+  "counts": 61,
+  "last_check": "2026-03-29 07:37:05",
   "data": [
     {
       "ip": "43.161.221.27",
@@ -221,17 +221,6 @@
       "network_latency": "134 ms",
       "download_speed": "15421 kB/s",
       "asn": "49304"
-    },
-    {
-      "ip": "36.232.112.247",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "KHH",
-      "region": "Asia Pacific",
-      "city": "Kaohsiung City",
-      "network_latency": "142 ms",
-      "download_speed": "971 kB/s",
-      "asn": "3462"
     },
     {
       "ip": "43.134.174.114",
