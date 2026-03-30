@@ -359,6 +359,7 @@ async def check_if_cf_proxy(ip: str, port: int) -> (bool, {}):
 def clean_dead_ip():
     # 将扫描到的result结果 复制到final
     copy_checked_ipport2result("snifferx-result", "snifferx-final-result")
+    copy_checked_ipport2result("snifferx-cfcdn", "snifferx-final-result")
 
     # 发送TG消息开始
     msg_info = f"CleanGFW-Ban ip"
