@@ -1,6 +1,6 @@
 {
-  "counts": 169,
-  "last_check": "2026-03-30 21:47:38",
+  "counts": 170,
+  "last_check": "2026-03-31 07:44:52",
   "data": [
     {
       "ip": "172.104.110.147",
@@ -9,8 +9,8 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "108 ms",
-      "download_speed": "19416 kB/s",
+      "network_latency": "105 ms",
+      "download_speed": "20085 kB/s",
       "asn": "63949"
     },
     {
@@ -64,8 +64,8 @@
       "data_center": "SYD",
       "region": "Oceania",
       "city": "Sydney",
-      "network_latency": "151 ms",
-      "download_speed": "10558 kB/s",
+      "network_latency": "184 ms",
+      "download_speed": "5572 kB/s",
       "asn": "63949"
     },
     {
@@ -86,8 +86,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "187 ms",
-      "download_speed": "6290 kB/s",
+      "network_latency": "209 ms",
+      "download_speed": "3896 kB/s",
       "asn": "40065"
     },
     {
@@ -130,8 +130,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "150 ms",
-      "download_speed": "5907 kB/s",
+      "network_latency": "207 ms",
+      "download_speed": "2602 kB/s",
       "asn": "932"
     },
     {
@@ -163,8 +163,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "414 ms",
-      "download_speed": "22 kB/s",
+      "network_latency": "196 ms",
+      "download_speed": "13 kB/s",
       "asn": "932"
     },
     {
@@ -196,8 +196,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "198 ms",
-      "download_speed": "6069 kB/s",
+      "network_latency": "207 ms",
+      "download_speed": "394 kB/s",
       "asn": "40065"
     },
     {
@@ -405,8 +405,8 @@
       "data_center": "LAX",
       "region": "North America",
       "city": "Los Angeles",
-      "network_latency": "44 ms",
-      "download_speed": "86158 kB/s",
+      "network_latency": "42 ms",
+      "download_speed": "97185 kB/s",
       "asn": "906"
     },
     {
@@ -581,8 +581,8 @@
       "data_center": "LAX",
       "region": "North America",
       "city": "Los Angeles",
-      "network_latency": "38 ms",
-      "download_speed": "107166 kB/s",
+      "network_latency": "45 ms",
+      "download_speed": "82520 kB/s",
       "asn": "906"
     },
     {
@@ -680,8 +680,8 @@
       "data_center": "SIN",
       "region": "Asia Pacific",
       "city": "Singapore",
-      "network_latency": "170 ms",
-      "download_speed": "9861 kB/s",
+      "network_latency": "218 ms",
+      "download_speed": "4280 kB/s",
       "asn": "63949"
     },
     {
@@ -691,8 +691,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "150 ms",
-      "download_speed": "6768 kB/s",
+      "network_latency": "210 ms",
+      "download_speed": "4241 kB/s",
       "asn": "932"
     },
     {
@@ -773,17 +773,6 @@
       "asn": "fofa-jp"
     },
     {
-      "ip": "1.161.60.208",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "TPE",
-      "region": "Asia Pacific",
-      "city": "Taipei",
-      "network_latency": "221 ms",
-      "download_speed": "10900 kB/s",
-      "asn": "3462"
-    },
-    {
       "ip": "154.17.225.54",
       "port": 443,
       "enable_tls": true,
@@ -812,8 +801,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "150 ms",
-      "download_speed": "3984 kB/s",
+      "network_latency": "239 ms",
+      "download_speed": "1729 kB/s",
       "asn": "932"
     },
     {
@@ -955,8 +944,8 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "109 ms",
-      "download_speed": "19209 kB/s",
+      "network_latency": "142 ms",
+      "download_speed": "11314 kB/s",
       "asn": "63949"
     },
     {
@@ -966,8 +955,8 @@
       "data_center": "SIN",
       "region": "Asia Pacific",
       "city": "Singapore",
-      "network_latency": "172 ms",
-      "download_speed": "11598 kB/s",
+      "network_latency": "218 ms",
+      "download_speed": "6509 kB/s",
       "asn": "63949"
     },
     {
@@ -988,8 +977,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "195 ms",
-      "download_speed": "3001 kB/s",
+      "network_latency": "211 ms",
+      "download_speed": "558 kB/s",
       "asn": "40065"
     },
     {
@@ -1043,8 +1032,8 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "110 ms",
-      "download_speed": "42976 kB/s",
+      "network_latency": "106 ms",
+      "download_speed": "43804 kB/s",
       "asn": "63949"
     },
     {
@@ -1054,8 +1043,8 @@
       "data_center": "SYD",
       "region": "Oceania",
       "city": "Sydney",
-      "network_latency": "137 ms",
-      "download_speed": "28606 kB/s",
+      "network_latency": "195 ms",
+      "download_speed": "21394 kB/s",
       "asn": "63949"
     },
     {
@@ -1131,9 +1120,20 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "108 ms",
-      "download_speed": "18025 kB/s",
+      "network_latency": "105 ms",
+      "download_speed": "18941 kB/s",
       "asn": "63949"
+    },
+    {
+      "ip": "103.103.245.101",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "HKG",
+      "region": "Asia Pacific",
+      "city": "Hong Kong",
+      "network_latency": "211 ms",
+      "download_speed": "636 kB/s",
+      "asn": "40065"
     },
     {
       "ip": "43.160.208.103",
@@ -1153,8 +1153,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "195 ms",
-      "download_speed": "4794 kB/s",
+      "network_latency": "210 ms",
+      "download_speed": "3907 kB/s",
       "asn": "40065"
     },
     {
@@ -1164,8 +1164,8 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "109 ms",
-      "download_speed": "18135 kB/s",
+      "network_latency": "105 ms",
+      "download_speed": "20223 kB/s",
       "asn": "63949"
     },
     {
@@ -1208,8 +1208,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "159 ms",
-      "download_speed": "6671 kB/s",
+      "network_latency": "207 ms",
+      "download_speed": "3232 kB/s",
       "asn": "932"
     },
     {
@@ -1230,8 +1230,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "187 ms",
-      "download_speed": "3831 kB/s",
+      "network_latency": "208 ms",
+      "download_speed": "605 kB/s",
       "asn": "40065"
     },
     {
@@ -1252,8 +1252,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "190 ms",
-      "download_speed": "6488 kB/s",
+      "network_latency": "207 ms",
+      "download_speed": "4387 kB/s",
       "asn": "40065"
     },
     {
@@ -1285,8 +1285,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "150 ms",
-      "download_speed": "4107 kB/s",
+      "network_latency": "205 ms",
+      "download_speed": "3161 kB/s",
       "asn": "932"
     },
     {
@@ -1318,8 +1318,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "198 ms",
-      "download_speed": "4294 kB/s",
+      "network_latency": "211 ms",
+      "download_speed": "2387 kB/s",
       "asn": "40065"
     },
     {
@@ -1354,6 +1354,28 @@
       "network_latency": "197 ms",
       "download_speed": "4466 kB/s",
       "asn": "40065"
+    },
+    {
+      "ip": "154.17.29.62",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "LAX",
+      "region": "North America",
+      "city": "Los Angeles",
+      "network_latency": "44 ms",
+      "download_speed": "79465 kB/s",
+      "asn": "906"
+    },
+    {
+      "ip": "154.21.92.36",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "LAX",
+      "region": "North America",
+      "city": "Los Angeles",
+      "network_latency": "50 ms",
+      "download_speed": "77227 kB/s",
+      "asn": "906"
     },
     {
       "ip": "178.157.49.113",
@@ -1411,17 +1433,6 @@
       "asn": "25820"
     },
     {
-      "ip": "43.161.221.27",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "HKG",
-      "region": "Asia Pacific",
-      "city": "Hong Kong",
-      "network_latency": "223 ms",
-      "download_speed": "12119 kB/s",
-      "asn": "132203"
-    },
-    {
       "ip": "97.64.28.210",
       "port": 443,
       "enable_tls": true,
@@ -1450,8 +1461,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "163 ms",
-      "download_speed": "3867 kB/s",
+      "network_latency": "207 ms",
+      "download_speed": "1218 kB/s",
       "asn": "932"
     },
     {
@@ -1538,8 +1549,8 @@
       "data_center": "NRT",
       "region": "Asia Pacific",
       "city": "Tokyo",
-      "network_latency": "142 ms",
-      "download_speed": "28346 kB/s",
+      "network_latency": "135 ms",
+      "download_speed": "29629 kB/s",
       "asn": "63949"
     },
     {
@@ -1549,8 +1560,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "144 ms",
-      "download_speed": "6653 kB/s",
+      "network_latency": "196 ms",
+      "download_speed": "4181 kB/s",
       "asn": "932"
     },
     {
@@ -1747,8 +1758,8 @@
       "data_center": "HKG",
       "region": "Asia Pacific",
       "city": "Hong Kong",
-      "network_latency": "142 ms",
-      "download_speed": "5456 kB/s",
+      "network_latency": "205 ms",
+      "download_speed": "3946 kB/s",
       "asn": "932"
     },
     {
@@ -1802,8 +1813,8 @@
       "data_center": "LAX",
       "region": "North America",
       "city": "Los Angeles",
-      "network_latency": "38 ms",
-      "download_speed": "93580 kB/s",
+      "network_latency": "45 ms",
+      "download_speed": "79919 kB/s",
       "asn": "906"
     },
     {
@@ -1846,8 +1857,8 @@
       "data_center": "SIN",
       "region": "Asia Pacific",
       "city": "Singapore",
-      "network_latency": "171 ms",
-      "download_speed": "9550 kB/s",
+      "network_latency": "221 ms",
+      "download_speed": "5452 kB/s",
       "asn": "63949"
     },
     {
