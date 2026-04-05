@@ -37,7 +37,7 @@ dns:
     - 240.0.0.0/4
     - 0.0.0.0/32
 proxies:
-- name: 🇺🇸美国-专线A
+- name: 🇺🇸美国-X专线A
   type: vless
   server: 154.17.234.35
   port: 443
@@ -51,7 +51,7 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线B
+- name: 🇺🇸美国-X专线B
   type: vless
   server: 154.17.15.91
   port: 443
@@ -65,7 +65,7 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线C
+- name: 🇺🇸美国-X专线C
   type: vless
   server: 154.17.31.82
   port: 443
@@ -79,7 +79,7 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线D
+- name: 🇺🇸美国-X专线D
   type: vless
   server: 154.17.15.126
   port: 443
@@ -93,7 +93,7 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线E
+- name: 🇺🇸美国-X专线E
   type: vless
   server: 154.17.20.7
   port: 443
@@ -112,19 +112,19 @@ proxy-groups:
   type: select
   proxies:
   - DIRECT
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🚀 节点选择
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: ⚖️ 均衡哈希
   type: load-balance
   strategy: consistent-hashing
@@ -132,110 +132,110 @@ proxy-groups:
   interval: 7200
   tolerance: 100
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: ♻️ 自动选择
   type: url-test
   url: http://www.gstatic.com/generate_204
   interval: 86400
   tolerance: 100
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🧬 故障转移
   type: fallback
   url: http://www.gstatic.com/generate_204
   interval: 7200
   tolerance: 100
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🌍 国外媒体
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 📲 电报信息
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: Ⓜ️ 微软服务
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🍎 苹果服务
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 📢 谷歌FCM
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🎯 全球直连
   type: select
   proxies:
   - DIRECT
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🛑 全球拦截
   type: select
   proxies:
   - REJECT
   - DIRECT
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🍃 应用净化
   type: select
   proxies:
   - REJECT
   - DIRECT
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 - name: 🐟 漏网之鱼
   type: select
   proxies:
-  - 🇺🇸美国-专线A
-  - 🇺🇸美国-专线B
-  - 🇺🇸美国-专线C
-  - 🇺🇸美国-专线D
-  - 🇺🇸美国-专线E
+  - 🇺🇸美国-X专线A
+  - 🇺🇸美国-X专线B
+  - 🇺🇸美国-X专线C
+  - 🇺🇸美国-X专线D
+  - 🇺🇸美国-X专线E
 rule-providers:
   reject:
     type: http
