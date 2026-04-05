@@ -41,7 +41,7 @@ proxies:
   type: vless
   server: 154.17.234.35
   port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
   tls: true
   servername: rnws.256800.xyz
@@ -55,7 +55,7 @@ proxies:
   type: vless
   server: 154.17.15.91
   port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
   tls: true
   servername: rnws.256800.xyz
@@ -69,7 +69,7 @@ proxies:
   type: vless
   server: 154.17.31.82
   port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
   tls: true
   servername: rnws.256800.xyz
@@ -83,7 +83,7 @@ proxies:
   type: vless
   server: 154.17.15.126
   port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
   tls: true
   servername: rnws.256800.xyz
@@ -97,7 +97,7 @@ proxies:
   type: vless
   server: 154.17.20.7
   port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
   tls: true
   servername: rnws.256800.xyz
