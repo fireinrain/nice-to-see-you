@@ -48,7 +48,7 @@ proxies:
   client-fingerprint: chrome
   network: xhttp
   ws-opts:
-    path: /5f4638b2
+    path: /eb8098
     headers:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线B
@@ -62,7 +62,7 @@ proxies:
   client-fingerprint: chrome
   network: xhttp
   ws-opts:
-    path: /5f4638b2
+    path: /eb8098
     headers:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线C
@@ -76,7 +76,7 @@ proxies:
   client-fingerprint: chrome
   network: xhttp
   ws-opts:
-    path: /5f4638b2
+    path: /eb8098
     headers:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线D
@@ -90,7 +90,7 @@ proxies:
   client-fingerprint: chrome
   network: xhttp
   ws-opts:
-    path: /5f4638b2
+    path: /eb8098
     headers:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线E
@@ -104,7 +104,7 @@ proxies:
   client-fingerprint: chrome
   network: xhttp
   ws-opts:
-    path: /5f4638b2
+    path: /eb8098
     headers:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-W专线A
