@@ -124,7 +124,7 @@ def main():
         return
 
     # ========= 4. 读取模板 =========
-    with open("logs/subscribe-temp.yml", "r", encoding="utf-8") as f:
+    with open("logs/subscribe-temp.yaml", "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     # ========= 5. 写入 proxies =========
