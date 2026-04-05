@@ -142,7 +142,7 @@ def main():
         group["proxies"] = base + proxy_names
 
     # ========= 7. 输出 =========
-    with open("logs/subscribe-final.yaml", "w", encoding="utf-8") as f:
+    with open("logs/subscribe-final.yml", "w", encoding="utf-8") as f:
         yaml.dump(config, f, allow_unicode=True, sort_keys=False)
 
     print("✅ 生成完成 subscribe-final.yaml")
