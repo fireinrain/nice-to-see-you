@@ -33,7 +33,7 @@ jobs:
           pip install --upgrade --ignore-installed certifi urllib3
           pip install -r requirements.txt
 
-      - name: Run single-task-clean-check    
+      - name: Run single-task-subscribe-update
         run: |
           python3 subscribe.py
 
