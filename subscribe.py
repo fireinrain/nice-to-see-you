@@ -162,21 +162,49 @@ def main():
     print("✅ 生成完成 subscribe-final.yaml")
     print(f"📊 节点数: {len(node_infos)}")
 
-    # ========= 8. Base64 编码 =========
+    # 只提取节点信息 提取vless节点分享链接，以一行一行的格式的字符串 格式之后 然后编码为base64 写入文件
+    # ========= 8. 提取 VLESS 链接 + Base64 =========
     try:
-        with open(output_yaml_path, "r", encoding="utf-8") as f:
-            content = f.read()
+        vless_links = []
 
-        # 转 bytes 再 base64
-        encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+        for item in node_infos:
+            # 重新还原成 vless:// 链接（关键）
+            uuid = item["uuid"]
+            server = item["server"]
+            port = item["port"]
+            name = urllib.parse.quote(item["name"])
+
+            query = {
+                "encryption": "none",
+                "security": "tls" if item.get("tls") else "none",
+                "sni": item.get("servername", ""),
+                "fp": item.get("client-fingerprint", "chrome"),
+                "type": item.get("network", "ws"),
+            }
+
+            # ws 参数
+            if item.get("network") in ["ws", "xhttp"]:
+                ws_opts = item.get("ws-opts", {})
+                query["path"] = urllib.parse.quote(ws_opts.get("path", "/"))
+
+            query_str = urllib.parse.urlencode(query)
+
+            vless_link = f"vless://{uuid}@{server}:{port}?{query_str}#{name}"
+            vless_links.append(vless_link)
+
+        # 一行一个
+        raw_text = "\n".join(vless_links)
+
+        # base64
+        encoded = base64.b64encode(raw_text.encode("utf-8")).decode("utf-8")
 
         with open(output_txt_path, "w", encoding="utf-8") as f:
             f.write(encoded)
 
-        print("✅ 已生成 subscribe-final.txt（Base64）")
+        print("✅ 已生成 subscribe-final.txt（VLESS Base64）")
 
     except Exception as e:
-        print("❌ Base64 编码失败:", str(e))
+        print("❌ VLESS 提取失败:", str(e))
 
 
 # ========================
