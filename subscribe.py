@@ -94,14 +94,14 @@ def main():
         return
 
     # ========= 2. 排序 =========
-    top10 = sorted(
+    top5 = sorted(
         ip_pool,
         key=lambda x: parse_speed(x.get("download_speed", "0 kB/s")),
         reverse=True
-    )[:10]
+    )[:5]
 
     # ========= 3. 生成 vless + 转 Clash =========
-    for index, item in enumerate(top10):
+    for index, item in enumerate(top5):
         ip = item.get("ip")
         port = item.get("port")
 
