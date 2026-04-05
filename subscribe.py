@@ -3,6 +3,8 @@ import yaml
 import urllib.parse
 from redis_tool import r
 
+import base64
+
 
 # ========================
 # 工具函数
@@ -147,6 +149,34 @@ def main():
 
     print("✅ 生成完成 subscribe-final.yaml")
     print(f"📊 节点数: {len(node_infos)}")
+
+    # 将生成的subscribe-final.yaml 中的内容 进行base64编码，写到subscribe-final.txt里面
+
+    # ========= 7. 输出 =========
+    output_yaml_path = "logs/subscribe-final.yaml"
+    output_txt_path = "logs/subscribe-final.txt"
+
+    with open(output_yaml_path, "w", encoding="utf-8") as f:
+        yaml.dump(config, f, allow_unicode=True, sort_keys=False)
+
+    print("✅ 生成完成 subscribe-final.yaml")
+    print(f"📊 节点数: {len(node_infos)}")
+
+    # ========= 8. Base64 编码 =========
+    try:
+        with open(output_yaml_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # 转 bytes 再 base64
+        encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+
+        with open(output_txt_path, "w", encoding="utf-8") as f:
+            f.write(encoded)
+
+        print("✅ 已生成 subscribe-final.txt（Base64）")
+
+    except Exception as e:
+        print("❌ Base64 编码失败:", str(e))
 
 
 # ========================
