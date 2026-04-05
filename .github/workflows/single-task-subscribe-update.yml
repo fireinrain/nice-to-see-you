@@ -52,6 +52,6 @@ jobs:
           echo "Changes detected, pushing to repository..."
           git config --global user.name "fireinrain"
           git config --global user.email "lzyme.dev@gmail.com"
-          git add logs/subscribe-final.yaml
+          git add logs/subscribe-final.yaml logs/subscribe-final.txt 
           git commit -m "$(date '+%Y-%m-%d')"
           git push origin master
