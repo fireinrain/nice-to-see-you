@@ -1,0 +1,84 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: '127.0.0.1:9090'
+dns:
+    enable: true
+    ipv6: false
+    default-nameserver: [223.5.5.5, 119.29.29.29]
+    enhanced-mode: fake-ip
+    fake-ip-range: 198.18.0.1/16
+    fake-ip-filter: ['*', +.lan, +.local]
+    use-hosts: true
+    proxy-server-nameserver: ['https://223.6.6.6/dns-query']
+    nameserver-policy: { 'geosite:cn,private': ['quic://223.5.5.5:853', 'https://1.12.12.12/dns-query'] }
+    nameserver: ['https://doh.pub/dns-query', 'https://dns.alidns.com/dns-query']
+    fallback: ['https://doh.dns.sb/dns-query', 'https://dns.cloudflare.com/dns-query', 'https://dns.twnic.tw/dns-query', 'tls://8.8.4.4:853']
+    fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
+proxies:
+    - { name: '🌍地球 - 专线A-V2', type: vless, server: yg1.ygkkk.dpdns.org, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🌍地球 - 专线B-V2', type: vless, server: 104.19.239.59, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇭🇰香港 - 专线A-V2', type: vless, server: 23.249.18.52, port: 1496, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇭🇰香港 - 专线B-V2', type: vless, server: 43.163.76.248, port: 443, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇲🇴澳门 - 专线A-V2', type: vless, server: 64.186.227.83, port: 443, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇲🇴澳门 - 专线B-V2', type: vless, server: 64.186.253.84, port: 59527, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇰🇷韩国 - 专线A-V2', type: vless, server: 43.155.187.201, port: 443, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇰🇷韩国 - 专线B-V2', type: vless, server: 43.133.229.220, port: 443, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇯🇵日本 - 专线A-V2', type: vless, server: 154.31.116.240, port: 2052, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇯🇵日本 - 专线B-V2', type: vless, server: 13.251.157.143, port: 443, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, tls: true, skip-cert-verify: true, flow: '', client-fingerprint: chrome, servername: cloudflare-is-oks.stdio.de5.net, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇺🇸美国 - 专线A-V2', type: vless, server: 198.41.223.179, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇺🇸美国 - 专线B-V2', type: vless, server: 162.159.6.31, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇺🇸美国 - 专线C-V2', type: vless, server: mfa.gov.ua, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+    - { name: '🇺🇸美国 - 专线D-V2', type: vless, server: saas.sin.fan, port: 80, uuid: 944754f1-562b-4177-a2a5-539d83f99654, udp: true, network: ws, ws-opts: { path: '/?ed=2048', headers: { Host: cloudflare-is-oks.stdio.de5.net } } }
+proxy-groups:
+    - { name: 派蒙风の翼|切换在下一项, type: select, proxies: [DIRECT,  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🚀 节点选择', type: select, proxies: ['♻️ 自动选择', '🧬 故障转移', '⚖️ 均衡哈希', '🎯 全球直连',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '⚖️ 均衡哈希', type: load-balance, strategy: consistent-hashing, url: 'http://www.gstatic.com/generate_204', interval: 7200, tolerance: 100, proxies: [ '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '♻️ 自动选择', type: url-test, url: 'http://www.gstatic.com/generate_204', interval: 86400, tolerance: 100, proxies: [ '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🧬 故障转移', type: fallback, url: 'http://www.gstatic.com/generate_204', interval: 7200, tolerance: 100, proxies: [ '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🌍 国外媒体', type: select, proxies: ['🚀 节点选择', '♻️ 自动选择', '🎯 全球直连',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '📲 电报信息', type: select, proxies: ['🚀 节点选择', '♻️ 自动选择', '🎯 全球直连',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: 'Ⓜ️ 微软服务', type: select, proxies: ['🎯 全球直连', '🚀 节点选择',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🍎 苹果服务', type: select, proxies: ['🚀 节点选择', '🎯 全球直连',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '📢 谷歌FCM', type: select, proxies: ['🚀 节点选择', '♻️ 自动选择', '🎯 全球直连',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🎯 全球直连', type: select, proxies: [DIRECT,  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🛑 全球拦截', type: select, proxies: [REJECT, DIRECT,  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🍃 应用净化', type: select, proxies: [REJECT, DIRECT,  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+    - { name: '🐟 漏网之鱼', type: select, proxies: ['🚀 节点选择', '🎯 全球直连', '♻️ 自动选择',  '🌍地球 - 专线A-V2', '🌍地球 - 专线B-V2', '🇭🇰香港 - 专线A-V2', '🇭🇰香港 - 专线B-V2', '🇲🇴澳门 - 专线A-V2', '🇲🇴澳门 - 专线B-V2', '🇰🇷韩国 - 专线A-V2', '🇰🇷韩国 - 专线B-V2', '🇯🇵日本 - 专线A-V2', '🇯🇵日本 - 专线B-V2', '🇺🇸美国 - 专线A-V2', '🇺🇸美国 - 专线B-V2', '🇺🇸美国 - 专线C-V2', '🇺🇸美国 - 专线D-V2'] }
+rule-providers:
+    reject: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt', path: ./ruleset/reject.yaml, interval: 86400 }
+    icloud: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt', path: ./ruleset/icloud.yaml, interval: 86400 }
+    apple: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt', path: ./ruleset/apple.yaml, interval: 86400 }
+    google: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt', path: ./ruleset/google.yaml, interval: 86400 }
+    proxy: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt', path: ./ruleset/proxy.yaml, interval: 86400 }
+    direct: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt', path: ./ruleset/direct.yaml, interval: 86400 }
+    private: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt', path: ./ruleset/private.yaml, interval: 86400 }
+    gfw: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt', path: ./ruleset/gfw.yaml, interval: 86400 }
+    greatfire: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt', path: ./ruleset/greatfire.yaml, interval: 86400 }
+    tld-not-cn: { type: http, behavior: domain, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt', path: ./ruleset/tld-not-cn.yaml, interval: 86400 }
+    telegramcidr: { type: http, behavior: ipcidr, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt', path: ./ruleset/telegramcidr.yaml, interval: 86400 }
+    cncidr: { type: http, behavior: ipcidr, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt', path: ./ruleset/cncidr.yaml, interval: 86400 }
+    lancidr: { type: http, behavior: ipcidr, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt', path: ./ruleset/lancidr.yaml, interval: 86400 }
+    applications: { type: http, behavior: classical, url: 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt', path: ./ruleset/applications.yaml, interval: 86400 }
+rules:
+    - 'DOMAIN,cloud-sub.paimon.eu,DIRECT'
+    - 'RULE-SET,applications,DIRECT'
+    - 'DOMAIN,clash.razord.top,DIRECT'
+    - 'DOMAIN,yacd.haishan.me,DIRECT'
+    - 'DOMAIN,services.googleapis.cn,🚀 节点选择'
+    - 'RULE-SET,private,DIRECT'
+    - 'RULE-SET,reject,REJECT'
+    - 'RULE-SET,icloud,DIRECT'
+    - 'RULE-SET,apple,DIRECT'
+    - 'RULE-SET,google,DIRECT'
+    - 'RULE-SET,proxy,🚀 节点选择'
+    - 'RULE-SET,direct,DIRECT'
+    - 'RULE-SET,lancidr,DIRECT'
+    - 'RULE-SET,cncidr,DIRECT'
+    - 'RULE-SET,telegramcidr,🚀 节点选择'
+    - 'GEOIP,LAN,DIRECT'
+    - 'GEOIP,CN,DIRECT'
+    - 'MATCH,🚀 节点选择'
+    - 'DOMAIN-SUFFIX,jdbstatic.com,🐟 漏网之鱼'

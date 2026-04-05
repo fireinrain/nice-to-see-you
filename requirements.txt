@@ -15,4 +15,5 @@ redis==7.4.0
 requests
 yarl==1.9.4
 zoomeyeai
+ PyYAML==6.0.3
 
