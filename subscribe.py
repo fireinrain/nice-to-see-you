@@ -177,10 +177,10 @@ def build_vless_link(item: dict) -> str:
 # ========================
 def main():
     # ===== 可配置参数 =====
-    TOP_N = 10
+    TOP_N = 5
 
     templates = [
-        # NodeTemplate("🇺🇸美国-X专线", "vless", "vless://5f4638b2-cf76-4f59-92a7-bdd5ad53e010@ip:port?encryption=none&security=tls&sni=rnxhttp.256800.xyz&fp=chrome&insecure=0&allowInsecure=0&type=xhttp&path=%2F5f4638b2&mode=auto#NodeName"),
+        NodeTemplate("🇺🇸美国-X专线", "vless", "vless://5f4638b2-cf76-4f59-92a7-bdd5ad53e010@ip:port?encryption=none&security=tls&sni=rnws.256800.xyz&fp=chrome&insecure=0&allowInsecure=0&type=xhttp&path=%2F5f4638b2&mode=auto#NodeName"),
         # 未来可以直接加：
         # NodeTemplate("🇭🇰香港-节点", "vmess", "vmess://xxxxx"),
         NodeTemplate("🇺🇸美国-W专线", "vless",
