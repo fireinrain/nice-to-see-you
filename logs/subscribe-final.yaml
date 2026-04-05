@@ -107,76 +107,6 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线F
-  type: vless
-  server: 174.136.206.5
-  port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
-  udp: true
-  tls: true
-  servername: rnxhttp.256800.xyz
-  client-fingerprint: chrome
-  network: xhttp
-  ws-opts:
-    path: /5f4638b2
-    headers:
-      Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线G
-  type: vless
-  server: 154.17.8.63
-  port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
-  udp: true
-  tls: true
-  servername: rnxhttp.256800.xyz
-  client-fingerprint: chrome
-  network: xhttp
-  ws-opts:
-    path: /5f4638b2
-    headers:
-      Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线H
-  type: vless
-  server: 45.59.187.85
-  port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
-  udp: true
-  tls: true
-  servername: rnxhttp.256800.xyz
-  client-fingerprint: chrome
-  network: xhttp
-  ws-opts:
-    path: /5f4638b2
-    headers:
-      Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线I
-  type: vless
-  server: 154.17.225.54
-  port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
-  udp: true
-  tls: true
-  servername: rnxhttp.256800.xyz
-  client-fingerprint: chrome
-  network: xhttp
-  ws-opts:
-    path: /5f4638b2
-    headers:
-      Host: rnxhttp.256800.xyz
-- name: 🇺🇸美国-专线J
-  type: vless
-  server: 174.136.204.87
-  port: 443
-  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
-  udp: true
-  tls: true
-  servername: rnxhttp.256800.xyz
-  client-fingerprint: chrome
-  network: xhttp
-  ws-opts:
-    path: /5f4638b2
-    headers:
-      Host: rnxhttp.256800.xyz
 proxy-groups:
 - name: 派蒙风の翼|切换在下一项
   type: select
@@ -187,11 +117,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🚀 节点选择
   type: select
   proxies:
@@ -200,11 +125,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: ⚖️ 均衡哈希
   type: load-balance
   strategy: consistent-hashing
@@ -217,11 +137,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: ♻️ 自动选择
   type: url-test
   url: http://www.gstatic.com/generate_204
@@ -233,11 +148,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🧬 故障转移
   type: fallback
   url: http://www.gstatic.com/generate_204
@@ -249,11 +159,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🌍 国外媒体
   type: select
   proxies:
@@ -262,11 +167,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 📲 电报信息
   type: select
   proxies:
@@ -275,11 +175,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: Ⓜ️ 微软服务
   type: select
   proxies:
@@ -288,11 +183,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🍎 苹果服务
   type: select
   proxies:
@@ -301,11 +191,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 📢 谷歌FCM
   type: select
   proxies:
@@ -314,11 +199,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🎯 全球直连
   type: select
   proxies:
@@ -328,11 +208,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🛑 全球拦截
   type: select
   proxies:
@@ -343,11 +218,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🍃 应用净化
   type: select
   proxies:
@@ -358,11 +228,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 - name: 🐟 漏网之鱼
   type: select
   proxies:
@@ -371,11 +236,6 @@ proxy-groups:
   - 🇺🇸美国-专线C
   - 🇺🇸美国-专线D
   - 🇺🇸美国-专线E
-  - 🇺🇸美国-专线F
-  - 🇺🇸美国-专线G
-  - 🇺🇸美国-专线H
-  - 🇺🇸美国-专线I
-  - 🇺🇸美国-专线J
 rule-providers:
   reject:
     type: http
