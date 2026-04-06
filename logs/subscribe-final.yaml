@@ -39,7 +39,7 @@ dns:
 proxies:
 - name: 🇺🇸美国-X专线A
   type: vless
-  server: 154.17.234.35
+  server: 150.242.90.205
   port: 443
   uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
@@ -53,7 +53,7 @@ proxies:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线B
   type: vless
-  server: 154.17.15.91
+  server: 154.17.29.62
   port: 443
   uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
@@ -67,7 +67,7 @@ proxies:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线C
   type: vless
-  server: 154.17.31.82
+  server: 154.17.2.51
   port: 443
   uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
@@ -81,7 +81,7 @@ proxies:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线D
   type: vless
-  server: 154.17.15.126
+  server: 45.59.184.32
   port: 443
   uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
@@ -95,7 +95,7 @@ proxies:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-X专线E
   type: vless
-  server: 154.17.20.7
+  server: 154.17.235.210
   port: 443
   uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
   udp: true
@@ -109,7 +109,7 @@ proxies:
       Host: rnws.256800.xyz
 - name: 🇺🇸美国-W专线A
   type: vless
-  server: 154.17.234.35
+  server: 150.242.90.205
   port: 443
   uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
   udp: true
@@ -123,7 +123,7 @@ proxies:
       Host: rnxhttp.256800.xyz
 - name: 🇺🇸美国-W专线B
   type: vless
-  server: 154.17.15.91
+  server: 154.17.29.62
   port: 443
   uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
   udp: true
@@ -137,7 +137,7 @@ proxies:
       Host: rnxhttp.256800.xyz
 - name: 🇺🇸美国-W专线C
   type: vless
-  server: 154.17.31.82
+  server: 154.17.2.51
   port: 443
   uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
   udp: true
@@ -151,7 +151,7 @@ proxies:
       Host: rnxhttp.256800.xyz
 - name: 🇺🇸美国-W专线D
   type: vless
-  server: 154.17.15.126
+  server: 45.59.184.32
   port: 443
   uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
   udp: true
@@ -165,7 +165,7 @@ proxies:
       Host: rnxhttp.256800.xyz
 - name: 🇺🇸美国-W专线E
   type: vless
-  server: 154.17.20.7
+  server: 154.17.235.210
   port: 443
   uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
   udp: true
