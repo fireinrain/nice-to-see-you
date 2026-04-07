@@ -552,7 +552,7 @@ def cleanup_old_asn_data(asn: str):
 def main():
     # 如果ip数量大于200个 则跳过执行
     keys = r.hkeys('snifferx-final-result')
-    if len(keys) >= 200:
+    if len(keys) >= 256:
         raise Exception("当前反代IP数量充足，暂不需要扫描")
     weekday = get_current_weekday_plus()
     asn = Wanted_ASN[weekday]
