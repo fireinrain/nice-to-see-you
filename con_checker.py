@@ -5,7 +5,8 @@ import json
 import random
 import re
 from collections import defaultdict
-
+import socket
+import ssl
 import urllib3
 import aiohttp
 import asyncio
@@ -595,6 +596,90 @@ def export_result_json_data(key: str):
         print(f"✅ 导出完成，共 {len(result_list)} 条")
     except Exception as e:
         print("❌ 导出失败:", e)
+
+
+def check_cf_edge_fast(ip: str, port: int, retries: int = 0) -> bool:
+    """
+    极速探测指定的 IP:Port 是否为 Cloudflare 边缘节点。
+
+    :param ip: 目标 IP 地址
+    :param port: 目标端口 (通常为 443)
+    :param retries: 失败后的重试次数 (0 表示只测 1 次)
+    :return: bool (True 表示有效 CF 节点，False 表示无效或死节点)
+    """
+    # 默认使用的探测域名和超时时间 (极速模式)
+    domain = "www.cloudflare.com"
+    timeout = 2.0
+
+    # 1. 预先构建原生的 HTTP/1.1 GET 请求报文
+    request_payload = (
+        f"GET /cdn-cgi/trace HTTP/1.1\r\n"
+        f"Host: {domain}\r\n"
+        f"User-Agent: Mozilla/5.0\r\n"
+        f"Connection: close\r\n\r\n"
+    ).encode('utf-8')
+
+    # 2. 预先配置 TLS 选项：跳过证书校验，准备注入 SNI
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+
+    # 执行探测，包含重试机制
+    for attempt in range(retries + 1):
+        sock = None
+        secure_sock = None
+        try:
+            # 3. 建立原生 TCP 连接，并设置绝对超时
+            sock = socket.create_connection((ip, port), timeout=timeout)
+
+            # 4. 包装为 TLS 连接，并强制注入我们想要的 SNI (Server Name Indication)
+            secure_sock = ssl_context.wrap_socket(sock, server_hostname=domain)
+
+            # 5. 发送 HTTP 报文
+            secure_sock.sendall(request_payload)
+
+            # 6. 极速读取响应 (限制最多读取 10KB 防恶意堵塞)
+            response_data = b""
+            while True:
+                chunk = secure_sock.recv(4096)
+                if not chunk:
+                    break
+                response_data += chunk
+                if len(response_data) > 10240:
+                    break
+
+            response_text = response_data.decode('utf-8', errors='ignore')
+
+            # 7. 严苛校验阶段 (照妖镜)
+            # 7.1 必须是 HTTP 200 OK
+            if not response_text.startswith("HTTP/1.1 200") and not response_text.startswith("HTTP/1.0 200"):
+                continue
+
+            # 7.2 响应头必须包含 Cloudflare
+            if "server: cloudflare" not in response_text.lower():
+                continue
+
+            # 7.3 Trace 页面正文必须包含机房代码和我们在 Payload 里写的 UA
+            if "colo=" in response_text and "uag=Mozilla/5.0" in response_text:
+                return True
+
+        except Exception:
+            # 任何异常（连接超时、TLS 握手被重置、读超时）都被视为无效节点
+            pass
+        finally:
+            # 8. 绝对保证文件描述符(FD)被释放，防止多线程时句柄耗尽
+            if secure_sock:
+                try:
+                    secure_sock.close()
+                except:
+                    pass
+            elif sock:
+                try:
+                    sock.close()
+                except:
+                    pass
+
+    return False
 
 
 if __name__ == '__main__':
