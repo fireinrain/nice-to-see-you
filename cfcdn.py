@@ -18,7 +18,6 @@ import requests
 import cloudflare
 
 
-
 def check_cf_edge_fast(ip: str, port: int, retries: int = 0) -> bool:
     """
     极速探测指定的 IP:Port 是否为 Cloudflare 边缘节点。
@@ -330,7 +329,6 @@ def delete_keys_containing_asn(hashmap_key, asn):
         print(f"No keys containing asn '{asn}' found")
 
 
-
 # 搭配worker 展示结果
 def main():
     asns = CountryASN['US']
@@ -355,30 +353,54 @@ def main():
         if argv_[1] == "check":
             keys = r.hkeys('snifferx-cfcdn')
             for key in keys:
-                value = r.hget('snifferx-cfcdn', key)
+                try:
+                    # 👉 统一转 string
+                    key_str = key.decode('utf-8')
 
-                # Prepare the data for Cloudflare KV
-                # kv_key = key.decode('utf-8')
-                kv_value = json.loads(value.decode('utf-8'))
+                    value = r.hget('snifferx-cfcdn', key)
+                    if not value:
+                        continue
 
-                ip = kv_value['ip']
-                port = kv_value['port']
-                # tls = kv_value['enable_tls']
-                # datacenter = kv_value['data_center']
-                region = kv_value['region']
-                city = kv_value['city']
-                key_str = str(key)
-                # port_open = IPChecker.check_port_open_with_retry(ip, port, 2)
-                is_cf_edge = check_cf_edge_fast(ip, port, 1)
-                if not is_cf_edge:
-                    print(f">>> 当前代理优选IP端口已失效: {ip}:{port},进行移除...")
-                    print(f">>> 原始记录: {key_str}--{kv_value}")
-                    r.hdel('snifferx-cfcdn', key)
-                    try:
-                        cloudflare.remove_dns_record('A', cloudflare.hostname, ip)
-                    except Exception as e:
-                        print(f"Delete DNS record failed: {e}")
+                    kv_value = json.loads(value.decode('utf-8'))
 
+                    ip = kv_value.get('ip')
+                    port = kv_value.get('port')
+
+                    # =========================
+                    # 🚀 校验 key 和 value 一致
+                    # =========================
+                    # key 格式: xx:ip:port
+                    parts = key_str.split(":")
+                    if len(parts) < 3:
+                        print(f"[WARN] 非法key格式: {key_str}")
+                        continue
+
+                    key_ip = parts[-2]
+                    key_port = parts[-1]
+
+                    if key_ip != ip or str(key_port) != str(port):
+                        print(f"[WARN] key/value 不一致，跳过: {key_str} -> {kv_value}")
+                        continue
+
+                    # =========================
+                    # 🚀 CF 检测
+                    # =========================
+                    is_cf_edge = check_cf_edge_fast(ip, port, 1)
+
+                    if not is_cf_edge:
+                        print(f">>> 失效节点: {ip}:{port}")
+                        print(f">>> 删除 Redis: {key_str}")
+                        # 删除 Redis
+                        r.hdel('snifferx-cfcdn', key)
+                        # 删除 DNS
+                        try:
+                            cloudflare.remove_dns_record('A', cloudflare.hostname, ip)
+                            print(f">>> 已删除 DNS: {ip}")
+                        except Exception as e:
+                            print(f"[ERROR] 删除 DNS 失败: {ip}, {e}")
+
+                except Exception as e:
+                    print(f"[ERROR] 处理 key 失败: {key}, err={e}")
 
 
 # 清理误判的ip SNI欺诈
