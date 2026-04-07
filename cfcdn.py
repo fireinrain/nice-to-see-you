@@ -28,7 +28,7 @@ def check_cf_edge_fast(ip: str, port: int, retries: int = 0) -> bool:
     :return: bool (True 表示有效 CF 节点，False 表示无效或死节点)
     """
     # 默认使用的探测域名和超时时间 (极速模式)
-    domain = "www.cloudflare.com"
+    domain = "www.shopify.com"
     timeout = 2.0
 
     # 1. 预先构建原生的 HTTP/1.1 GET 请求报文
