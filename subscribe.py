@@ -177,7 +177,7 @@ def build_vless_link(item: dict) -> str:
 # ========================
 def main():
     # ===== 可配置参数 =====
-    TOP_N = 5
+    TOP_N = 8
 
     templates = [
         NodeTemplate("🇺🇸美国-X专线", "vless", "vless://eb80987d-037b-4b6d-b964-1ef6fe201e16@ip:port?encryption=none&security=tls&sni=rnws.256800.xyz&fp=chrome&insecure=0&allowInsecure=0&type=xhttp&path=%2Feb8098&mode=auto#NodeName"),
