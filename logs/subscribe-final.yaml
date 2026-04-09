@@ -107,6 +107,48 @@ proxies:
     path: /eb8098
     headers:
       Host: rnws.256800.xyz
+- name: 🇺🇸美国-X专线F
+  type: vless
+  server: 154.17.15.91
+  port: 443
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
+  udp: true
+  tls: true
+  servername: rnws.256800.xyz
+  client-fingerprint: chrome
+  network: xhttp
+  ws-opts:
+    path: /eb8098
+    headers:
+      Host: rnws.256800.xyz
+- name: 🇺🇸美国-X专线G
+  type: vless
+  server: 154.17.20.7
+  port: 443
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
+  udp: true
+  tls: true
+  servername: rnws.256800.xyz
+  client-fingerprint: chrome
+  network: xhttp
+  ws-opts:
+    path: /eb8098
+    headers:
+      Host: rnws.256800.xyz
+- name: 🇺🇸美国-X专线H
+  type: vless
+  server: 154.17.238.147
+  port: 443
+  uuid: eb80987d-037b-4b6d-b964-1ef6fe201e16
+  udp: true
+  tls: true
+  servername: rnws.256800.xyz
+  client-fingerprint: chrome
+  network: xhttp
+  ws-opts:
+    path: /eb8098
+    headers:
+      Host: rnws.256800.xyz
 - name: 🇺🇸美国-W专线A
   type: vless
   server: 150.242.90.205
@@ -177,6 +219,48 @@ proxies:
     path: /5f4638b2
     headers:
       Host: rnxhttp.256800.xyz
+- name: 🇺🇸美国-W专线F
+  type: vless
+  server: 154.17.15.91
+  port: 443
+  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  udp: true
+  tls: true
+  servername: rnxhttp.256800.xyz
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /5f4638b2
+    headers:
+      Host: rnxhttp.256800.xyz
+- name: 🇺🇸美国-W专线G
+  type: vless
+  server: 154.17.20.7
+  port: 443
+  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  udp: true
+  tls: true
+  servername: rnxhttp.256800.xyz
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /5f4638b2
+    headers:
+      Host: rnxhttp.256800.xyz
+- name: 🇺🇸美国-W专线H
+  type: vless
+  server: 154.17.238.147
+  port: 443
+  uuid: 5f4638b2-cf76-4f59-92a7-bdd5ad53e010
+  udp: true
+  tls: true
+  servername: rnxhttp.256800.xyz
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /5f4638b2
+    headers:
+      Host: rnxhttp.256800.xyz
 proxy-groups:
 - name: 派蒙风の翼|切换在下一项
   type: select
@@ -187,11 +271,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🚀 节点选择
   type: select
   proxies:
@@ -200,11 +290,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: ⚖️ 均衡哈希
   type: load-balance
   strategy: consistent-hashing
@@ -217,11 +313,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: ♻️ 自动选择
   type: url-test
   url: http://www.gstatic.com/generate_204
@@ -233,11 +335,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🧬 故障转移
   type: fallback
   url: http://www.gstatic.com/generate_204
@@ -249,11 +357,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🌍 国外媒体
   type: select
   proxies:
@@ -262,11 +376,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 📲 电报信息
   type: select
   proxies:
@@ -275,11 +395,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: Ⓜ️ 微软服务
   type: select
   proxies:
@@ -288,11 +414,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🍎 苹果服务
   type: select
   proxies:
@@ -301,11 +433,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 📢 谷歌FCM
   type: select
   proxies:
@@ -314,11 +452,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🎯 全球直连
   type: select
   proxies:
@@ -328,11 +472,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🛑 全球拦截
   type: select
   proxies:
@@ -343,11 +493,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🍃 应用净化
   type: select
   proxies:
@@ -358,11 +514,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 - name: 🐟 漏网之鱼
   type: select
   proxies:
@@ -371,11 +533,17 @@ proxy-groups:
   - 🇺🇸美国-X专线C
   - 🇺🇸美国-X专线D
   - 🇺🇸美国-X专线E
+  - 🇺🇸美国-X专线F
+  - 🇺🇸美国-X专线G
+  - 🇺🇸美国-X专线H
   - 🇺🇸美国-W专线A
   - 🇺🇸美国-W专线B
   - 🇺🇸美国-W专线C
   - 🇺🇸美国-W专线D
   - 🇺🇸美国-W专线E
+  - 🇺🇸美国-W专线F
+  - 🇺🇸美国-W专线G
+  - 🇺🇸美国-W专线H
 rule-providers:
   reject:
     type: http
