@@ -1,6 +1,6 @@
 {
-  "counts": 257,
-  "last_check": "2026-04-11 21:33:37",
+  "counts": 256,
+  "last_check": "2026-04-12 08:53:42",
   "data": [
     {
       "ip": "172.104.110.147",
@@ -2366,17 +2366,6 @@
       "network_latency": "35 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "172.104.127.132",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "NRT",
-      "region": "Asia Pacific",
-      "city": "Tokyo",
-      "network_latency": "106 ms",
-      "download_speed": "43804 kB/s",
-      "asn": "63949"
     },
     {
       "ip": "172.105.182.14",
