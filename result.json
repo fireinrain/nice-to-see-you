@@ -1,18 +1,7 @@
 {
-  "counts": 294,
-  "last_check": "2026-05-06 08:52:26",
+  "counts": 289,
+  "last_check": "2026-05-06 23:23:35",
   "data": [
-    {
-      "ip": "154.17.12.186",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "46 ms",
-      "download_speed": "61105 kB/s",
-      "asn": "906"
-    },
     {
       "ip": "87.83.100.1",
       "port": 443,
@@ -452,17 +441,6 @@
       "network_latency": "154 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "156.251.183.184",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "HKG",
-      "region": "Asia Pacific",
-      "city": "Hong Kong",
-      "network_latency": "221 ms",
-      "download_speed": "4309 kB/s",
-      "asn": "40065"
     },
     {
       "ip": "129.226.150.167",
@@ -1079,17 +1057,6 @@
       "network_latency": "225 ms",
       "download_speed": "4892 kB/s",
       "asn": "138915"
-    },
-    {
-      "ip": "154.17.1.214",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "63 ms",
-      "download_speed": "64497 kB/s",
-      "asn": "906"
     },
     {
       "ip": "103.43.191.121",
@@ -2401,17 +2368,6 @@
       "asn": "132203"
     },
     {
-      "ip": "138.2.27.85",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "NRT",
-      "region": "Asia Pacific",
-      "city": "Tokyo",
-      "network_latency": "97 ms",
-      "download_speed": "21581 kB/s",
-      "asn": "31898"
-    },
-    {
       "ip": "154.17.30.135",
       "port": 443,
       "enable_tls": true,
@@ -2861,17 +2817,6 @@
       "network_latency": "198 ms",
       "download_speed": "4642 kB/s",
       "asn": "932"
-    },
-    {
-      "ip": "43.161.238.135",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "HKG",
-      "region": "Asia Pacific",
-      "city": "Hong Kong",
-      "network_latency": "230 ms",
-      "download_speed": "6938 kB/s",
-      "asn": "132203"
     },
     {
       "ip": "122.248.192.79",
