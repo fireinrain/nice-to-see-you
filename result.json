@@ -1,6 +1,6 @@
 {
   "counts": 295,
-  "last_check": "2026-05-12 00:25:24",
+  "last_check": "2026-05-12 09:04:26",
   "data": [
     {
       "ip": "87.83.100.1",
@@ -1048,6 +1048,17 @@
       "asn": "63949"
     },
     {
+      "ip": "103.26.8.38",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "SIN",
+      "region": "Asia Pacific",
+      "city": "Singapore",
+      "network_latency": "216 ms",
+      "download_speed": "8971 kB/s",
+      "asn": "36002"
+    },
+    {
       "ip": "154.17.31.134",
       "port": 443,
       "enable_tls": true,
@@ -1818,17 +1829,6 @@
       "asn": "25820"
     },
     {
-      "ip": "206.237.7.26",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "HKG",
-      "region": "Asia Pacific",
-      "city": "Hong Kong",
-      "network_latency": "198 ms",
-      "download_speed": "10882 kB/s",
-      "asn": "932"
-    },
-    {
       "ip": "154.17.236.18",
       "port": 443,
       "enable_tls": true,
@@ -2432,6 +2432,17 @@
       "network_latency": "8 ms",
       "download_speed": "103913 kB/s",
       "asn": "906"
+    },
+    {
+      "ip": "52.68.134.227",
+      "port": 443,
+      "enable_tls": "true",
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "latency": "492.03 ms",
+      "download_speed": "9116.91 kB/s",
+      "asn": "fofa-jp"
     },
     {
       "ip": "38.147.187.14",
@@ -3103,17 +3114,6 @@
       "network_latency": "163 ms",
       "download_speed": "18562 kB/s",
       "asn": "8143"
-    },
-    {
-      "ip": "52.68.186.178",
-      "port": 443,
-      "enable_tls": "true",
-      "data_center": "NRT",
-      "region": "Asia Pacific",
-      "city": "Tokyo",
-      "latency": "487.71 ms",
-      "download_speed": "10595.52 kB/s",
-      "asn": "fofa-jp"
     },
     {
       "ip": "45.78.76.218",
