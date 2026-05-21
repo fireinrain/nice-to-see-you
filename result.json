@@ -1,6 +1,6 @@
 {
   "counts": 298,
-  "last_check": "2026-05-21 09:16:29",
+  "last_check": "2026-05-22 00:44:18",
   "data": [
     {
       "ip": "104.160.44.135",
@@ -925,6 +925,17 @@
       "network_latency": "9 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
+    },
+    {
+      "ip": "8.222.212.171",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "SIN",
+      "region": "Asia Pacific",
+      "city": "Singapore",
+      "network_latency": "210 ms",
+      "download_speed": "6720 kB/s",
+      "asn": "45102"
     },
     {
       "ip": "65.49.212.242",
@@ -2157,17 +2168,6 @@
       "network_latency": "58 ms",
       "download_speed": "34373 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "193.123.247.210",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "ICN",
-      "region": "Asia Pacific",
-      "city": "Seoul",
-      "network_latency": "162 ms",
-      "download_speed": "10797 kB/s",
-      "asn": "31898"
     },
     {
       "ip": "23.105.195.30",
