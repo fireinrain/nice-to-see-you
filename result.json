@@ -1,6 +1,6 @@
 {
-  "counts": 273,
-  "last_check": "2026-06-06 09:17:04",
+  "counts": 274,
+  "last_check": "2026-06-06 23:01:59",
   "data": [
     {
       "ip": "199.180.116.11",
@@ -2410,6 +2410,17 @@
       "network_latency": "23 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
+    },
+    {
+      "ip": "52.194.202.85",
+      "port": 443,
+      "enable_tls": "true",
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "latency": "492.97 ms",
+      "download_speed": "12211.60 kB/s",
+      "asn": "fofa-jp"
     },
     {
       "ip": "8.209.231.3",
