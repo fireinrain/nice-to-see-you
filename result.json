@@ -1,6 +1,6 @@
 {
-  "counts": 272,
-  "last_check": "2026-06-19 00:47:31",
+  "counts": 270,
+  "last_check": "2026-06-19 10:57:46",
   "data": [
     {
       "ip": "199.180.116.11",
@@ -507,17 +507,6 @@
       "network_latency": "221 ms",
       "download_speed": "4793 kB/s",
       "asn": "40065"
-    },
-    {
-      "ip": "144.34.245.152",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "35 ms",
-      "download_speed": "0 kB/s",
-      "asn": "25820"
     },
     {
       "ip": "150.242.90.148",
@@ -2850,17 +2839,6 @@
       "network_latency": "37 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "154.17.225.54",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "44 ms",
-      "download_speed": "66906 kB/s",
-      "asn": "906"
     },
     {
       "ip": "154.21.82.189",
