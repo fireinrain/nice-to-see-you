@@ -278,12 +278,19 @@
         const dates = data.map(i => i.date);
         const counts = data.map(i => i.counts);
 
-        const detailKeys = Object.keys(data[0].detail);
+        // const detailKeys = Object.keys(data[0].detail);
+        const detailKeys = [...new Set(
+            data.flatMap(item => Object.keys(item.detail || {}))
+        )];
         const detailData = {};
 
+        // detailKeys.forEach(k => {
+        //     detailData[k] = data.map(i => i.detail[k]);
+        // });
         detailKeys.forEach(k => {
-            detailData[k] = data.map(i => i.detail[k]);
+            detailData[k] = data.map(item => item.detail?.[k] ?? 0);
         });
+
 
         const datasets = [{
             label: 'Total',
