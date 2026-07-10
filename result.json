@@ -1,6 +1,6 @@
 {
-  "counts": 301,
-  "last_check": "2026-07-10 00:25:40",
+  "counts": 300,
+  "last_check": "2026-07-10 09:17:57",
   "data": [
     {
       "ip": "139.162.123.230",
@@ -3146,17 +3146,6 @@
       "city": "Los Angeles",
       "network_latency": "58 ms",
       "download_speed": "52182 kB/s",
-      "asn": "906"
-    },
-    {
-      "ip": "154.17.26.16",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "8 ms",
-      "download_speed": "165460 kB/s",
       "asn": "906"
     },
     {
