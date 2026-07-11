@@ -1,6 +1,6 @@
 {
-  "counts": 301,
-  "last_check": "2026-07-11 09:15:04",
+  "counts": 302,
+  "last_check": "2026-07-11 22:34:40",
   "data": [
     {
       "ip": "139.162.123.230",
@@ -377,6 +377,17 @@
       "asn": "25820"
     },
     {
+      "ip": "172.104.96.58",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "network_latency": "108 ms",
+      "download_speed": "21721 kB/s",
+      "asn": "63949"
+    },
+    {
       "ip": "162.211.230.187",
       "port": 443,
       "enable_tls": true,
@@ -575,17 +586,6 @@
       "asn": "932"
     },
     {
-      "ip": "154.17.6.240",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "61 ms",
-      "download_speed": "62484 kB/s",
-      "asn": "906"
-    },
-    {
       "ip": "154.17.28.156",
       "port": 443,
       "enable_tls": true,
@@ -672,17 +672,6 @@
       "network_latency": "118 ms",
       "download_speed": "19848 kB/s",
       "asn": "63949"
-    },
-    {
-      "ip": "43.133.190.213",
-      "port": 8443,
-      "enable_tls": true,
-      "data_center": "NRT",
-      "region": "Asia Pacific",
-      "city": "Tokyo",
-      "network_latency": "141 ms",
-      "download_speed": "3173 kB/s",
-      "asn": "132203"
     },
     {
       "ip": "67.230.186.32",
@@ -1532,6 +1521,17 @@
       "asn": "45102"
     },
     {
+      "ip": "52.68.186.178",
+      "port": 443,
+      "enable_tls": "true",
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "latency": "487.71 ms",
+      "download_speed": "10595.52 kB/s",
+      "asn": "fofa-jp"
+    },
+    {
       "ip": "140.238.25.190",
       "port": 443,
       "enable_tls": true,
@@ -2014,6 +2014,17 @@
       "network_latency": "155 ms",
       "download_speed": "28217 kB/s",
       "asn": "31898"
+    },
+    {
+      "ip": "103.30.77.144",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "HKG",
+      "region": "Asia Pacific",
+      "city": "Hong Kong",
+      "network_latency": "171 ms",
+      "download_speed": "9055 kB/s",
+      "asn": "932"
     },
     {
       "ip": "97.64.29.158",
