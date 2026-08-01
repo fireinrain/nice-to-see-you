@@ -1,6 +1,6 @@
 {
   "counts": 329,
-  "last_check": "2026-08-01 09:18:34",
+  "last_check": "2026-08-01 22:51:23",
   "data": [
     {
       "ip": "45.78.29.27",
@@ -2962,17 +2962,6 @@
       "asn": "906"
     },
     {
-      "ip": "156.244.43.22",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "DXB",
-      "region": "Middle East",
-      "city": "Dubai",
-      "network_latency": "234 ms",
-      "download_speed": "48 kB/s",
-      "asn": "138915"
-    },
-    {
       "ip": "154.21.92.216",
       "port": 443,
       "enable_tls": true,
@@ -3268,6 +3257,17 @@
       "network_latency": "9 ms",
       "download_speed": "194026 kB/s",
       "asn": "25820"
+    },
+    {
+      "ip": "64.120.94.97",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "SIN",
+      "region": "Asia Pacific",
+      "city": "Singapore",
+      "network_latency": "216 ms",
+      "download_speed": "13645 kB/s",
+      "asn": "SG_CIDR"
     },
     {
       "ip": "103.110.221.239",
