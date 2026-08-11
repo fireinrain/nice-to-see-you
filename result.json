@@ -1,6 +1,6 @@
 {
-  "counts": 348,
-  "last_check": "2026-08-10 22:31:19",
+  "counts": 347,
+  "last_check": "2026-08-11 08:54:11",
   "data": [
     {
       "ip": "45.78.29.27",
@@ -1826,17 +1826,6 @@
       "city": "Los Angeles",
       "network_latency": "35 ms",
       "download_speed": "0 kB/s",
-      "asn": "25820"
-    },
-    {
-      "ip": "212.50.233.73",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "KIX",
-      "region": "Asia Pacific",
-      "city": "Osaka",
-      "network_latency": "166 ms",
-      "download_speed": "9416 kB/s",
       "asn": "25820"
     },
     {
