@@ -3,139 +3,592 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP数量变化折线图</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title data-i18n="pageTitle">IP Count Trend</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            background-color: #efeeee;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
+
+        body {
+            background: #0a0e1a;
+            background-image:
+                radial-gradient(circle at 80% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 20% 100%, rgba(56, 189, 248, 0.06) 0%, transparent 50%);
+            margin: 0;
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        .glass {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+
+        .glow-border {
+            position: relative;
+        }
+
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(139, 92, 246, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
         .chart-container {
             position: relative;
-            height: 80vh;
-            width: 95vw;
-            margin: auto;
+            width: 100%;
+            height: 78vh;
+            min-height: 420px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .range-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .range-btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(56, 189, 248, 0.6);
+        }
+
+        .range-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+            color: white;
+            border-color: transparent;
+        }
+
+        .footer-link {
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .stat-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.25);
+        }
+
+        .stat-icon-mini {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 9999px;
+            background: rgba(6, 182, 212, 0.12);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
+        .lang-toggle {
+            display: inline-flex;
+            padding: 3px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+        }
+
+        .lang-btn {
+            padding: 4px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            line-height: 1;
+        }
+
+        .lang-btn:hover {
+            color: #e2e8f0;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
         }
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <h1 class="mt-3 mb-3 text-center">Cloudflare Proxy IP Counts</h1>
-    <div class="chart-container">
-        <canvas id="dataChart"></canvas>
+
+<div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- 顶部 -->
+    <header class="fade-in flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent" data-i18n="mainTitle">
+                    Cloudflare Proxy IP Counts
+                </h1>
+                <div class="flex items-center gap-2 mt-0.5">
+                    <span class="pulse-dot"></span>
+                    <span class="text-xs text-slate-400" id="statusText" data-i18n="loading">Loading data...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- 语言切换 -->
+            <div class="lang-toggle" role="tablist">
+                <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+                <button class="lang-btn" data-lang="zh" onclick="switchLang('zh')">中文</button>
+            </div>
+            <a href="/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white hover:border-cyan-500/60 bg-slate-800/30 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span data-i18n="backDetail">Back to detail</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- 时间范围（新增 - 原页面固定90天，现在可切换） -->
+    <div class="fade-in flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div class="flex flex-wrap items-center gap-2 range-btns">
+            <button onclick="setRange(30)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">30D</button>
+            <button onclick="setRange(90)" class="range-btn active px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 bg-slate-800/30">90D</button>
+            <button onclick="setRange(180)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">180D</button>
+            <button onclick="setRange(365)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">365D</button>
+            <button onclick="setRange(0)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30" data-i18n="btnAll">ALL</button>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="mini-chip" id="avgChip">-- / day avg</span>
+        </div>
     </div>
-    <div class="mt-5 text-center">
-        <span>Powered By <a href="https://t.me/eulerme" target="_blank">Euler</a>&nbsp Since 2024<a href="/" target="">&nbsp Back to detail</a></span>
+
+    <!-- 迷你统计行 -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+        <div class="stat-mini fade-in">
+            <div class="stat-icon-mini bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
+                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400" data-i18n="statCurrent">Current</p>
+                <p class="text-lg font-semibold text-white" id="statCurrent">--</p>
+            </div>
+        </div>
+
+        <div class="stat-mini fade-in">
+            <div class="stat-icon-mini bg-gradient-to-br from-emerald-500/20 to-green-500/20">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400" data-i18n="statPeak">Peak</p>
+                <p class="text-lg font-semibold text-white" id="statPeak">--</p>
+            </div>
+        </div>
+
+        <div class="stat-mini fade-in">
+            <div class="stat-icon-mini bg-gradient-to-br from-violet-500/20 to-purple-500/20">
+                <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400" data-i18n="statTotal">Total Logged</p>
+                <p class="text-lg font-semibold text-white" id="statTotal">--</p>
+            </div>
+        </div>
+
+        <div class="stat-mini fade-in">
+            <div class="stat-icon-mini bg-gradient-to-br from-amber-500/20 to-orange-500/20">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400" data-i18n="statRange">Range Days</p>
+                <p class="text-lg font-semibold text-white" id="statDays">--</p>
+            </div>
+        </div>
     </div>
+
+    <!-- 主图表 -->
+    <div class="glass glow-border rounded-2xl p-4 sm:p-6 mb-6 fade-in">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    <span data-i18n="chartTitle">Total IP Count Trending</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5" data-i18n="chartSub">Aggregated data from all regions combined</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="dataChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 fade-in">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-slate-500">
+            <div class="flex items-center gap-2">
+                <span data-i18n="footer.power">🚀 Powered By</span>
+                <a href="https://t.me/eulerme" target="_blank" class="footer-link font-medium text-slate-300 hover:text-cyan-400 transition-colors">
+                    Euler with ❤️
+                </a>
+                <span class="text-slate-700">·</span>
+                <span data-i18n="footer.since">Since 2024</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="/" class="footer-link text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="footer.detail">Detail Dashboard</a>
+                <span class="text-slate-700">·</span>
+                <a href="https://cfpool.131433.xyz/dash" target="_blank" class="footer-link text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="footer.api">API</a>
+            </div>
+        </div>
+    </footer>
 
 </div>
 
 <script>
+    // ========== i18n 字典 ==========
+    const I18N = {
+        en: {
+            pageTitle: 'IP Count Trend',
+            mainTitle: 'Cloudflare Proxy IP Counts',
+            loading: 'Loading data...',
+            live: 'Live · Updated',
+            btnAll: 'ALL',
+            backDetail: 'Back to detail',
+            statCurrent: 'Current',
+            statPeak: 'Peak',
+            statTotal: 'Total Logged',
+            statRange: 'Range Days',
+            chartTitle: 'Total IP Count Trending',
+            chartSub: 'Aggregated data from all regions combined',
+            chartLabel: 'IP Count',
+            footer: { power: '🚀 Powered By', since: 'Since 2024', detail: 'Detail Dashboard', api: 'API' },
+            avgSuffix: ' / day avg',
+            tooltipSuffix: ' IPs',
+            devtoolsBlock: 'DevTools is not allowed on this page. 😊'
+        },
+        zh: {
+            pageTitle: 'IP 数量趋势图',
+            mainTitle: 'Cloudflare 代理 IP 数量统计',
+            loading: '正在加载数据...',
+            live: '实时 · 更新于',
+            btnAll: '全部',
+            backDetail: '返回详情页',
+            statCurrent: '当前值',
+            statPeak: '峰值',
+            statTotal: '累计总量',
+            statRange: '时间跨度',
+            chartTitle: 'IP 总数趋势图',
+            chartSub: '合并所有区域的聚合数据',
+            chartLabel: 'IP 数量',
+            footer: { power: '🚀 作者', since: '创立于 2024', detail: '详情面板', api: 'API 接口' },
+            avgSuffix: ' / 日均',
+            tooltipSuffix: ' 个 IP',
+            devtoolsBlock: '本页面禁止打开开发者工具。😊'
+        }
+    };
+
+    const STORAGE_KEY = 'cf_monitor_lang';
+    let currentLang = localStorage.getItem(STORAGE_KEY) || 'zh';
+
+    // ========== i18n 核心函数 ==========
+    function t(path) {
+        const parts = path.split('.');
+        let v = I18N[currentLang];
+        for (const p of parts) { if (v && p in v) v = v[p]; else return I18N.en[path] || path; }
+        return v === undefined ? I18N.en[path] || path : v;
+    }
+
+    function applyI18n() {
+        document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const val = t(key);
+            if (el.tagName === 'TITLE') {
+                document.title = val;
+            } else {
+                el.textContent = val;
+            }
+        });
+
+        // 高亮语言按钮
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.lang === currentLang);
+        });
+
+        // 如果已有数据，重新渲染统计和图表标签
+        if (rawCSV.length) {
+            const filtered = filterData(rawCSV, currentRange);
+            renderStats(filtered);
+            renderChart(filtered);
+        }
+    }
+
+    function switchLang(lang) {
+        if (lang === currentLang) return;
+        currentLang = lang;
+        localStorage.setItem(STORAGE_KEY, lang);
+        applyI18n();
+    }
+
+    // ========== 防止控制台打开 ==========
+    (function() {
+        function detectDevTools(allow) {
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+            if (allow) return;
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 24px; color: #e2e8f0; background: #0a0e1a;">' + t('devtoolsBlock') + '</div>';
+            }
+        }
+        setInterval(detectDevTools, 1000);
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    })();
+
     let myChart = null;
+    let rawCSV = [];
+    let currentRange = 90;
+
+    function filterData(rows, days) {
+        if (days === 0 || rows.length <= days) return rows;
+        return rows.slice(-days);
+    }
+
+    function renderStats(rows) {
+        if (!rows.length) return;
+        const latest = rows[rows.length - 1];
+        const peak = rows.reduce((m, r) => r.count > m.count ? r : m, rows[0]);
+        const total = rows.reduce((s, r) => s + r.count, 0);
+        const avg = Math.round(total / rows.length);
+
+        document.getElementById('statCurrent').textContent = latest.count.toLocaleString();
+        document.getElementById('statPeak').textContent = peak.count.toLocaleString();
+        document.getElementById('statTotal').textContent = total.toLocaleString();
+        document.getElementById('statDays').textContent = rows.length;
+        document.getElementById('avgChip').textContent = avg.toLocaleString() + t('avgSuffix');
+        document.getElementById('statusText').textContent = `${t('live')} ${latest.date}`;
+    }
+
+    function renderChart(rows) {
+        const labels = rows.map(r => r.date);
+        const values = rows.map(r => r.count);
+        const ctx = document.getElementById('dataChart').getContext('2d');
+
+        if (myChart) myChart.destroy();
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas?.height || 400);
+        gradient.addColorStop(0, 'rgba(45, 212, 191, 0.35)');
+        gradient.addColorStop(1, 'rgba(45, 212, 191, 0.0)');
+
+        const tooltipSuffix = t('tooltipSuffix');
+        const chartLabel = t('chartLabel');
+
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: chartLabel,
+                    data: values,
+                    borderColor: '#2dd4bf',
+                    borderWidth: 2.5,
+                    backgroundColor: gradient,
+                    tension: 0.38,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#2dd4bf',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                        titleColor: '#e2e8f0',
+                        bodyColor: '#2dd4bf',
+                        borderColor: 'rgba(75, 85, 99, 0.4)',
+                        borderWidth: 1,
+                        cornerRadius: 10,
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 12, weight: '600' },
+                        bodyFont: { family: 'Inter', size: 14, weight: '600' },
+                        callbacks: {
+                            label: function(ctx) {
+                                return '  ' + ctx.parsed.y.toLocaleString() + tooltipSuffix;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#64748b",
+                            font: { family: 'Inter', size: 10 },
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 12
+                        },
+                        grid: {
+                            color: 'rgba(148, 163, 184, 0.05)',
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: "#94a3b8",
+                            font: { family: 'Inter', size: 10 },
+                            callback: function(v) { return v.toLocaleString(); }
+                        },
+                        grid: {
+                            color: 'rgba(148, 163, 184, 0.05)',
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function setRange(days) {
+        currentRange = days;
+        document.querySelectorAll(".range-btns button")
+            .forEach(btn => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        if (!rawCSV.length) return;
+        let filtered = rawCSV;
+        if (days !== 0 && rawCSV.length > days) {
+            filtered = rawCSV.slice(-days);
+        }
+        renderStats(filtered);
+        renderChart(filtered);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
+        applyI18n();
+
         const fetchData = async () => {
             const response = await fetch('https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/report.csv');
             const data = await response.text();
-            return data.split('\n').filter(line => line.trim() !== '');
-        };
-
-        const processData = (data) => {
-            if (data.length > 90) {
-                data = data.slice(-90);
-            }
-            return data;
-        };
-
-        const renderChart = (data) => {
-            const labels = data.map(line => line.split(',')[0]);
-            const values = data.map(line => parseInt(line.split(',')[1]));
-            const ctx = document.getElementById('dataChart').getContext('2d');
-            // If a chart instance exists, destroy it
-            if (myChart) {
-                myChart.destroy();
-            }
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '数量',
-                        data: values,
-                        borderColor: 'rgb(41,164,164)',
-                        borderWidth: 2,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            time: {
-                                unit: 'day'
-                            },
-                            distribution: 'linear',
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 10
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
+            const rows = data.split('\n').filter(line => line.trim() !== '');
+            return rows.map(line => {
+                const parts = line.split(',');
+                return { date: parts[0], count: parseInt(parts[1] || 0, 10) };
             });
         };
 
-        fetchData().then(processData).then(renderChart);
-
-        // 窗口大小改变时重新渲染图表
-        window.addEventListener('resize', function () {
-            fetchData().then(processData).then(renderChart);
+        fetchData().then(data => {
+            rawCSV = data;
+            const filtered = filterData(rawCSV, currentRange);
+            renderStats(filtered);
+            renderChart(filtered);
         });
     });
 
-    // 防止控制台打开
-    (function() {
-            function detectDevTools(allow) {
-                if(allow) return;
-
-                const widthThreshold = window.outerWidth - window.innerWidth > 160;
-                const heightThreshold = window.outerHeight - window.innerHeight > 160;
-
-                if(widthThreshold || heightThreshold) {
-                    document.body.innerHTML = 'DevTools is not allowed on this page.';
-                }
-            }
-
-            setInterval(detectDevTools, 1000);
-
-            // 禁用右键菜单
-            document.addEventListener('contextmenu', event => event.preventDefault());
-
-            // 禁用常见的开发者工具快捷键
-            document.onkeydown = function(e) {
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-                    return false;
-                }
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-                    return false;
-                }
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-                    return false;
-                }
-                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-                    return false;
-                }
-            }
-        })();
-
-
+    // 初始应用语言
+    applyI18n();
 </script>
 </body>
 </html>

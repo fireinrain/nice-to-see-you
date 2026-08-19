@@ -3,48 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloudflare Proxy IP Monitor</title>
+    <title data-i18n="pageTitle">Cloudflare Proxy IP Monitor</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
-            background: #0b1220;
+            background: #0a0e1a;
+            background-image:
+                radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
             color: #e2e8f0;
             margin: 0;
+            min-height: 100vh;
         }
 
-        /* 顶部控制栏 */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 25px;
+        .glass {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
         }
 
-        /* 按钮 */
-        .range-btns button {
-            margin-left: 8px;
-            border-radius: 10px;
-            padding: 6px 14px;
-            border: 1px solid #334155;
-            background: transparent;
-            color: #38bdf8;
+        .glow-border {
+            position: relative;
         }
 
-        .range-btns button.active {
-            background: #06b6d4;
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(139, 92, 246, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .stat-icon {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2));
+        }
+
+        .range-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .range-btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(56, 189, 248, 0.6);
+        }
+
+        .range-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
             color: white;
+            border-color: transparent;
         }
 
-        /* 图表区域（最大化） */
         .chart-wrapper {
-            width: 100vw;
-            height: 80vh;
-            padding: 0 10px;
+            position: relative;
+            width: 100%;
+            height: 72vh;
+            min-height: 400px;
         }
 
         canvas {
@@ -52,158 +84,727 @@
             height: 100% !important;
         }
 
-        /* 表格 */
-        .table {
+        .region-table tr {
+            transition: background 0.2s ease;
+        }
+
+        .region-table tbody tr:hover {
+            background: rgba(56, 189, 248, 0.06);
+        }
+
+        .region-table tbody tr td:first-child {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 500;
+            border-radius: 9999px;
+            letter-spacing: 0.4px;
+        }
+
+        .badge-asia { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+        .badge-na { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-eu { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-me { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+        .badge-sa { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-oc { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+        .footer-link {
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stagger-1 { animation-delay: 0.05s; }
+        .stagger-2 { animation-delay: 0.1s; }
+        .stagger-3 { animation-delay: 0.15s; }
+        .stagger-4 { animation-delay: 0.2s; }
+        .stagger-5 { animation-delay: 0.25s; }
+
+        .lang-toggle {
+            display: inline-flex;
+            padding: 3px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+        }
+
+        .lang-btn {
+            padding: 4px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            line-height: 1;
+        }
+
+        .lang-btn:hover {
             color: #e2e8f0;
         }
 
-        .footer {
-            width: 100%;
-            display: flex;
-            justify-content: center; /* 水平居中 */
-            align-items: center; /* 垂直居中 */
-            margin: 40px 0 20px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        .footer-inner {
-            display: flex;
-            align-items: center;
-            gap: 10px; /* 自动间距，比 | 更优雅 */
-            flex-wrap: wrap; /* 小屏自动换行 */
-            justify-content: center;
-        }
-
-        .footer a {
-            color: #38bdf8;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            color: #06b6d4;
-        }
-
-        /* 分隔符弱化 */
-        .divider {
-            color: #475569;
+        .lang-btn.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
         }
     </style>
 </head>
 
 <body>
 
-<!-- 顶部 -->
-<div class="top-bar">
-    <h3>📊 Cloudflare Proxy IP Monitor</h3>
+<div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-5">
 
-    <div class="range-btns">
-        <button onclick="setRange(7)">7D</button>
-        <button onclick="setRange(30)">30D</button>
-        <button onclick="setRange(60)">60D</button>
-        <button onclick="setRange(90)">90D</button>
-        <button onclick="setRange(120)">120D</button>
-        <button onclick="setRange(365)" class="active">365D</button>
-        <button onclick="setRange(0)">ALL</button>
+    <!-- 顶部导航 -->
+    <header class="fade-in flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent" data-i18n="mainTitle">
+                    Cloudflare Proxy IP Monitor
+                </h1>
+                <div class="flex items-center gap-2 mt-0.5">
+                    <span class="pulse-dot"></span>
+                    <span class="text-xs text-slate-400" data-i18n="loading" id="statusText">Loading data...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- 语言切换 -->
+            <div class="lang-toggle" role="tablist">
+                <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+                <button class="lang-btn" data-lang="zh" onclick="switchLang('zh')">中文</button>
+            </div>
+
+            <!-- 时间范围切换 -->
+            <div class="range-btns flex flex-wrap items-center gap-2">
+                <button onclick="setRange(7)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">7D</button>
+                <button onclick="setRange(30)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">30D</button>
+                <button onclick="setRange(60)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">60D</button>
+                <button onclick="setRange(90)" class="range-btn active px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 bg-slate-800/30">90D</button>
+                <button onclick="setRange(120)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">120D</button>
+                <button onclick="setRange(365)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30">365D</button>
+                <button onclick="setRange(0)" class="range-btn px-3.5 py-1.5 rounded-lg text-sm font-medium border border-slate-700/60 text-slate-300 hover:text-white bg-slate-800/30" data-i18n="btnAll">ALL</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 统计卡片 -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="glass glow-border rounded-2xl p-5 fade-in stagger-1">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5" data-i18n="statActive">Active Now</p>
+                    <p class="text-3xl font-bold text-white" id="statCurrent">--</p>
+                    <p class="text-xs text-slate-500 mt-1" id="statDate">--</p>
+                </div>
+                <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass glow-border rounded-2xl p-5 fade-in stagger-2">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5" data-i18n="statPeak">Peak Count</p>
+                    <p class="text-3xl font-bold text-white" id="statPeak">--</p>
+                    <p class="text-xs text-slate-500 mt-1" id="statPeakDate">--</p>
+                </div>
+                <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass glow-border rounded-2xl p-5 fade-in stagger-3">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5" data-i18n="statRegions">Regions</p>
+                    <p class="text-3xl font-bold text-white" id="statRegions">--</p>
+                    <p class="text-xs text-slate-500 mt-1" data-i18n="statRegionsDesc">Active data centers</p>
+                </div>
+                <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass glow-border rounded-2xl p-5 fade-in stagger-4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5" data-i18n="statDays">Tracked Days</p>
+                    <p class="text-3xl font-bold text-white" id="statDays">--</p>
+                    <p class="text-xs text-slate-500 mt-1" data-i18n="statDaysDesc">Since launch</p>
+                </div>
+                <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- 图表 -->
-<div class="chart-wrapper">
-    <canvas id="chart"></canvas>
-</div>
+    <!-- 主图表 -->
+    <div class="glass glow-border rounded-2xl p-4 sm:p-6 mb-6 fade-in stagger-5">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    <span data-i18n="chartTitle">IP Count Trend</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5" data-i18n="chartSub">Scroll to zoom · Drag to pan · Hover for details</p>
+            </div>
+            <div class="hidden sm:flex items-center gap-4 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-0.5 rounded-full bg-cyan-400"></span>
+                    <span class="text-slate-400" data-i18n="legendTotal">Total</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-0.5 rounded-full bg-amber-400"></span>
+                    <span class="text-slate-400" data-i18n="legendRegion">By Region</span>
+                </div>
+            </div>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
 
-<div class="container-fluid mt-4">
+    <!-- CDN 区域表 -->
+    <div class="glass glow-border rounded-2xl p-5 sm:p-6 mb-6 fade-in">
+        <div class="flex items-center justify-between mb-5">
+            <div>
+                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span data-i18n="cdnTitle">Cloudflare CDN Regions</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5" data-i18n="cdnSub">Core data centers covered by the network</p>
+            </div>
+            <span class="text-xs text-slate-500" id="regionCount">12 locations</span>
+        </div>
 
-    <!-- CDN 表 -->
-    <div class="card-custom">
-        <h4 class="card-title">🌍 Cloudflare CDN Regions</h4>
-
-        <div class="table-responsive">
-            <table class="table table-dark table-hover align-middle custom-table">
+        <div class="overflow-x-auto rounded-xl border border-slate-700/40">
+            <table class="region-table w-full text-sm">
                 <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Location</th>
-                </tr>
+                    <tr class="bg-slate-800/50 text-slate-300 text-xs uppercase tracking-wider">
+                        <th class="text-left py-3 px-4 font-medium" data-i18n="thCode">Code</th>
+                        <th class="text-left py-3 px-4 font-medium" data-i18n="thLocation">Location</th>
+                        <th class="text-left py-3 px-4 font-medium hidden sm:table-cell" data-i18n="thRegion">Region</th>
+                        <th class="text-right py-3 px-4 font-medium hidden sm:table-cell" data-i18n="thIpCount">IP Count</th>
+                        <th class="text-right py-3 px-4 font-medium hidden md:table-cell" data-i18n="thType">Type</th>
+                    </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td>HKG</td>
-                    <td>Hong Kong</td>
-                </tr>
-                <tr>
-                    <td>SIN</td>
-                    <td>Singapore</td>
-                </tr>
-                <tr>
-                    <td>ICN</td>
-                    <td>Seoul, South Korea</td>
-                </tr>
-                <tr>
-                    <td>TPE</td>
-                    <td>Taipei, Taiwan</td>
-                </tr>
-                <tr>
-                    <td>NRT</td>
-                    <td>Narita, Japan</td>
-                </tr>
-                <tr>
-                    <td>KUL</td>
-                    <td>Kuala Lumpur</td>
-                </tr>
-                <tr>
-                    <td>KHH</td>
-                    <td>Kaohsiung</td>
-                </tr>
-                <tr>
-                    <td>KIX</td>
-                    <td>Osaka</td>
-                </tr>
-                <tr>
-                    <td>SJC</td>
-                    <td>San Jose</td>
-                </tr>
-                <tr>
-                    <td>LAX</td>
-                    <td>Los Angeles</td>
-                </tr>
-                <tr>
-                    <td>RUH</td>
-                    <td>Riyadh</td>
-                </tr>
-                <tr>
-                    <td>MFM</td>
-                    <td>Macau</td>
-                </tr>
+                <tbody class="text-slate-200 divide-y divide-slate-700/30" id="cdnTbody">
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">HKG</td>
+                        <td class="py-3 px-4" data-i18n="loc.hkg">Hong Kong</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="hkg">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">SIN</td>
+                        <td class="py-3 px-4" data-i18n="loc.sin">Singapore</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="sin">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">ICN</td>
+                        <td class="py-3 px-4" data-i18n="loc.icn">Seoul, South Korea</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="icn">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">TPE</td>
+                        <td class="py-3 px-4" data-i18n="loc.tpe">Taipei, Taiwan</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="tpe">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">NRT</td>
+                        <td class="py-3 px-4" data-i18n="loc.nrt">Narita, Japan</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="nrt">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">KUL</td>
+                        <td class="py-3 px-4" data-i18n="loc.kul">Kuala Lumpur</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="kul">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">KHH</td>
+                        <td class="py-3 px-4" data-i18n="loc.khh">Kaohsiung</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="khh">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">KIX</td>
+                        <td class="py-3 px-4" data-i18n="loc.kix">Osaka</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="kix">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-violet-400">SJC</td>
+                        <td class="py-3 px-4" data-i18n="loc.sjc">San Jose</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-na" data-i18n="reg.na">N. America</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="sjc">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-violet-400">LAX</td>
+                        <td class="py-3 px-4" data-i18n="loc.lax">Los Angeles</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-na" data-i18n="reg.na">N. America</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="lax">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.t1">Tier-1 Hub</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-pink-400">RUH</td>
+                        <td class="py-3 px-4" data-i18n="loc.ruh">Riyadh</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-me" data-i18n="reg.me">Middle East</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="ruh">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-4 text-cyan-400">MFM</td>
+                        <td class="py-3 px-4" data-i18n="loc.mfm">Macau</td>
+                        <td class="py-3 px-4 hidden sm:table-cell"><span class="badge badge-asia" data-i18n="reg.asia">Asia</span></td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-300 hidden sm:table-cell" data-dc-ip="mfm">--</td>
+                        <td class="py-3 px-4 text-right text-slate-400 hidden md:table-cell" data-i18n="type.reg">Regional</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <!-- Footer -->
-    <div class="footer">
-        <div class="footer-inner">
-        <span>
-            🚀 Powered By
-            <a href="https://t.me/eulerme" target="_blank">Euler</a>
-            &nbsp;Since 2024
-        </span>
-            <span class="divider">|</span>
-            <a href="/simple">Total Trending</a>
-            <span class="divider">|</span>
-            <a href="https://cfpool.131433.xyz/dash" target="_blank">API接口</a>
+    <footer class="text-center py-8 fade-in">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-slate-500">
+            <div class="flex items-center gap-2">
+                <span data-i18n="footer.power">🚀 Powered By</span>
+                <a href="https://t.me/eulerme" target="_blank" class="footer-link font-medium text-slate-300 hover:text-cyan-400 transition-colors">
+                    Euler with ❤️
+                </a>
+                <span class="text-slate-700">·</span>
+                <span data-i18n="footer.since">Since 2024</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="/simple" class="footer-link text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="footer.trending">Total Trending</a>
+                <span class="text-slate-700">|</span>
+                <a href="https://cfpool.131433.xyz/dash" target="_blank" class="footer-link text-slate-400 hover:text-cyan-400 transition-colors" data-i18n="footer.api">API</a>
+            </div>
         </div>
-    </div>
+    </footer>
 
 </div>
 
 <script>
-(function(){function detectDevTools(allow){if(new RegExp('\u004D\u006F\u0062\u0069\u007C\u0041\u006E\u0064\u0072\u006F\u0069\u0064\u007C\u0069\u0050\u0068\u006F\u006E\u0065\u007C\u0069\u0050\u0061\u0064\u007C\u0069\u0050\u006F\u0064','\u0069')['\u0074\u0065\u0073\u0074'](navigator['\u0075\u0073\u0065\u0072\u0041\u0067\u0065\u006E\u0074'])){return;}if(allow)return;var _0x6eac;const _0xc8f9dc=window['\u006F\u0075\u0074\u0065\u0072\u0057\u0069\u0064\u0074\u0068']-window['\u0069\u006E\u006E\u0065\u0072\u0057\u0069\u0064\u0074\u0068']>(687775^687679);_0x6eac=(415905^415905)+(509602^509604);var _0xg68g0d=(696927^696920)+(344767^344764);const _0xed55a=window['\u006F\u0075\u0074\u0065\u0072\u0048\u0065\u0069\u0067\u0068\u0074']-window['\u0069\u006E\u006E\u0065\u0072\u0048\u0065\u0069\u0067\u0068\u0074']>(691232^691328);_0xg68g0d='\u006C\u006E\u0071\u0061\u006C\u0071';if(_0xc8f9dc||_0xed55a){document['\u0062\u006F\u0064\u0079']['\u0069\u006E\u006E\u0065\u0072\u0048\u0054\u004D\u004C']="\u003C\u0064\u0069\u0076\u0020\u0073\u0074\u0079\u006C\u0065\u003D\u0022\u0064\u0069\u0073\u0070\u006C\u0061\u0079\u003A\u0020\u0066\u006C\u0065\u0078\u003B\u0020\u006A\u0075\u0073\u0074\u0069\u0066\u0079\u002D\u0063\u006F\u006E\u0074\u0065\u006E\u0074\u003A\u0020\u0063\u0065\u006E\u0074\u0065\u0072\u003B\u0020\u0061\u006C\u0069\u0067\u006E\u002D\u0069\u0074\u0065\u006D\u0073\u003A\u0020\u0063\u0065\u006E\u0074\u0065\u0072\u003B\u0020\u0068\u0065\u0069\u0067\u0068\u0074\u003A\u0020\u0031\u0030\u0030\u0076\u0068\u003B\u0020\u0066\u006F\u006E\u0074\u002D\u0073\u0069\u007A\u0065\u003A\u0020\u0032\u0034\u0070\u0078\u003B\u0022\u003E"+"\uDE0A\uD83D .egap siht no dewolla ton si slooTveD".split("").reverse().join("")+"\u003C\u002F\u0064\u0069\u0076\u003E";}}setInterval(detectDevTools,571770^572050);document['\u0061\u0064\u0064\u0045\u0076\u0065\u006E\u0074\u004C\u0069\u0073\u0074\u0065\u006E\u0065\u0072']("\u0063\u006F\u006E\u0074\u0065\u0078\u0074\u006D\u0065\u006E\u0075",event=>event['\u0070\u0072\u0065\u0076\u0065\u006E\u0074\u0044\u0065\u0066\u0061\u0075\u006C\u0074']());document['\u006F\u006E\u006B\u0065\u0079\u0064\u006F\u0077\u006E']=function(e){if(!new RegExp('\u004D\u006F\u0062\u0069\u007C\u0041\u006E\u0064\u0072\u006F\u0069\u0064\u007C\u0069\u0050\u0068\u006F\u006E\u0065\u007C\u0069\u0050\u0061\u0064\u007C\u0069\u0050\u006F\u0064','\u0069')['\u0074\u0065\u0073\u0074'](navigator['\u0075\u0073\u0065\u0072\u0041\u0067\u0065\u006E\u0074'])){if(e['\u0063\u0074\u0072\u006C\u004B\u0065\u0079']&&e['\u0073\u0068\u0069\u0066\u0074\u004B\u0065\u0079']&&e['\u006B\u0065\u0079\u0043\u006F\u0064\u0065']=="\u0049"['\u0063\u0068\u0061\u0072\u0043\u006F\u0064\u0065\u0041\u0074'](981686^981686)){return false;}if(e['\u0063\u0074\u0072\u006C\u004B\u0065\u0079']&&e['\u0073\u0068\u0069\u0066\u0074\u004B\u0065\u0079']&&e['\u006B\u0065\u0079\u0043\u006F\u0064\u0065']=="\u0043"['\u0063\u0068\u0061\u0072\u0043\u006F\u0064\u0065\u0041\u0074'](662321^662321)){return false;}if(e['\u0063\u0074\u0072\u006C\u004B\u0065\u0079']&&e['\u0073\u0068\u0069\u0066\u0074\u004B\u0065\u0079']&&e['\u006B\u0065\u0079\u0043\u006F\u0064\u0065']=="\u004A"['\u0063\u0068\u0061\u0072\u0043\u006F\u0064\u0065\u0041\u0074'](621468^621468)){return false;}if(e['\u0063\u0074\u0072\u006C\u004B\u0065\u0079']&&e['\u006B\u0065\u0079\u0043\u006F\u0064\u0065']=="\u0055"['\u0063\u0068\u0061\u0072\u0043\u006F\u0064\u0065\u0041\u0074'](562771^562771)){return false;}}};})();var _0x_0x7e2=(434006^434003)+(279551^279548);const url="\u0068\u0074\u0074\u0070\u0073\u003A\u002F\u002F\u0072\u0061\u0077\u002E\u0067\u0069\u0074\u0068\u0075\u0062\u0075\u0073\u0065\u0072\u0063\u006F\u006E\u0074\u0065\u006E\u0074\u002E\u0063\u006F\u006D\u002F\u0066\u0069\u0072\u0065\u0069\u006E\u0072\u0061\u0069\u006E\u002F\u006E\u0069\u0063\u0065\u002D\u0074\u006F\u002D\u0073\u0065\u0065\u002D\u0079\u006F\u0075\u002F\u006D\u0061\u0073\u0074\u0065\u0072\u002F\u0072\u0065\u0070\u006F\u0072\u0074\u002E\u006A\u0073\u006F\u006E";_0x_0x7e2=(787782^787777)+(267540^267542);let rawData=[];let chart;fetch(url)['\u0074\u0068\u0065\u006E'](res=>res['\u006A\u0073\u006F\u006E']())['\u0074\u0068\u0065\u006E'](data=>{rawData=data;renderChart(509224^508997);});function filterData(days){if(days===(663336^663336))return rawData;var _0xa9e4cd=(737318^737319)+(650350^650348);const _0x2_0xfaf=new Date();_0xa9e4cd=(339412^339410)+(664787^664784);var _0x2282ac=(585097^585088)+(266181^266179);const _0x3272d=new Date(_0x2_0xfaf);_0x2282ac=440640^440641;_0x3272d['\u0073\u0065\u0074\u0044\u0061\u0074\u0065'](_0x2_0xfaf['\u0067\u0065\u0074\u0044\u0061\u0074\u0065']()-days);return rawData['\u0066\u0069\u006C\u0074\u0065\u0072'](item=>new Date(item['\u0064\u0061\u0074\u0065'])>=_0x3272d);}function renderChart(days){const _0x1ec3aa=filterData(days);var _0x931dd;const _0xb344ag=_0x1ec3aa['\u006D\u0061\u0070'](i=>i['\u0064\u0061\u0074\u0065']);_0x931dd=(578671^578664)+(271612^271612);const _0x60d=_0x1ec3aa['\u006D\u0061\u0070'](i=>i['\u0063\u006F\u0075\u006E\u0074\u0073']);const _0x1ab66e=[...new Set(_0x1ec3aa['\u0066\u006C\u0061\u0074\u004D\u0061\u0070'](item=>Object['\u006B\u0065\u0079\u0073'](item['\u0064\u0065\u0074\u0061\u0069\u006C']||{})))];const _0x99287f={};_0x1ab66e['\u0066\u006F\u0072\u0045\u0061\u0063\u0068'](k=>{_0x99287f[k]=_0x1ec3aa['\u006D\u0061\u0070'](item=>item['\u0064\u0065\u0074\u0061\u0069\u006C']?.[k]??260809^260809);});const _0x6cac=[{'\u006C\u0061\u0062\u0065\u006C':'Total',"data":_0x60d,"borderWidth":2,'\u0066\u0069\u006C\u006C':false,'\u0079\u0041\u0078\u0069\u0073\u0049\u0044':"\u0079\u0031"}];_0x1ab66e['\u0066\u006F\u0072\u0045\u0061\u0063\u0068'](k=>{_0x6cac['\u0070\u0075\u0073\u0068']({'\u006C\u0061\u0062\u0065\u006C':k,"data":_0x99287f[k],'\u0062\u006F\u0072\u0064\u0065\u0072\u0057\u0069\u0064\u0074\u0068':1,"fill":false,"yAxisID":"\u0079\u0032"});});if(chart)chart['\u0064\u0065\u0073\u0074\u0072\u006F\u0079']();chart=new Chart(document['\u0067\u0065\u0074\u0045\u006C\u0065\u006D\u0065\u006E\u0074\u0042\u0079\u0049\u0064']("trahc".split("").reverse().join("")),{'\u0074\u0079\u0070\u0065':"\u006C\u0069\u006E\u0065",'\u0064\u0061\u0074\u0061':{'\u006C\u0061\u0062\u0065\u006C\u0073':_0xb344ag,"datasets":_0x6cac},"options":{'\u0072\u0065\u0073\u0070\u006F\u006E\u0073\u0069\u0076\u0065':!![],'\u006D\u0061\u0069\u006E\u0074\u0061\u0069\u006E\u0041\u0073\u0070\u0065\u0063\u0074\u0052\u0061\u0074\u0069\u006F':false,"interaction":{'\u006D\u006F\u0064\u0065':'index','\u0069\u006E\u0074\u0065\u0072\u0073\u0065\u0063\u0074':false},'\u0070\u006C\u0075\u0067\u0069\u006E\u0073':{'\u006C\u0065\u0067\u0065\u006E\u0064':{'\u006C\u0061\u0062\u0065\u006C\u0073':{"color":"\u0023\u0066\u0066\u0066"}},"zoom":{'\u007A\u006F\u006F\u006D':{'\u0077\u0068\u0065\u0065\u006C':{'\u0065\u006E\u0061\u0062\u006C\u0065\u0064':!![]},'\u0070\u0069\u006E\u0063\u0068':{"enabled":!![]},'\u006D\u006F\u0064\u0065':"\u0078"},'\u0070\u0061\u006E':{'\u0065\u006E\u0061\u0062\u006C\u0065\u0064':!![],'\u006D\u006F\u0064\u0065':"\u0078"}}},"scales":{'\u0078':{'\u0074\u0069\u0063\u006B\u0073':{'\u0063\u006F\u006C\u006F\u0072':"#94a3b8"}},'\u0079\u0031':{"position":"\u006C\u0065\u0066\u0074","ticks":{'\u0063\u006F\u006C\u006F\u0072':"\u0023\u0033\u0038\u0062\u0064\u0066\u0038"}},"y2":{'\u0070\u006F\u0073\u0069\u0074\u0069\u006F\u006E':"\u0072\u0069\u0067\u0068\u0074","ticks":{"color":"\u0023\u0066\u0061\u0063\u0063\u0031\u0035"},'\u0067\u0072\u0069\u0064':{"drawOnChartArea":false}}}}});}function setRange(days){document['\u0071\u0075\u0065\u0072\u0079\u0053\u0065\u006C\u0065\u0063\u0074\u006F\u0072\u0041\u006C\u006C']("\u002E\u0072\u0061\u006E\u0067\u0065\u002D\u0062\u0074\u006E\u0073\u0020\u0062\u0075\u0074\u0074\u006F\u006E")['\u0066\u006F\u0072\u0045\u0061\u0063\u0068'](btn=>btn['\u0063\u006C\u0061\u0073\u0073\u004C\u0069\u0073\u0074']['\u0072\u0065\u006D\u006F\u0076\u0065']("\u0061\u0063\u0074\u0069\u0076\u0065"));event['\u0074\u0061\u0072\u0067\u0065\u0074']['\u0063\u006C\u0061\u0073\u0073\u004C\u0069\u0073\u0074']['\u0061\u0064\u0064']("evitca".split("").reverse().join(""));renderChart(days);}
+
+    // ========== i18n 字典 ==========
+    const I18N = {
+        en: {
+            pageTitle: 'Cloudflare Proxy IP Monitor',
+            mainTitle: 'Cloudflare Proxy IP Monitor',
+            loading: 'Loading data...',
+            live: 'Live · Updated',
+            btnAll: 'ALL',
+            statActive: 'Active Now',
+            statPeak: 'Peak Count',
+            statRegions: 'Regions',
+            statRegionsDesc: 'Active data centers',
+            statDays: 'Tracked Days',
+            statDaysDesc: 'Since launch',
+            chartTitle: 'IP Count Trend',
+            chartSub: 'Scroll to zoom · Drag to pan · Hover for details',
+            legendTotal: 'Total',
+            legendRegion: 'By Region',
+            cdnTitle: 'Cloudflare CDN Regions',
+            cdnSub: 'Core data centers covered by the network',
+            cdnCount: ' data centers',
+            thCode: 'Code',
+            thLocation: 'Location',
+            thRegion: 'Region',
+            thIpCount: 'IP Count',
+            thType: 'Type',
+            type: { t1: 'Tier-1 Hub', reg: 'Regional' },
+            reg: { asia: 'Asia', na: 'N. America', eu: 'Europe', me: 'Middle East', sa: 'S. America', oc: 'Oceania' },
+            loc: {
+                hkg: 'Hong Kong',
+                sin: 'Singapore',
+                icn: 'Seoul, South Korea',
+                tpe: 'Taipei, Taiwan',
+                nrt: 'Narita, Japan',
+                kul: 'Kuala Lumpur',
+                khh: 'Kaohsiung',
+                kix: 'Osaka',
+                sjc: 'San Jose',
+                lax: 'Los Angeles',
+                ruh: 'Riyadh',
+                mfm: 'Macau'
+            },
+            footer: { power: '🚀 Powered By', since: 'Since 2024', trending: 'Total Trending', api: 'API' },
+            chartLabel: 'Total',
+            devtoolsBlock: 'DevTools is not allowed on this page. 😊'
+        },
+        zh: {
+            pageTitle: 'Cloudflare 代理 IP 监控面板',
+            mainTitle: 'Cloudflare 代理 IP 监控面板',
+            loading: '正在加载数据...',
+            live: '实时 · 更新于',
+            btnAll: '全部',
+            statActive: '当前在线',
+            statPeak: '历史峰值',
+            statRegions: '覆盖区域',
+            statRegionsDesc: '活跃数据中心数',
+            statDays: '累计追踪',
+            statDaysDesc: '自运行以来',
+            chartTitle: 'IP 数量趋势图',
+            chartSub: '滚轮缩放 · 拖拽平移 · 悬停查看详情',
+            legendTotal: '总数',
+            legendRegion: '按地区',
+            cdnTitle: 'Cloudflare CDN 数据中心',
+            cdnSub: '网络覆盖的核心机房列表',
+            cdnCount: ' 个数据中心',
+            thCode: '代号',
+            thLocation: '所在城市',
+            thRegion: '所属区域',
+            thIpCount: 'IP 数量',
+            thType: '节点类型',
+            type: { t1: '核心枢纽', reg: '区域节点' },
+            reg: { asia: '亚洲', na: '北美洲', eu: '欧洲', me: '中东', sa: '南美洲', oc: '大洋洲' },
+            loc: {
+                hkg: '中国香港',
+                sin: '新加坡',
+                icn: '韩国首尔',
+                tpe: '中国台北',
+                nrt: '日本成田',
+                kul: '吉隆坡',
+                khh: '高雄',
+                kix: '大阪',
+                sjc: '圣何塞',
+                lax: '洛杉矶',
+                ruh: '利雅得',
+                mfm: '中国澳门'
+            },
+            footer: { power: '🚀 作者', since: '创立于 2024', trending: '总量趋势图', api: 'API 接口' },
+            chartLabel: '总数',
+            devtoolsBlock: '本页面禁止打开开发者工具。😊'
+        }
+    };
+
+    const STORAGE_KEY = 'cf_monitor_lang';
+    let currentLang = localStorage.getItem(STORAGE_KEY) || 'zh';
+    let currentRange = 90;
+
+    const DC_TO_REGION = {
+        hkg: 'asia', sin: 'asia', icn: 'asia', tpe: 'asia', nrt: 'asia',
+        kul: 'asia', khh: 'asia', kix: 'asia', mfm: 'asia',
+        sjc: 'na', lax: 'na',
+        ruh: 'me',
+        gru: 'sa', eze: 'sa',
+        syd: 'oc', akl: 'oc',
+        ams: 'eu', cdg: 'eu', fra: 'eu', lhr: 'eu', mad: 'eu', fco: 'eu', waw: 'eu', vie: 'eu'
+    };
+
+    // ========== i18n 核心函数 ==========
+    function t(path) {
+        const parts = path.split('.');
+        let v = I18N[currentLang];
+        for (const p of parts) { if (v && p in v) v = v[p]; else return I18N.en[path] || path; }
+        return v === undefined ? I18N.en[path] || path : v;
+    }
+
+    function applyI18n() {
+        document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const val = t(key);
+            if (el.tagName === 'TITLE') {
+                document.title = val;
+            } else {
+                el.textContent = val;
+            }
+        });
+
+        // 高亮语言按钮
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.lang === currentLang);
+        });
+
+        // 动态文本
+        if (typeof rawData !== 'undefined' && rawData.length) {
+            updateStats(rawData);
+        }
+        if (typeof chart !== 'undefined' && chart) {
+            renderChart(currentRange);
+        }
+    }
+
+    function switchLang(lang) {
+        if (lang === currentLang) return;
+        currentLang = lang;
+        localStorage.setItem(STORAGE_KEY, lang);
+        applyI18n();
+    }
+
+    // ========== 防止控制台打开 ==========
+    (function () {
+        function detectDevTools(allow) {
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+            if (allow) return;
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 24px; color: #e2e8f0; background: #0a0e1a;">' + t('devtoolsBlock') + '</div>';
+            }
+        }
+        setInterval(detectDevTools, 1000);
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function (e) {
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    })();
+
+    const url = 'https://raw.githubusercontent.com/fireinrain/nice-to-see-you/master/report.json';
+    let rawData = [];
+    let chart;
+
+    const regionBadges = {
+        'ASIA': ['HKG', 'SIN', 'ICN', 'TPE', 'NRT', 'KUL', 'KHH', 'KIX', 'MFM', 'CGK', 'BKK', 'MNL', 'BOM'],
+        'NA':   ['SJC', 'LAX', 'EWR', 'DFW', 'YVR'],
+        'EU':   ['MRS', 'CDG', 'AMS', 'FRA', 'LHR'],
+        'ME':   ['RUH', 'MCT', 'JED'],
+        'SA':   ['SCL', 'GRU'],
+        'OC':   ['SYD']
+    };
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            rawData = data;
+            updateStats(data);
+            applyI18n();
+            document.getElementById('statusText').textContent = `${t('live')} ${data[data.length - 1].date}`;
+            renderChart(currentRange);
+        });
+
+    function updateStats(data) {
+        const latest = data[data.length - 1];
+        const peak = data.reduce((max, i) => i.counts > max.counts ? i : max, data[0]);
+        const allDc = new Set(data.flatMap(i => Object.keys(i.detail || {})));
+        document.getElementById('statCurrent').textContent = latest.counts.toLocaleString();
+        document.getElementById('statDate').textContent = latest.date;
+        document.getElementById('statPeak').textContent = peak.counts.toLocaleString();
+        document.getElementById('statPeakDate').textContent = peak.date;
+        document.getElementById('statRegions').textContent = allDc.size;
+        document.getElementById('statDays').textContent = data.length;
+        document.getElementById('regionCount').textContent = allDc.size + t('cdnCount');
+
+        const detail = latest.detail || {};
+        document.querySelectorAll('[data-dc-ip]').forEach(el => {
+            const dc = el.getAttribute('data-dc-ip');
+            const count = detail[dc.toUpperCase()] ?? detail[dc.toLowerCase()] ?? 0;
+            el.textContent = (count || 0).toLocaleString();
+        });
+    }
+
+    function filterData(days) {
+        if (days === 0) return rawData;
+        const now = new Date();
+        const cutoff = new Date(now);
+        cutoff.setDate(now.getDate() - days);
+        return rawData.filter(item => new Date(item.date) >= cutoff);
+    }
+
+    function getLineColor(index) {
+        const palette = [
+            '#facc15', '#fb923c', '#f472b6', '#a78bfa', '#60a5fa',
+            '#34d399', '#22d3ee', '#f87171', '#c084fc', '#fbbf24',
+            '#2dd4bf', '#818cf8', '#fb7185', '#4ade80', '#22d3ee',
+            '#f59e0b', '#d946ef', '#0ea5e9', '#10b981', '#ef4444'
+        ];
+        return palette[index % palette.length];
+    }
+
+    function renderChart(days) {
+        const data = filterData(days);
+        const dates = data.map(i => i.date);
+        const counts = data.map(i => i.counts);
+        const detailKeys = [...new Set(data.flatMap(item => Object.keys(item.detail || {})))];
+        const detailData = {};
+        detailKeys.forEach(k => {
+            detailData[k] = data.map(item => item.detail?.[k] ?? 0);
+        });
+
+        const datasets = [{
+            label: t('chartLabel'),
+            data: counts,
+            borderWidth: 2.5,
+            borderColor: '#38bdf8',
+            backgroundColor: 'rgba(56, 189, 248, 0.08)',
+            tension: 0.35,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#38bdf8',
+            pointHoverBorderColor: '#fff',
+            pointHoverBorderWidth: 2,
+            fill: true,
+            yAxisID: 'y1'
+        }];
+
+        detailKeys.forEach((k, idx) => {
+            datasets.push({
+                label: k,
+                data: detailData[k],
+                borderWidth: 1.2,
+                borderColor: getLineColor(idx),
+                backgroundColor: 'transparent',
+                tension: 0.3,
+                pointRadius: 0,
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: getLineColor(idx),
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 1.5,
+                fill: false,
+                yAxisID: 'y2',
+                borderDash: detailKeys.length > 10 ? [3, 3] : []
+            });
+        });
+
+        if (chart) chart.destroy();
+        const gridColor = 'rgba(148, 163, 184, 0.06)';
+
+        chart = new Chart(document.getElementById('chart'), {
+            type: 'line',
+            data: { labels: dates, datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        display: detailKeys.length <= 8,
+                        position: 'top',
+                        align: 'end',
+                        labels: { color: "#94a3b8", font: { family: 'Inter', size: 11 }, boxWidth: 12, boxHeight: 2, padding: 14 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                        titleColor: '#e2e8f0',
+                        bodyColor: '#cbd5e1',
+                        borderColor: 'rgba(75, 85, 99, 0.4)',
+                        borderWidth: 1,
+                        cornerRadius: 10,
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 12, weight: '600' },
+                        bodyFont: { family: 'Inter', size: 11 },
+                        boxPadding: 4,
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`;
+                            }
+                        }
+                    },
+                    zoom: {
+                        zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' },
+                        pan: { enabled: true, mode: 'x' }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: "#64748b", font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { color: gridColor, drawBorder: false } },
+                    y1: { position: 'left', ticks: { color: "#38bdf8", font: { family: 'Inter', size: 10 } }, grid: { color: gridColor, drawBorder: false } },
+                    y2: { position: 'right', ticks: { color: "#facc15", font: { family: 'Inter', size: 10 } }, grid: { drawOnChartArea: false, drawBorder: false } }
+                }
+            }
+        });
+    }
+
+    function setRange(days) {
+        currentRange = days;
+        document.querySelectorAll(".range-btns button").forEach(btn => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        renderChart(days);
+    }
+
+    // 初始应用语言
+    applyI18n();
 </script>
 
 </body>
 </html>
-
-
-

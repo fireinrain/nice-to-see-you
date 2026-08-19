@@ -1,6 +1,29 @@
 // api.cfpool.131433.xyz
 
-// api.cfpool.131433.xyz
+// =====================
+// 🎨 Favicon (内嵌 SVG Data URI)
+// =====================
+const FAVICON = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e293b"/><stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="cf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F97316"/><stop offset=".5" stop-color="#F38020"/><stop offset="1" stop-color="#FB923C"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bg)" stroke="#475569" stroke-width="1"/>
+  <g transform="translate(12 13)">
+    <path d="M21 1C26 1 29.9 4.1 31.2 8.2C34.4 9.2 36.9 12 37.4 15.5C39.8 16.8 41.3 19.5 41.3 22.6C41.3 27 37.8 30.5 33.5 30.5L7.8 30.5C3.5 30.5 0 27 0 22.6C0 19.1 2.3 16 5.4 15C6 11.1 9.3 8.2 13.4 7.8C14.7 3.8 17.8 1 21.5 1Z" fill="url(#cf)"/>
+    <path d="M27.8 13C30.3 13 32.2 14.8 32.7 17.2C34.7 18 35.8 20 35.8 22.1C35.8 24.9 33.5 27.2 30.5 27.4" fill="none" stroke="#FFF7ED" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>
+  </g>
+  <g stroke="#F38020" stroke-width="2.3" fill="none" stroke-linecap="round">
+    <path d="M14 51L50 51" opacity=".95"/>
+    <path d="M19 55.5L45 55.5" opacity=".7"/>
+    <path d="M24 60L40 60" opacity=".45"/>
+  </g>
+</svg>`.replace(/\s+/g, " ").trim());
 
 // =====================
 // 🌍 国家 -> data_center 映射
@@ -341,7 +364,12 @@ function getLoginHTML() {
 <head>
 <meta charset="UTF-8">
 <title>API Access</title>
+<link rel="icon" type="image/svg+xml" href="${FAVICON}">
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui;
@@ -374,17 +402,30 @@ input {
   border: 1px solid #334155;
   background: #0f172a;
   color: white;
+  outline: none;
+  transition: border-color .2s;
+}
+
+input:focus {
+  border-color: #06b6d4;
 }
 
 button {
   width: 100%;
   margin-top: 16px;
-  padding: 12px;
+  padding: 14px 16px;
   border: none;
   border-radius: 10px;
   background: linear-gradient(90deg, #3b82f6, #06b6d4);
   color: white;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: filter .2s;
+}
+
+button:hover {
+  filter: brightness(1.08);
 }
 
 .tip {
@@ -427,6 +468,7 @@ function getDashboardHTML() {
 <head>
 <meta charset="UTF-8">
 <title>API Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="${FAVICON}">
 <style>
 body { font-family: sans-serif; background:#0f172a; color:#e2e8f0; padding:40px;}
 .card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;}
