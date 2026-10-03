@@ -1,6 +1,6 @@
 {
-  "counts": 306,
-  "last_check": "2026-10-03 02:57:20",
+  "counts": 307,
+  "last_check": "2026-10-03 11:07:38",
   "data": [
     {
       "ip": "45.78.29.27",
@@ -309,6 +309,17 @@
       "network_latency": "201 ms",
       "download_speed": "2077 kB/s",
       "asn": "SG_CIDR"
+    },
+    {
+      "ip": "112.120.200.196",
+      "port": 8443,
+      "enable_tls": true,
+      "data_center": "HKG",
+      "region": "Asia Pacific",
+      "city": "Hong Kong",
+      "network_latency": "189 ms",
+      "download_speed": "7543 kB/s",
+      "asn": "4760"
     },
     {
       "ip": "38.147.184.75",
