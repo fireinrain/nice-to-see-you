@@ -1,6 +1,6 @@
 {
-  "counts": 315,
-  "last_check": "2026-10-07 03:24:39",
+  "counts": 311,
+  "last_check": "2026-10-07 11:28:08",
   "data": [
     {
       "ip": "45.78.29.27",
@@ -1653,17 +1653,6 @@
       "asn": "906"
     },
     {
-      "ip": "154.17.12.62",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "62 ms",
-      "download_speed": "34630 kB/s",
-      "asn": "906"
-    },
-    {
       "ip": "38.54.116.209",
       "port": 443,
       "enable_tls": true,
@@ -1761,17 +1750,6 @@
       "network_latency": "97 ms",
       "download_speed": "21335 kB/s",
       "asn": "31898"
-    },
-    {
-      "ip": "154.17.29.72",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "8 ms",
-      "download_speed": "100577 kB/s",
-      "asn": "906"
     },
     {
       "ip": "172.93.32.181",
@@ -2146,17 +2124,6 @@
       "network_latency": "56 ms",
       "download_speed": "0 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "192.9.175.224",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "SYD",
-      "region": "Oceania",
-      "city": "Sydney",
-      "network_latency": "141 ms",
-      "download_speed": "12409 kB/s",
-      "asn": "31898"
     },
     {
       "ip": "45.59.186.102",
@@ -3455,17 +3422,6 @@
       "network_latency": "104 ms",
       "download_speed": "19963 kB/s",
       "asn": "31898"
-    },
-    {
-      "ip": "103.135.248.104",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "HKG",
-      "region": "Asia Pacific",
-      "city": "Hong Kong",
-      "network_latency": "145 ms",
-      "download_speed": "12135 kB/s",
-      "asn": "906"
     }
   ]
 }
