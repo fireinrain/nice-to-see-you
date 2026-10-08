@@ -1,6 +1,6 @@
 {
-  "counts": 311,
-  "last_check": "2026-10-08 04:00:24",
+  "counts": 310,
+  "last_check": "2026-10-08 11:53:25",
   "data": [
     {
       "ip": "45.78.29.27",
@@ -870,17 +870,6 @@
       "network_latency": "229 ms",
       "download_speed": "6097 kB/s",
       "asn": "63949"
-    },
-    {
-      "ip": "65.49.231.108",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "YVR",
-      "region": "North America",
-      "city": "Vancouver",
-      "network_latency": "70 ms",
-      "download_speed": "21071 kB/s",
-      "asn": "25820"
     },
     {
       "ip": "219.76.13.177",
