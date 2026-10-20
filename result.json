@@ -1,6 +1,6 @@
 {
   "counts": 335,
-  "last_check": "2026-10-20 11:01:36",
+  "last_check": "2026-10-21 01:55:14",
   "data": [
     {
       "ip": "104.160.45.177",
@@ -630,17 +630,6 @@
       "asn": "25820"
     },
     {
-      "ip": "150.242.90.227",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "YVR",
-      "region": "North America",
-      "city": "Vancouver",
-      "network_latency": "8 ms",
-      "download_speed": "0 kB/s",
-      "asn": "25820"
-    },
-    {
       "ip": "104.243.20.49",
       "port": 443,
       "enable_tls": true,
@@ -1189,6 +1178,17 @@
       "network_latency": "223 ms",
       "download_speed": "4949 kB/s",
       "asn": "SG_CIDR"
+    },
+    {
+      "ip": "38.47.105.76",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "network_latency": "142 ms",
+      "download_speed": "14501 kB/s",
+      "asn": "400464"
     },
     {
       "ip": "176.122.183.199",
