@@ -1,18 +1,7 @@
 {
-  "counts": 332,
-  "last_check": "2026-10-23 10:40:54",
+  "counts": 331,
+  "last_check": "2026-10-24 02:03:48",
   "data": [
-    {
-      "ip": "104.160.45.177",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "PDX",
-      "region": "North America",
-      "city": "Portland",
-      "network_latency": "10 ms",
-      "download_speed": "173290 kB/s",
-      "asn": "25820"
-    },
     {
       "ip": "45.78.29.27",
       "port": 443,
@@ -1290,6 +1279,17 @@
       "asn": "25820"
     },
     {
+      "ip": "60.249.21.29",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "TPE",
+      "region": "Asia Pacific",
+      "city": "Taipei",
+      "network_latency": "222 ms",
+      "download_speed": "7735 kB/s",
+      "asn": "3462"
+    },
+    {
       "ip": "144.34.227.75",
       "port": 443,
       "enable_tls": true,
@@ -1838,17 +1838,6 @@
       "network_latency": "10 ms",
       "download_speed": "179034 kB/s",
       "asn": "25820"
-    },
-    {
-      "ip": "154.17.1.148",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "63 ms",
-      "download_speed": "50301 kB/s",
-      "asn": "906"
     },
     {
       "ip": "38.54.116.209",
@@ -2443,6 +2432,17 @@
       "network_latency": "57 ms",
       "download_speed": "64819 kB/s",
       "asn": "25820"
+    },
+    {
+      "ip": "87.83.110.203",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "HKG",
+      "region": "Asia Pacific",
+      "city": "Hong Kong",
+      "network_latency": "181 ms",
+      "download_speed": "8923 kB/s",
+      "asn": "49304"
     },
     {
       "ip": "23.225.247.214",
@@ -3047,17 +3047,6 @@
       "city": "Los Angeles",
       "network_latency": "46 ms",
       "download_speed": "0 kB/s",
-      "asn": "25820"
-    },
-    {
-      "ip": "144.34.229.174",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "8 ms",
-      "download_speed": "228069 kB/s",
       "asn": "25820"
     },
     {
