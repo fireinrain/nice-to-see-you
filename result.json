@@ -1,6 +1,6 @@
 {
-  "counts": 339,
-  "last_check": "2026-10-28 11:23:48",
+  "counts": 336,
+  "last_check": "2026-10-29 03:28:26",
   "data": [
     {
       "ip": "212.50.230.13",
@@ -485,6 +485,17 @@
       "network_latency": "12 ms",
       "download_speed": "216247 kB/s",
       "asn": "25820"
+    },
+    {
+      "ip": "172.104.86.229",
+      "port": 443,
+      "enable_tls": true,
+      "data_center": "NRT",
+      "region": "Asia Pacific",
+      "city": "Tokyo",
+      "network_latency": "108 ms",
+      "download_speed": "18196 kB/s",
+      "asn": "63949"
     },
     {
       "ip": "138.128.197.254",
@@ -1224,17 +1235,6 @@
       "asn": "906"
     },
     {
-      "ip": "154.17.29.62",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "33 ms",
-      "download_speed": "92192 kB/s",
-      "asn": "906"
-    },
-    {
       "ip": "65.49.231.168",
       "port": 443,
       "enable_tls": true,
@@ -1840,28 +1840,6 @@
       "asn": "3462"
     },
     {
-      "ip": "67.230.185.46",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "8 ms",
-      "download_speed": "222046 kB/s",
-      "asn": "25820"
-    },
-    {
-      "ip": "65.49.231.234",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "YVR",
-      "region": "North America",
-      "city": "Vancouver",
-      "network_latency": "70 ms",
-      "download_speed": "29353 kB/s",
-      "asn": "25820"
-    },
-    {
       "ip": "23.83.225.178",
       "port": 443,
       "enable_tls": true,
@@ -2278,17 +2256,6 @@
       "network_latency": "62 ms",
       "download_speed": "55205 kB/s",
       "asn": "906"
-    },
-    {
-      "ip": "67.209.182.145",
-      "port": 443,
-      "enable_tls": true,
-      "data_center": "LAX",
-      "region": "North America",
-      "city": "Los Angeles",
-      "network_latency": "81 ms",
-      "download_speed": "36253 kB/s",
-      "asn": "25820"
     },
     {
       "ip": "67.230.186.4",
